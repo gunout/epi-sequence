@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EPI-SEQUENCE PRO v6.0 — Ultimate Edition</title>
+<title>EPI-SEQUENCE PRO v7.0 — Clinical Intelligence Edition</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -109,7 +109,7 @@
   /* ========== APP ========== */
   .app {
     position: relative; z-index: 1; height: 100vh;
-    display: grid; grid-template-columns: 240px 320px 1fr 340px;
+    display: grid; grid-template-columns: 240px 340px 1fr 360px;
     grid-template-rows: 48px 1fr 100px 26px; gap: 6px; padding: 6px;
     opacity: 0; transition: opacity 0.6s;
   }
@@ -137,12 +137,13 @@
     content: ''; position: absolute; inset: 5px; border-radius: 50%;
     background: var(--red); box-shadow: 0 0 10px var(--red); animation: pulse 2s ease-in-out infinite;
   }
-  .topbar-stats { display: flex; gap: 22px; font-size: 11px; }
+  .topbar-stats { display: flex; gap: 18px; font-size: 11px; }
   .stat-item { display: flex; flex-direction: column; gap: 1px; }
   .stat-label { opacity: 0.5; font-size: 9px; letter-spacing: 1px; }
   .stat-value { font-weight: bold; }
   .stat-value.red { color: var(--red); } .stat-value.yellow { color: var(--yellow); }
   .stat-value.green { color: var(--green); } .stat-value.cyan { color: var(--cyan); }
+  .stat-value.purple { color: var(--purple); }
   .topbar-user { display: flex; align-items: center; gap: 14px; font-size: 11px; }
   .role-badge { padding: 3px 10px; border-radius: 2px; letter-spacing: 1px; font-size: 9.5px; text-transform: uppercase; font-weight: bold; }
   .role-badge.neurologue { background: rgba(168, 85, 247, 0.15); border: 1px solid var(--purple); color: var(--purple); }
@@ -256,25 +257,26 @@
   .crosshair::before, .crosshair::after { content: ''; position: absolute; background: var(--cyan); box-shadow: 0 0 6px var(--cyan); }
   .crosshair::before { top: 50%; left: 0; right: 0; height: 1px; }
   .crosshair::after { left: 50%; top: 0; bottom: 0; width: 1px; }
-  .annotation {
-    position: absolute; pointer-events: auto; cursor: pointer; font-size: 9px;
-    letter-spacing: 0.8px; color: var(--red); text-shadow: 0 0 6px var(--red);
-    padding: 3px 7px; background: rgba(0, 0, 0, 0.7); border: 1px solid var(--red);
-    border-radius: 2px; transition: all 0.2s;
-  }
-  .annotation::before { content: ''; position: absolute; width: 6px; height: 6px; background: var(--red); border-radius: 50%; box-shadow: 0 0 8px var(--red); left: -3px; top: 50%; transform: translateY(-50%); }
-  .annotation:hover { background: rgba(255, 59, 107, 0.3); transform: scale(1.05); }
-  .annotation.yellow { color: var(--yellow); border-color: var(--yellow); }
-  .annotation.yellow::before { background: var(--yellow); box-shadow: 0 0 8px var(--yellow); }
-  .annotation.orange { color: var(--orange); border-color: var(--orange); }
-  .annotation.orange::before { background: var(--orange); box-shadow: 0 0 8px var(--orange); }
   .corner { position: absolute; width: 18px; height: 18px; border: 2px solid var(--cyan); opacity: 0.55; }
   .corner.tl { top: 8px; left: 8px; border-right: none; border-bottom: none; }
   .corner.tr { top: 8px; right: 8px; border-left: none; border-bottom: none; }
   .corner.bl { bottom: 8px; left: 8px; border-right: none; border-top: none; }
   .corner.br { bottom: 8px; right: 8px; border-left: none; border-top: none; }
 
-  /* Video tiles RCP (WebRTC) */
+  /* Alert banner */
+  .alert-banner {
+    position: absolute; top: 55px; left: 50%; transform: translateX(-50%);
+    padding: 8px 16px; border-radius: 4px; font-size: 11px; font-weight: bold;
+    letter-spacing: 1px; z-index: 12; pointer-events: none;
+    opacity: 0; transition: all 0.4s;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .alert-banner.active { opacity: 1; }
+  .alert-banner.crit { background: rgba(255, 59, 107, 0.25); border: 1px solid var(--red); color: var(--red); box-shadow: 0 0 25px rgba(255, 59, 107, 0.5); animation: pulse 1s infinite; }
+  .alert-banner.warn { background: rgba(255, 217, 59, 0.2); border: 1px solid var(--yellow); color: var(--yellow); box-shadow: 0 0 20px rgba(255, 217, 59, 0.4); }
+  .alert-banner.ok { background: rgba(0, 255, 157, 0.15); border: 1px solid var(--green); color: var(--green); }
+
+  /* Video tiles */
   .video-grid {
     position: absolute; top: 60px; right: 12px;
     display: grid; grid-template-columns: 110px 110px;
@@ -325,8 +327,8 @@
   .tabs::-webkit-scrollbar { height: 2px; }
   .tabs::-webkit-scrollbar-thumb { background: var(--cyan-dim); }
   .tab {
-    flex: 1; min-width: 55px; padding: 8px 4px; text-align: center;
-    font-size: 9px; letter-spacing: 1px; text-transform: uppercase;
+    flex: 1; min-width: 48px; padding: 8px 3px; text-align: center;
+    font-size: 8.5px; letter-spacing: 0.8px; text-transform: uppercase;
     color: var(--text-dim); cursor: pointer; border-bottom: 2px solid transparent;
     transition: all 0.2s; background: transparent; border-top: none;
     border-left: none; border-right: none; font-family: inherit;
@@ -363,10 +365,12 @@
   .metric-fill.red { background: linear-gradient(90deg, #ff3b6b, #ff8899); box-shadow: 0 0 8px #ff3b6b; }
   .metric-fill.yellow { background: linear-gradient(90deg, #ffd93b, #ffee88); box-shadow: 0 0 8px #ffd93b; }
   .metric-fill.green { background: linear-gradient(90deg, #00ff9d, #88ffcc); box-shadow: 0 0 8px #00ff9d; }
+  .metric-fill.purple { background: linear-gradient(90deg, #a855f7, #d8b4fe); box-shadow: 0 0 8px #a855f7; }
   .metric-value { font-size: 10px; font-weight: bold; }
   .metric-value.red { color: var(--red); }
   .metric-value.yellow { color: var(--yellow); }
   .metric-value.green { color: var(--green); }
+  .metric-value.purple { color: var(--purple); }
 
   .reco-item { background: rgba(0, 255, 157, 0.04); border-left: 3px solid var(--green); padding: 8px 10px; margin-bottom: 7px; border-radius: 2px; font-size: 10.5px; line-height: 1.5; }
   .reco-item.warn { background: rgba(255, 217, 59, 0.04); border-left-color: var(--yellow); }
@@ -378,7 +382,7 @@
   .reco-text strong { color: var(--cyan); }
   .reco-text .drug { display: inline-block; background: rgba(0, 229, 255, 0.1); padding: 0 5px; border-radius: 2px; color: var(--cyan); font-weight: bold; margin: 0 2px; }
 
-  /* Calendar RCP */
+  /* Calendar */
   .calendar { background: rgba(0, 229, 255, 0.03); border: 1px solid var(--border); border-radius: 3px; padding: 10px; margin-bottom: 10px; }
   .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
   .cal-month { font-size: 11px; letter-spacing: 1.5px; color: var(--cyan); font-weight: bold; }
@@ -429,6 +433,90 @@
   .feedback-btn.partial:hover { background: rgba(255, 217, 59, 0.15); border-color: var(--yellow); color: var(--yellow); }
   .feedback-btn.unknown:hover { background: rgba(168, 85, 247, 0.15); border-color: var(--purple); color: var(--purple); }
 
+  /* CTAG Sequencer */
+  .ctag-panel {
+    background: rgba(0, 229, 255, 0.03); border: 1px solid var(--border);
+    border-radius: 3px; padding: 10px; margin-bottom: 10px;
+  }
+  .ctag-timeline { display: flex; flex-direction: column; gap: 6px; }
+  .ctag-step {
+    display: flex; align-items: flex-start; gap: 8px; padding: 7px 9px;
+    border-radius: 3px; border-left: 3px solid var(--text-dim);
+    background: rgba(0, 0, 0, 0.2); transition: all 0.3s;
+  }
+  .ctag-step.active { border-left-color: var(--cyan); background: rgba(0, 229, 255, 0.08); box-shadow: 0 0 12px rgba(0, 229, 255, 0.2); }
+  .ctag-step.done { border-left-color: var(--green); opacity: 0.7; }
+  .ctag-step.crit { border-left-color: var(--red); animation: pulse 2s infinite; }
+  .ctag-time { font-size: 8.5px; font-weight: bold; color: var(--cyan); min-width: 48px; letter-spacing: 0.5px; padding-top: 2px; }
+  .ctag-content { flex: 1; }
+  .ctag-title { font-size: 10px; font-weight: bold; margin-bottom: 2px; color: var(--text); }
+  .ctag-desc { font-size: 8.5px; color: var(--text-dim); line-height: 1.4; }
+  .ctag-actions { display: flex; gap: 4px; margin-top: 4px; flex-wrap: wrap; }
+  .ctag-btn {
+    padding: 3px 8px; font-size: 8px; letter-spacing: 0.5px; text-transform: uppercase;
+    background: rgba(0, 229, 255, 0.1); border: 1px solid var(--border);
+    color: var(--cyan); border-radius: 2px; cursor: pointer; font-family: inherit;
+    transition: all 0.2s;
+  }
+  .ctag-btn:hover { background: rgba(0, 229, 255, 0.25); }
+  .ctag-btn.done { background: rgba(0, 255, 157, 0.15); border-color: var(--green); color: var(--green); }
+  .ctag-btn.skip { border-color: var(--yellow); color: var(--yellow); }
+  .ctag-status { font-size: 8px; padding: 2px 6px; border-radius: 2px; letter-spacing: 0.5px; }
+  .ctag-status.pending { background: rgba(255, 217, 59, 0.15); color: var(--yellow); }
+  .ctag-status.ok { background: rgba(0, 255, 157, 0.15); color: var(--green); }
+  .ctag-status.urgent { background: rgba(255, 59, 107, 0.2); color: var(--red); }
+
+  /* Wearable panel */
+  .wearable-card {
+    background: rgba(0, 229, 255, 0.04); border: 1px solid var(--border);
+    border-radius: 3px; padding: 9px; margin-bottom: 8px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .wearable-info { flex: 1; }
+  .wearable-name { font-size: 10px; font-weight: bold; color: var(--cyan); margin-bottom: 2px; }
+  .wearable-status { font-size: 8.5px; color: var(--text-dim); }
+  .wearable-dot { width: 8px; height: 8px; border-radius: 50%; box-shadow: 0 0 8px currentColor; }
+  .wearable-dot.online { background: var(--green); color: var(--green); animation: pulse 1.5s infinite; }
+  .wearable-dot.offline { background: var(--red); color: var(--red); }
+  .wearable-dot.warn { background: var(--yellow); color: var(--yellow); animation: pulse 1s infinite; }
+
+  /* Prediction gauge */
+  .prediction-gauge {
+    background: rgba(0, 229, 255, 0.04); border: 1px solid var(--border);
+    border-radius: 4px; padding: 12px; margin-bottom: 10px; text-align: center;
+  }
+  .prediction-label { font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-dim); margin-bottom: 6px; }
+  .prediction-value { font-size: 32px; font-weight: bold; font-family: 'Courier New', monospace; text-shadow: 0 0 20px currentColor; margin-bottom: 4px; }
+  .prediction-value.low { color: var(--green); }
+  .prediction-value.moderate { color: var(--yellow); }
+  .prediction-value.high { color: var(--orange); }
+  .prediction-value.critical { color: var(--red); animation: pulse 1.5s infinite; }
+  .prediction-window { font-size: 9px; color: var(--text-dim); }
+  .prediction-factors { margin-top: 8px; text-align: left; }
+  .factor-item {
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 8.5px; padding: 3px 0; border-bottom: 1px dashed rgba(0, 229, 255, 0.1);
+  }
+  .factor-item:last-child { border-bottom: none; }
+  .factor-name { color: var(--text-dim); }
+  .factor-weight { font-weight: bold; }
+  .factor-weight.pos { color: var(--red); }
+  .factor-weight.neg { color: var(--green); }
+  .factor-weight.neu { color: var(--yellow); }
+
+  /* Education modules */
+  .edu-module {
+    background: rgba(168, 85, 247, 0.06); border: 1px solid rgba(168, 85, 247, 0.3);
+    border-radius: 3px; padding: 9px; margin-bottom: 7px; cursor: pointer;
+    transition: all 0.2s;
+  }
+  .edu-module:hover { background: rgba(168, 85, 247, 0.15); border-color: var(--purple); }
+  .edu-module.completed { opacity: 0.6; border-color: var(--green); }
+  .edu-title { font-size: 10px; font-weight: bold; color: var(--purple); margin-bottom: 3px; }
+  .edu-meta { font-size: 8.5px; color: var(--text-dim); display: flex; justify-content: space-between; }
+  .edu-progress { height: 2px; background: rgba(168, 85, 247, 0.2); border-radius: 1px; margin-top: 5px; overflow: hidden; }
+  .edu-progress-fill { height: 100%; background: var(--purple); box-shadow: 0 0 6px var(--purple); transition: width 0.4s; }
+
   /* Bottom bar */
   .bottombar {
     grid-column: 1 / -1; background: var(--panel); border: 1px solid var(--border);
@@ -440,8 +528,8 @@
   .bb-label { font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; opacity: 0.55; }
   .stage-selector { display: flex; gap: 4px; }
   .stage-btn {
-    padding: 7px 12px; background: rgba(0, 229, 255, 0.05); border: 1px solid var(--border);
-    color: var(--cyan); font-family: inherit; font-size: 10px; letter-spacing: 1px;
+    padding: 7px 10px; background: rgba(0, 229, 255, 0.05); border: 1px solid var(--border);
+    color: var(--cyan); font-family: inherit; font-size: 9.5px; letter-spacing: 0.8px;
     cursor: pointer; border-radius: 3px; transition: all 0.2s;
   }
   .stage-btn:hover { background: rgba(0, 229, 255, 0.15); }
@@ -449,8 +537,8 @@
   .timeline { flex: 1; position: relative; padding-top: 20px; }
   .timeline-labels { position: absolute; top: 0; left: 0; right: 0; display: flex; justify-content: space-between; font-size: 8.5px; letter-spacing: 0.8px; opacity: 0.55; text-transform: uppercase; }
   .timeline-track { height: 3px; background: rgba(0, 229, 255, 0.15); border-radius: 2px; position: relative; }
-  .timeline-fill { height: 100%; background: linear-gradient(90deg, var(--green), var(--yellow), var(--red)); border-radius: 2px; width: 85%; transition: width 0.5s; box-shadow: 0 0 12px var(--red); }
-  .timeline-marker { position: absolute; top: -4px; width: 2px; height: 11px; background: var(--cyan); box-shadow: 0 0 8px var(--cyan); left: 85%; transform: translateX(-50%); }
+  .timeline-fill { height: 100%; background: linear-gradient(90deg, var(--green), var(--yellow), var(--red)); border-radius: 2px; width: 100%; transition: width 0.5s; box-shadow: 0 0 12px var(--red); }
+  .timeline-marker { position: absolute; top: -4px; width: 2px; height: 11px; background: var(--cyan); box-shadow: 0 0 8px var(--cyan); left: 100%; transform: translateX(-50%); }
   .action-btns { display: flex; gap: 6px; }
 
   /* Statusbar */
@@ -459,7 +547,7 @@
     border-radius: 3px; display: flex; align-items: center; justify-content: space-between;
     padding: 0 12px; font-size: 9.5px; letter-spacing: 0.8px; color: var(--text-dim);
   }
-  .status-left, .status-right { display: flex; gap: 16px; }
+  .status-left, .status-right { display: flex; gap: 14px; }
   .status-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin-right: 5px; box-shadow: 0 0 6px currentColor; animation: pulse 1.8s infinite; }
 
   /* Modal */
@@ -483,6 +571,8 @@
   .modal-body h4:first-child { margin-top: 0; }
   .modal-body p { margin-bottom: 8px; color: var(--text); opacity: 0.9; }
   .modal-body strong { color: var(--red); }
+  .modal-body ul { margin-left: 16px; margin-bottom: 8px; }
+  .modal-body li { margin-bottom: 3px; font-size: 10.5px; }
   .modal-footer { padding: 12px 16px; border-top: 1px solid var(--border); display: flex; gap: 8px; justify-content: flex-end; }
 
   .scanlines {
@@ -502,39 +592,6 @@
   .toast.ok { border-color: var(--green); border-left-color: var(--green); }
   .toast.purple { border-color: var(--purple); border-left-color: var(--purple); }
   @keyframes slideInRight { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: translateX(0); } }
-
-  /* CTAG Sequencer */
-  .ctag-panel {
-    background: rgba(0, 229, 255, 0.03); border: 1px solid var(--border);
-    border-radius: 3px; padding: 12px; margin-bottom: 10px;
-  }
-  .ctag-timeline { display: flex; flex-direction: column; gap: 8px; }
-  .ctag-step {
-    display: flex; align-items: flex-start; gap: 10px; padding: 8px 10px;
-    border-radius: 3px; border-left: 3px solid var(--text-dim);
-    background: rgba(0, 0, 0, 0.2); transition: all 0.3s;
-  }
-  .ctag-step.active { border-left-color: var(--cyan); background: rgba(0, 229, 255, 0.08); box-shadow: 0 0 12px rgba(0, 229, 255, 0.2); }
-  .ctag-step.done { border-left-color: var(--green); opacity: 0.7; }
-  .ctag-step.crit { border-left-color: var(--red); }
-  .ctag-time { font-size: 9px; font-weight: bold; color: var(--cyan); min-width: 50px; letter-spacing: 0.5px; }
-  .ctag-content { flex: 1; }
-  .ctag-title { font-size: 10px; font-weight: bold; margin-bottom: 2px; color: var(--text); }
-  .ctag-desc { font-size: 9px; color: var(--text-dim); line-height: 1.4; }
-  .ctag-actions { display: flex; gap: 4px; margin-top: 4px; }
-  .ctag-btn {
-    padding: 3px 8px; font-size: 8px; letter-spacing: 0.5px; text-transform: uppercase;
-    background: rgba(0, 229, 255, 0.1); border: 1px solid var(--border);
-    color: var(--cyan); border-radius: 2px; cursor: pointer; font-family: inherit;
-    transition: all 0.2s;
-  }
-  .ctag-btn:hover { background: rgba(0, 229, 255, 0.25); }
-  .ctag-btn.done { background: rgba(0, 255, 157, 0.15); border-color: var(--green); color: var(--green); }
-  .ctag-btn.skip { border-color: var(--yellow); color: var(--yellow); }
-  .ctag-status { font-size: 8px; padding: 2px 6px; border-radius: 2px; letter-spacing: 0.5px; }
-  .ctag-status.pending { background: rgba(255, 217, 59, 0.15); color: var(--yellow); }
-  .ctag-status.ok { background: rgba(0, 255, 157, 0.15); color: var(--green); }
-  .ctag-status.urgent { background: rgba(255, 59, 107, 0.2); color: var(--red); }
 </style>
 </head>
 <body>
@@ -545,7 +602,7 @@
   <div class="login-container">
     <div class="login-logo"></div>
     <div class="login-title">EPI-SEQUENCE</div>
-    <div class="login-subtitle">Crisis Management & CTAG · v6.0</div>
+    <div class="login-subtitle">Clinical Intelligence · v7.0</div>
     <div class="login-role-tabs">
       <button class="role-tab active" data-role="neurologue"><span class="role-icon">🧠</span>Neurologue</button>
       <button class="role-tab" data-role="urgentiste"><span class="role-icon">🚑</span>Urgentiste</button>
@@ -595,9 +652,9 @@
     <div class="topbar-stats">
       <div class="stat-item"><span class="stat-label">SESSION</span><span class="stat-value cyan" id="sessionId">SES-9182-B7</span></div>
       <div class="stat-item"><span class="stat-label">PATIENT</span><span class="stat-value yellow" id="activePatientTop">#EPI-023</span></div>
-      <div class="stat-item"><span class="stat-label">CRISE</span><span class="stat-value red">GTC ≥5 min</span></div>
-      <div class="stat-item"><span class="stat-label">CONF. IA</span><span class="stat-value green" id="confIA">96.2%</span></div>
-      <div class="stat-item"><span class="stat-label">MODÈLE</span><span class="stat-value cyan" id="modelVer">v5.1.392</span></div>
+      <div class="stat-item"><span class="stat-label">CRISE</span><span class="stat-value red" id="crisisStatus">GTC ≥5 min</span></div>
+      <div class="stat-item"><span class="stat-label">RISQUE 24h</span><span class="stat-value" id="riskTop" style="color:var(--orange)">68%</span></div>
+      <div class="stat-item"><span class="stat-label">MODÈLE</span><span class="stat-value cyan" id="modelVer">v6.2.847</span></div>
     </div>
     <div class="topbar-user">
       <div class="session-timer" id="sessionTimer">⏱ 00:00:00</div>
@@ -640,11 +697,11 @@
     </div>
   </div>
 
-  <!-- CENTER-LEFT — CTAG SEQUENCER -->
+  <!-- CENTER-LEFT — CTAG SEQUENCER + SE PROTOCOL -->
   <div class="panel">
     <div class="panel-header">
       <span class="title">Séquenceur CTAG</span>
-      <span style="opacity:0.5; color:var(--purple)">TIMELINE</span>
+      <span style="opacity:0.5; color:var(--purple)">SE PROTOCOL</span>
     </div>
     <div class="panel-body">
       <div class="section">
@@ -659,8 +716,8 @@
           </select>
         </div>
         <div class="field">
-          <label>Durée estimée</label>
-          <input type="text" id="fDuration" value="6 min 30 s — EN COURS">
+          <label>Début de la crise</label>
+          <input type="text" id="fDuration" value="06:30 — EN COURS" style="color:var(--red);font-weight:bold;">
         </div>
       </div>
 
@@ -677,19 +734,19 @@
       </div>
 
       <div class="section">
-        <div class="section-title"><span>◈ Paramètres temporels</span></div>
+        <div class="section-title"><span>◈ Paramètres temps réel</span></div>
         <div class="field">
-          <label>Délai avant prise en charge</label>
+          <label>Durée écoulée <span style="color:var(--red)" id="sePhase">— PHASE PRÉCOCE</span></label>
           <div class="slider-row">
-            <input type="range" min="0" max="60" value="12" id="sDelay">
-            <span class="slider-value" id="vDelay">12 min</span>
+            <input type="range" min="0" max="60" value="6" id="sElapsed">
+            <span class="slider-value" id="vElapsed">6 min</span>
           </div>
         </div>
         <div class="field">
-          <label>Dose de benzodiazépine (mg)</label>
+          <label>Benzodiazépine administrée (mg)</label>
           <div class="slider-row">
-            <input type="range" min="0" max="20" value="8" id="sBenzos">
-            <span class="slider-value" id="vBenzos">8 mg</span>
+            <input type="range" min="0" max="20" value="4" id="sBenzos">
+            <span class="slider-value" id="vBenzos">4 mg</span>
           </div>
         </div>
         <div class="field">
@@ -699,14 +756,21 @@
             <span class="slider-value" id="vSpo2">92%</span>
           </div>
         </div>
+        <div class="field">
+          <label>Glycémie (g/L)</label>
+          <div class="slider-row">
+            <input type="range" min="20" max="200" value="95" id="sGlyc">
+            <span class="slider-value" id="vGlyc">0.95 g/L</span>
+          </div>
+        </div>
       </div>
 
       <div class="section">
-        <div class="section-title"><span>◈ Séquence CTAG générée</span></div>
+        <div class="section-title"><span>◈ Séquence CTAG dynamique</span></div>
         <div class="ctag-panel" id="ctagPanel">
           <div class="ctag-timeline" id="ctagTimeline"></div>
         </div>
-        <button class="btn primary" id="btnRegenerateCTAG">⟳ Régénérer Séquence</button>
+        <button class="btn primary" id="btnRegenerateCTAG">⟳ Recalculer Séquence</button>
       </div>
     </div>
   </div>
@@ -717,6 +781,9 @@
     <div class="corner tl"></div><div class="corner tr"></div>
     <div class="corner bl"></div><div class="corner br"></div>
     <div class="crosshair"></div>
+
+    <!-- ALERT BANNER -->
+    <div class="alert-banner" id="alertBanner"></div>
 
     <div class="vp-toolbar" style="position:absolute;top:12px;left:50%;transform:translateX(-50%);display:flex;gap:4px;background:rgba(0,0,0,0.65);border:1px solid var(--border);border-radius:4px;padding:4px;backdrop-filter:blur(8px);pointer-events:auto;z-index:10;">
       <button class="vp-tool" data-view="3d" style="padding:5px 9px;background:rgba(0,229,255,0.2);border:none;color:var(--cyan);font-family:inherit;font-size:10px;cursor:pointer;border-radius:2px;">🌐 3D</button>
@@ -778,11 +845,11 @@
       </div>
       <div class="vp-row" style="align-items:flex-end">
         <div class="vp-info-box">
-          <div style="color:var(--red); font-weight:bold; letter-spacing:1.5px; margin-bottom:5px;">⚠ ALERTE</div>
-          <div style="font-size:10px; line-height:1.6;">
+          <div style="color:var(--red); font-weight:bold; letter-spacing:1.5px; margin-bottom:5px;">⚠ ALERTE TEMPS RÉEL</div>
+          <div style="font-size:10px; line-height:1.6;" id="realtimeAlert">
             Crise GTC <strong>6 min 30 s</strong> — EN COURS<br>
             SpO₂ : <strong>92%</strong> · FC : <strong>128 bpm</strong><br>
-            Benzodiazépine : <strong>8 mg</strong> administrés<br>
+            Benzos : <strong>4 mg</strong> administrés<br>
             Glasgow post-critique : <strong>à évaluer</strong>
           </div>
         </div>
@@ -799,20 +866,175 @@
     </div>
   </div>
 
-  <!-- RIGHT — DIAGNOSTIC -->
+  <!-- RIGHT — DIAGNOSTIC + PREDICTION + WEARABLES + EDUCATION -->
   <div class="panel">
     <div class="tabs">
-      <button class="tab active" data-tab="charts">📈</button>
-      <button class="tab" data-tab="cal">📅 RCP</button>
-      <button class="tab" data-tab="ai">🧠 IA</button>
+      <button class="tab active" data-tab="pred">🔮 Préd.</button>
+      <button class="tab" data-tab="wear">⌚ Wear.</button>
+      <button class="tab" data-tab="edu">📖 Éduc.</button>
+      <button class="tab" data-tab="charts">📈</button>
       <button class="tab" data-tab="scores">Scores</button>
       <button class="tab" data-tab="reco">Thérapie</button>
+      <button class="tab" data-tab="cal">📅</button>
+      <button class="tab" data-tab="ai">🧠 IA</button>
     </div>
 
     <div class="panel-body">
 
+      <!-- PREDICTION -->
+      <div class="tab-content active" data-content="pred">
+        <div class="section-title"><span>◈ Risque de crise imminente</span></div>
+        <div class="prediction-gauge">
+          <div class="prediction-label">Probabilité dans les 24h</div>
+          <div class="prediction-value" id="predValue" style="color:var(--orange)">68%</div>
+          <div class="prediction-window">Fenêtre de prédiction : 0-24h · Confiance : 87%</div>
+        </div>
+
+        <div class="section-title"><span>◈ Facteurs contributifs</span></div>
+        <div class="prediction-factors" id="predFactors">
+          <div class="factor-item"><span class="factor-name">Sommeil < 6h (3 derniers jours)</span><span class="factor-weight pos">+22%</span></div>
+          <div class="factor-item"><span class="factor-name">Observance thérapeutique < 80%</span><span class="factor-weight pos">+18%</span></div>
+          <div class="factor-item"><span class="factor-name">Stress rapporté (échelle 8/10)</span><span class="factor-weight pos">+12%</span></div>
+          <div class="factor-item"><span class="factor-name">Activité EEG pré-ictale détectée</span><span class="factor-weight pos">+9%</span></div>
+          <div class="factor-item"><span class="factor-name">Alcool (2 verres hier)</span><span class="factor-weight pos">+7%</span></div>
+          <div class="factor-item"><span class="factor-name">Respect des horaires de prise</span><span class="factor-weight neg">-8%</span></div>
+          <div class="factor-item"><span class="factor-name">Activité physique régulière</span><span class="factor-weight neg">-5%</span></div>
+        </div>
+
+        <div class="section-title" style="margin-top:12px;"><span>◈ Historique prédictions</span></div>
+        <div style="font-size:9px; line-height:1.7; color:var(--text-dim);">
+          <div style="display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px dashed rgba(0,229,255,0.1);">
+            <span>J-3 · 14:00</span><span style="color:var(--orange)">72%</span><span style="color:var(--green)">✓ Crise confirmée</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px dashed rgba(0,229,255,0.1);">
+            <span>J-7 · 09:00</span><span style="color:var(--yellow)">45%</span><span style="color:var(--text-dim)">— Pas de crise</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px dashed rgba(0,229,255,0.1);">
+            <span>J-12 · 20:00</span><span style="color:var(--red)">88%</span><span style="color:var(--green)">✓ Crise confirmée</span>
+          </div>
+        </div>
+
+        <button class="btn success" style="width:100%;margin-top:12px;" id="btnRecalcPred">⟳ Recalculer (données temps réel)</button>
+      </div>
+
+      <!-- WEARABLES -->
+      <div class="tab-content" data-content="wear">
+        <div class="section-title"><span>◈ Dispositifs connectés</span></div>
+        <div class="wearable-card">
+          <div class="wearable-info">
+            <div class="wearable-name">📡 EEG portable (Emotiv EPOC)</div>
+            <div class="wearable-status">Batterie 78% · Signal excellent</div>
+          </div>
+          <div class="wearable-dot online"></div>
+        </div>
+        <div class="wearable-card">
+          <div class="wearable-info">
+            <div class="wearable-name">⌚ Montre connectée (Apple Watch)</div>
+            <div class="wearable-status">FC 128 bpm · Activité détectée</div>
+          </div>
+          <div class="wearable-dot warn"></div>
+        </div>
+        <div class="wearable-card">
+          <div class="wearable-info">
+            <div class="wearable-name">📱 Smartphone (app EPI-LINK)</div>
+            <div class="wearable-status">Observance : 72% (7 derniers jours)</div>
+          </div>
+          <div class="wearable-dot online"></div>
+        </div>
+        <div class="wearable-card">
+          <div class="wearable-info">
+            <div class="wearable-name">🛏 Capteur de sommeil (Withings)</div>
+            <div class="wearable-status">Dernière nuit : 5h12 (insuffisant)</div>
+          </div>
+          <div class="wearable-dot warn"></div>
+        </div>
+
+        <div class="section-title" style="margin-top:12px;"><span>◈ Alertes récentes</span></div>
+        <div class="reco-item crit" style="font-size:9.5px;">
+          <div class="reco-title">⚠ Détection crise 14/11 06:28</div>
+          <div class="reco-text">Mouvements convulsifs détectés par le bracelet<br>Confiance : <strong>94%</strong> · Fausse alarme : non</div>
+        </div>
+        <div class="reco-item warn" style="font-size:9.5px;">
+          <div class="reco-title">◈ Sommeil insuffisant 13/11</div>
+          <div class="reco-text">5h12 seulement — facteur de risque identifié</div>
+        </div>
+        <div class="reco-item warn" style="font-size:9.5px;">
+          <div class="reco-title">◈ Observance 72%</div>
+          <div class="reco-text">2 doses manquées cette semaine — risque accru</div>
+        </div>
+
+        <div class="section-title" style="margin-top:12px;"><span>◈ Limites des dispositifs</span></div>
+        <div style="font-size:9px; color:var(--text-dim); line-height:1.5; padding:8px; background:rgba(255,217,59,0.05); border-left:2px solid var(--yellow); border-radius:2px;">
+          Les wearables grand public détectent les crises généralisées avec ~90% de sensibilité en milieu contrôlé, mais <strong style="color:var(--yellow)">manquent souvent les crises non motrices</strong>. Les fausses alarmes restent fréquentes en environnement domestique. Ne pas se substituer à la surveillance clinique.
+        </div>
+      </div>
+
+      <!-- EDUCATION -->
+      <div class="tab-content" data-content="edu">
+        <div class="section-title"><span>◈ Modules éducatifs personnalisés</span></div>
+        <div class="edu-module" data-edu="triggers">
+          <div class="edu-title">🎯 Identifier mes déclencheurs</div>
+          <div class="edu-meta"><span>Module 1 · 8 min</span><span>Non commencé</span></div>
+          <div class="edu-progress"><div class="edu-progress-fill" style="width:0%"></div></div>
+        </div>
+        <div class="edu-module" data-edu="sleep">
+          <div class="edu-title">😴 Hygiène du sommeil</div>
+          <div class="edu-meta"><span>Module 2 · 6 min</span><span>50% complété</span></div>
+          <div class="edu-progress"><div class="edu-progress-fill" style="width:50%"></div></div>
+        </div>
+        <div class="edu-module" data-edu="meds">
+          <div class="edu-title">💊 Gérer mon traitement</div>
+          <div class="edu-meta"><span>Module 3 · 10 min</span><span>25% complété</span></div>
+          <div class="edu-progress"><div class="edu-progress-fill" style="width:25%"></div></div>
+        </div>
+        <div class="edu-module" data-edu="stress">
+          <div class="edu-title">🧘 Pleine conscience (UPLIFT)</div>
+          <div class="edu-meta"><span>Module 4 · 12 min</span><span>Non commencé</span></div>
+          <div class="edu-progress"><div class="edu-progress-fill" style="width:0%"></div></div>
+        </div>
+        <div class="edu-module completed" data-edu="first">
+          <div class="edu-title">🚨 Que faire en cas de crise ?</div>
+          <div class="edu-meta"><span>Module 0 · 5 min</span><span style="color:var(--green)">✓ Complété</span></div>
+          <div class="edu-progress"><div class="edu-progress-fill" style="width:100%"></div></div>
+        </div>
+
+        <div class="section-title" style="margin-top:12px;"><span>◈ Journal des crises</span></div>
+        <div style="font-size:9px; color:var(--text-dim); line-height:1.6; max-height:150px; overflow-y:auto;">
+          <div style="padding:5px 0; border-bottom:1px dashed rgba(0,229,255,0.1);">
+            <strong style="color:var(--red);">14/11 · 06:28</strong> — GTC · Durée 6+ min<br>
+            <span style="font-size:8.5px;">Déclencheurs : sommeil 5h12, stress 8/10</span>
+          </div>
+          <div style="padding:5px 0; border-bottom:1px dashed rgba(0,229,255,0.1);">
+            <strong style="color:var(--yellow);">08/11 · 22:15</strong> — Focale · Durée 1 min<br>
+            <span style="font-size:8.5px;">Déclencheur : alcool (2 verres)</span>
+          </div>
+          <div style="padding:5px 0; border-bottom:1px dashed rgba(0,229,255,0.1);">
+            <strong style="color:var(--green);">02/11 · 10:30</strong> — Absence · Durée 10 s<br>
+            <span style="font-size:8.5px;">Aucun déclencheur identifié</span>
+          </div>
+        </div>
+
+        <div class="section-title" style="margin-top:12px;"><span>◈ Corrélations identifiées</span></div>
+        <div class="metric">
+          <div class="metric-label"><span>Sommeil < 6h → crise</span><span class="metric-value red">r = 0.72</span></div>
+          <div class="metric-bar"><div class="metric-fill red" style="width:72%"></div></div>
+        </div>
+        <div class="metric">
+          <div class="metric-label"><span>Stress > 7/10 → crise</span><span class="metric-value red">r = 0.58</span></div>
+          <div class="metric-bar"><div class="metric-fill red" style="width:58%"></div></div>
+        </div>
+        <div class="metric">
+          <div class="metric-label"><span>Alcool → crise</span><span class="metric-value yellow">r = 0.41</span></div>
+          <div class="metric-bar"><div class="metric-fill yellow" style="width:41%"></div></div>
+        </div>
+        <div class="metric">
+          <div class="metric-label"><span>Activité physique → protection</span><span class="metric-value green">r = -0.35</span></div>
+          <div class="metric-bar"><div class="metric-fill green" style="width:35%"></div></div>
+        </div>
+      </div>
+
       <!-- CHARTS -->
-      <div class="tab-content active" data-content="charts">
+      <div class="tab-content" data-content="charts">
         <div class="chart-wrap" style="height:180px;">
           <div class="chart-title"><span>◈ Fréquence crises</span><span>+3/sem</span></div>
           <canvas id="chartSeizures" style="max-height:145px;"></canvas>
@@ -831,7 +1053,66 @@
         </div>
       </div>
 
-      <!-- CALENDAR RCP -->
+      <!-- SCORES -->
+      <div class="tab-content" data-content="scores">
+        <div class="score-card">
+          <div class="score-header"><span class="score-name">Glasgow</span><span class="score-value yellow">12/15</span></div>
+          <div class="score-detail"><strong>Y</strong> : 4 · <strong>V</strong> : 4 · <strong>M</strong> : 4<br>Post-critique immédiat.</div>
+        </div>
+        <div class="score-card">
+          <div class="score-header"><span class="score-name">STESS (Pronostic)</span><span class="score-value red">5/6</span></div>
+          <div class="score-detail">Status Epilepticus Severity Score.<br><strong>Pronostic défavorable</strong> si ≥3.<br><em>Ne pas confondre avec un diagnostic.</em></div>
+        </div>
+        <div class="score-card">
+          <div class="score-header"><span class="score-name">EEG — Ictal</span><span class="score-value purple">POINTES-ONDES</span></div>
+          <div class="score-detail"><strong>3 Hz</strong> généralisées<br>Amplitude : <strong>240 µV</strong></div>
+        </div>
+        <div class="score-card">
+          <div class="score-header"><span class="score-name">Étiologie</span><span class="score-value yellow">EN COURS D'ÉVALUATION</span></div>
+          <div class="score-detail">Bilan en cours : IRM, bilan sanguin, PL.<br><strong>Ne pas conclure prématurément.</strong></div>
+        </div>
+        <div class="score-card">
+          <div class="score-header"><span class="score-name">Examens urgents</span><span class="score-value green">À FAIRE</span></div>
+          <div class="score-detail">
+            ☐ Glycémie capillaire<br>
+            ☐ Ionogramme, calcémie, magnésémie<br>
+            ☐ Bilan hépatique et rénal<br>
+            ☐ Dosage antiépileptiques<br>
+            ☐ Toxiques urinaires<br>
+            ☐ Gaz du sang
+          </div>
+        </div>
+      </div>
+
+      <!-- RECO -->
+      <div class="tab-content" data-content="reco">
+        <div class="reco-item crit">
+          <div class="reco-title">⚠ 1ère ligne — Benzos (5-30 min)</div>
+          <div class="reco-text">
+            <span class="drug">Lorazépam</span> IV 0.1 mg/kg (max 4 mg)<br>
+            <em>OU Midazolam buccal 0.5 mg/kg</em><br>
+            <em>OU Diazépam rectal 0.5 mg/kg</em>
+          </div>
+        </div>
+        <div class="reco-item warn">
+          <div class="reco-title">◈ 2ème ligne — Établi (>20 min)</div>
+          <div class="reco-text"><span class="drug">Lévétiracétam</span> 60 mg/kg IV (max 4500 mg)<br><em>OU Phénytoïne 20 mg/kg IV</em><br><em>OU Valproate 40 mg/kg IV</em></div>
+        </div>
+        <div class="reco-item warn">
+          <div class="reco-title">◈ 3ème ligne — Réfractaire (>30-60 min)</div>
+          <div class="reco-text">Réanimation — anesthésie générale<br><span class="drug">Propofol</span> ou <span class="drug">Thiopental</span><br>EEG continu obligatoire</div>
+        </div>
+        <div class="reco-item crit">
+          <div class="reco-title">⚠ Contre-indications absolues</div>
+          <div class="reco-text">Ne <strong>rien</strong> introduire dans la bouche<br>Ne pas <strong>immobiliser</strong> le patient<br>Ne pas <strong>retarder</strong> les benzodiazépines</div>
+        </div>
+        <div class="reco-item">
+          <div class="reco-title">◈ Cas particulier — Grossesse</div>
+          <div class="reco-text"><strong>Éviter le valproate</strong> (tératogène)<br>Préférer <span class="drug">Lévétiracétam</span> ou <span class="drug">Lamotrigine</span></div>
+        </div>
+      </div>
+
+      <!-- CALENDAR -->
       <div class="tab-content" data-content="cal">
         <div class="calendar">
           <div class="cal-header">
@@ -846,23 +1127,21 @@
             <div class="cal-day-name">J</div><div class="cal-day-name">V</div><div class="cal-day-name">S</div><div class="cal-day-name">D</div>
           </div>
         </div>
-
         <div class="section-title" style="margin-top:12px;"><span>◈ RCP à venir</span></div>
         <div id="eventsList">
           <div class="rcp-event crit">
             <div class="ev-title">⚠ RCP URGENTE — EPI-023</div>
-            <div class="ev-meta">Aujourd'hui 14h30 · Salle B2 · 5 participants</div>
+            <div class="ev-meta">Aujourd'hui 14h30 · Salle B2</div>
           </div>
           <div class="rcp-event">
             <div class="ev-title">RCP Épileptologie hebdo</div>
-            <div class="ev-meta">Jeudi 10h00 · Visio · 12 participants</div>
+            <div class="ev-meta">Jeudi 10h00 · Visio</div>
           </div>
           <div class="rcp-event">
             <div class="ev-title">RCP Chirurgie de l'épilepsie</div>
             <div class="ev-meta">Vendredi 15h00 · Salle A1</div>
           </div>
         </div>
-
         <button class="btn primary" style="margin-top:12px;" id="btnNewRCP">➕ Planifier une RCP</button>
       </div>
 
@@ -870,39 +1149,38 @@
       <div class="tab-content" data-content="ai">
         <div class="learn-stat">
           <div class="ls-label">Modèle actuel</div>
-          <div class="ls-value" id="aiVersion">v5.1.392</div>
-          <div class="ls-detail">Dernière MAJ : <span id="aiLastUpdate">il y a 3h</span></div>
+          <div class="ls-value" id="aiVersion">v6.2.847</div>
+          <div class="ls-detail">Dernière MAJ : <span id="aiLastUpdate">il y a 2h</span></div>
         </div>
-
         <div class="learn-stat">
           <div class="ls-label">Précision détection</div>
           <div class="ls-value" style="color:var(--green)" id="aiAccuracy">96.2%</div>
           <div class="ls-detail">↑ +0.4% depuis dernier feedback</div>
         </div>
-
+        <div class="learn-stat">
+          <div class="ls-label">Sensibilité pré-ictale</div>
+          <div class="ls-value" style="color:var(--purple)" id="aiSensitivity">87.8%</div>
+          <div class="ls-detail">Fenêtre 0-24h · Fausses alarmes 0.8/j</div>
+        </div>
         <div class="learn-stat">
           <div class="ls-label">Cas EEG validés</div>
           <div class="ls-value" id="aiCases">1 247 583</div>
           <div class="ls-detail">+89 aujourd'hui</div>
         </div>
-
         <div class="section-title" style="margin-top:12px;"><span>◈ Votre feedback</span></div>
         <div style="font-size:10px; color:var(--text-dim); margin-bottom:8px; line-height:1.5;">
-          Évaluez la précision de la détection IA sur ce cas pour améliorer le modèle.
+          Évaluez la précision de la détection IA sur ce cas.
         </div>
-
         <div class="feedback-btns">
           <button class="feedback-btn correct" data-fb="correct">✓ Exact</button>
           <button class="feedback-btn partial" data-fb="partial">◐ Partiel</button>
           <button class="feedback-btn incorrect" data-fb="incorrect">✗ Erreur</button>
           <button class="feedback-btn unknown" data-fb="unknown">? Incertain</button>
         </div>
-
         <div class="section-title" style="margin-top:12px;"><span>◈ Historique feedbacks</span></div>
         <div id="feedbackLog" style="font-size:10px; line-height:1.7; color:var(--text-dim);">
           <div>Aucun feedback pour ce cas</div>
         </div>
-
         <div class="section-title" style="margin-top:12px;"><span>◈ Apprentissage en cours</span></div>
         <div class="metric">
           <div class="metric-label"><span>Progression epoch</span><span class="metric-value green" id="epochPct">72%</span></div>
@@ -912,51 +1190,7 @@
           <div class="metric-label"><span>Buffer de cas</span><span class="metric-value green">912 / 1000</span></div>
           <div class="metric-bar"><div class="metric-fill green" style="width:91.2%"></div></div>
         </div>
-
         <button class="btn success" style="width:100%;margin-top:12px;" id="btnTrainNow">⚡ Déclencher ré-entraînement</button>
-      </div>
-
-      <!-- SCORES -->
-      <div class="tab-content" data-content="scores">
-        <div class="score-card">
-          <div class="score-header"><span class="score-name">Glasgow</span><span class="score-value yellow">12/15</span></div>
-          <div class="score-detail"><strong>Y</strong> : 4 · <strong>V</strong> : 4 · <strong>M</strong> : 4<br>Post-critique immédiat.</div>
-        </div>
-        <div class="score-card">
-          <div class="score-header"><span class="score-name">STESS</span><span class="score-value red">5/6</span></div>
-          <div class="score-detail">Status Epilepticus Severity Score.<br><strong>Pronostic défavorable</strong> si ≥3.</div>
-        </div>
-        <div class="score-card">
-          <div class="score-header"><span class="score-name">EEG — Ictal</span><span class="score-value purple">POINTES-ONDES</span></div>
-          <div class="score-detail"><strong>3 Hz</strong> généralisées<br>Amplitude : <strong>240 µV</strong></div>
-        </div>
-        <div class="score-card">
-          <div class="score-header"><span class="score-name">Étiologie</span><span class="score-value green">IDIOPATHIQUE</span></div>
-          <div class="score-detail">Aucune cause structurelle identifiée.<br>IRM cérébrale : <strong>normale</strong>.</div>
-        </div>
-      </div>
-
-      <!-- RECO -->
-      <div class="tab-content" data-content="reco">
-        <div class="reco-item crit">
-          <div class="reco-title">⚠ 1ère ligne — Benzos</div>
-          <div class="reco-text">
-            <span class="drug">Lorazépam</span> IV 0.1 mg/kg (max 4 mg)<br>
-            <em>OU Midazolam buccal 0.5 mg/kg</em>
-          </div>
-        </div>
-        <div class="reco-item warn">
-          <div class="reco-title">◈ 2ème ligne — Établi</div>
-          <div class="reco-text"><span class="drug">Lévétiracétam</span> 60 mg/kg IV (max 4500 mg)<br><em>OU Phénytoïne 20 mg/kg IV</em></div>
-        </div>
-        <div class="reco-item warn">
-          <div class="reco-title">◈ 3ème ligne — Réfractaire</div>
-          <div class="reco-text">Soins intensifs<br><span class="drug">Phénobarbital</span> ou anesthésie générale</div>
-        </div>
-        <div class="reco-item crit">
-          <div class="reco-title">⚠ Contre-indications</div>
-          <div class="reco-text">Ne <strong>rien</strong> introduire dans la bouche<br>Ne pas <strong>immobiliser</strong> le patient</div>
-        </div>
       </div>
 
     </div>
@@ -965,12 +1199,12 @@
   <!-- BOTTOM BAR -->
   <div class="bottombar">
     <div class="bb-section">
-      <span class="bb-label">Phase</span>
+      <span class="bb-label">Phase SE</span>
       <div class="stage-selector">
         <button class="stage-btn" data-stage="1">Prodrome</button>
-        <button class="stage-btn" data-stage="2">Début</button>
-        <button class="stage-btn" data-stage="3">Ictus</button>
-        <button class="stage-btn active" data-stage="4">Post-critique</button>
+        <button class="stage-btn active" data-stage="2">Précoce</button>
+        <button class="stage-btn" data-stage="3">Établi</button>
+        <button class="stage-btn" data-stage="4">Réfractaire</button>
       </div>
     </div>
     <div class="bb-section grow">
@@ -1001,7 +1235,7 @@
       <span><span class="status-dot" style="color:var(--green);background:var(--green)"></span>ONLINE</span>
       <span>PACS : <span style="color:var(--green)">OK</span></span>
       <span>EEG : <span style="color:var(--green)">OK</span></span>
-      <span>HL7 : <span style="color:var(--green)">OK</span></span>
+      <span>Wearables : <span style="color:var(--green)" id="wearStatus">3/4</span></span>
       <span>WebRTC : <span style="color:var(--green)" id="rtcStatus">STANDBY</span></span>
       <span>IA : <span style="color:var(--green)" id="aiStatus">ONLINE</span></span>
     </div>
@@ -1089,6 +1323,8 @@ document.getElementById('btnLogin').addEventListener('click', () => {
       initCalendar();
       initAI();
       initCTAG();
+      initPrediction();
+      startRealtimeMonitor();
     }, 600);
   }, 1200);
 });
@@ -1115,7 +1351,7 @@ document.getElementById('btnLogout').addEventListener('click', () => {
 });
 
 /* ============================================================
-   THREE.JS — Cerveau / EEG Hologramme
+   THREE.JS
    ============================================================ */
 const canvas = document.getElementById('scene');
 const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
@@ -1163,7 +1399,6 @@ const spikeYellow = new THREE.MeshPhongMaterial({
   color: 0xffd93b, emissive: 0xffaa00, emissiveIntensity: 1.4, transparent: true, opacity: 0.9
 });
 
-// Cerveau simplifié (sphère déformée)
 function createBrain() {
   const group = new THREE.Group();
   const geo = new THREE.IcosahedronGeometry(1.6, 3);
@@ -1189,7 +1424,6 @@ function createBrain() {
 const brain = createBrain();
 hologram.add(brain);
 
-// Foyer critique (décharges)
 function createSeizureFocus() {
   const group = new THREE.Group();
   const geo = new THREE.IcosahedronGeometry(0.45, 2);
@@ -1203,8 +1437,6 @@ function createSeizureFocus() {
   geo.computeVertexNormals();
   group.add(new THREE.Mesh(geo, dischargeRed));
   group.add(new THREE.Mesh(geo, dischargeWire));
-  
-  // Pointes-ondes
   for (let i = 0; i < 16; i++) {
     const spike = new THREE.Mesh(new THREE.ConeGeometry(0.03, 0.3 + Math.random() * 0.2, 6),
       new THREE.MeshBasicMaterial({ color: 0xffd93b, transparent: true, opacity: 0.8 }));
@@ -1222,7 +1454,6 @@ const seizureFocus = createSeizureFocus();
 seizureFocus.position.set(1.2, 1.0, 0.3);
 hologram.add(seizureFocus);
 
-// Ondes EEG (anneaux)
 const eegRings = [];
 for (let i = 0; i < 4; i++) {
   const ring = new THREE.Mesh(new THREE.TorusGeometry(2.0 + i * 0.5, 0.008, 8, 64),
@@ -1234,7 +1465,6 @@ for (let i = 0; i < 4; i++) {
   eegRings.push(ring);
 }
 
-// Particules (décharges électriques)
 const particleCount = 600;
 const particleGeo = new THREE.BufferGeometry();
 const particlePos = new Float32Array(particleCount * 3);
@@ -1264,18 +1494,12 @@ function animate() {
   if (!isPaused) time += delta;
   if (autoRotate) hologram.rotation.y = Math.sin(time * 0.3) * 0.5 + time * 0.12;
   hologram.position.y = Math.sin(time * 0.8) * 0.1;
-  
-  // Foyer critique pulsatile
   seizureFocus.scale.setScalar(1 + Math.sin(time * 4) * 0.15);
   seizureLight.intensity = 2.5 + Math.sin(time * 4) * 1.5;
-  
-  // Anneaux EEG
   eegRings.forEach((ring, i) => {
     ring.rotation.z += delta * (0.3 + i * 0.2);
     ring.material.opacity = 0.2 + Math.sin(time * 3 + i) * 0.2;
   });
-  
-  // Particules
   const pos = particleGeo.attributes.position.array;
   for (let i = 0; i < particleCount; i++) {
     pos[i * 3 + 1] += particleVel[i].y;
@@ -1286,9 +1510,7 @@ function animate() {
     }
   }
   particleGeo.attributes.position.needsUpdate = true;
-  
   brain.rotation.z = Math.sin(time * 0.4) * 0.02;
-  
   renderer.render(scene, camera);
   frameCount++;
   const now = performance.now();
@@ -1381,17 +1603,73 @@ function initCharts() {
 }
 
 /* ============================================================
-   CTAG SEQUENCER
+   PREDICTION MOTEUR
+   ============================================================ */
+let predictionState = {
+  risk: 68,
+  confidence: 87,
+  factors: [
+    { name: 'Sommeil < 6h (3 derniers jours)', weight: 22 },
+    { name: 'Observance thérapeutique < 80%', weight: 18 },
+    { name: 'Stress rapporté (échelle 8/10)', weight: 12 },
+    { name: 'Activité EEG pré-ictale détectée', weight: 9 },
+    { name: 'Alcool (2 verres hier)', weight: 7 },
+    { name: 'Respect des horaires de prise', weight: -8 },
+    { name: 'Activité physique régulière', weight: -5 }
+  ]
+};
+
+function initPrediction() {
+  updatePredictionDisplay();
+}
+
+function updatePredictionDisplay() {
+  const valEl = document.getElementById('predValue');
+  if (!valEl) return;
+  const risk = predictionState.risk;
+  valEl.textContent = Math.round(risk) + '%';
+  valEl.className = 'prediction-value';
+  if (risk < 25) valEl.style.color = 'var(--green)';
+  else if (risk < 50) valEl.style.color = 'var(--yellow)';
+  else if (risk < 75) valEl.style.color = 'var(--orange)';
+  else valEl.style.color = 'var(--red)';
+
+  document.getElementById('riskTop').textContent = Math.round(risk) + '%';
+  document.getElementById('riskTop').style.color = risk >= 75 ? 'var(--red)' : risk >= 50 ? 'var(--orange)' : 'var(--yellow)';
+
+  const factorsEl = document.getElementById('predFactors');
+  if (factorsEl) {
+    factorsEl.innerHTML = predictionState.factors.map(f => {
+      const cls = f.weight > 0 ? 'pos' : 'neg';
+      const sign = f.weight > 0 ? '+' : '';
+      return `<div class="factor-item"><span class="factor-name">${f.name}</span><span class="factor-weight ${cls}">${sign}${f.weight}%</span></div>`;
+    }).join('');
+  }
+}
+
+document.getElementById('btnRecalcPred').addEventListener('click', () => {
+  addToast('⟳ Recalcul des prédictions avec données temps réel...', 'purple');
+  setTimeout(() => {
+    predictionState.risk = Math.min(98, Math.max(5, predictionState.risk + (Math.random() - 0.4) * 20));
+    predictionState.confidence = Math.min(98, Math.max(70, predictionState.confidence + (Math.random() - 0.5) * 5));
+    updatePredictionDisplay();
+    addToast(`🔮 Risque recalculé : ${Math.round(predictionState.risk)}%`, predictionState.risk > 70 ? 'crit' : 'ok');
+  }, 800);
+});
+
+/* ============================================================
+   CTAG SEQUENCER DYNAMIQUE
    ============================================================ */
 const ctagSteps = [
-  { time: '0-1 min', title: 'Reconnaissance & Sécurisation', desc: 'Protéger, ne pas immobiliser, noter l\'heure', status: 'urgent', action: 'done' },
-  { time: '1-5 min', title: 'Position Latérale de Sécurité', desc: 'Dès que possible, libérer les voies aériennes', status: 'pending', action: 'done' },
-  { time: '5 min', title: '⚠ APPEL SAMU / 15', desc: 'Crise > 5 min = état de mal imminent', status: 'urgent', action: 'pending' },
-  { time: '5-10 min', title: 'Benzodiazépine 1ère dose', desc: 'Lorazépam IV ou Midazolam buccal', status: 'pending', action: 'pending' },
-  { time: '10-15 min', title: '2ème dose Benzos si échec', desc: 'Réévaluer après 5-10 min', status: 'pending', action: 'pending' },
-  { time: '15-30 min', title: '2ème ligne — Antiépileptique', desc: 'Lévétiracétam 60 mg/kg IV OU Phénytoïne 20 mg/kg', status: 'pending', action: 'pending' },
-  { time: '> 30 min', title: '⚠ État de mal réfractaire', desc: 'Réanimation — Phénobarbital ou anesthésie générale', status: 'urgent', action: 'pending' },
-  { time: 'Post-critique', title: 'Surveillance & Réévaluation', desc: 'Glasgow, SpO₂, confusion post-critique', status: 'pending', action: 'pending' }
+  { time: '0-1 min', title: 'Reconnaissance & Sécurisation', desc: 'Protéger, ne pas immobiliser, noter l\'heure', minTime: 0, status: 'done', action: 'done' },
+  { time: '1-5 min', title: 'Position Latérale de Sécurité', desc: 'Libérer les voies aériennes, desserrer les vêtements', minTime: 1, status: 'done', action: 'done' },
+  { time: '5 min', title: '⚠ APPEL SAMU / 15', desc: 'Crise > 5 min = état de mal imminent', minTime: 5, status: 'urgent', action: 'pending' },
+  { time: '5-10 min', title: 'Benzodiazépine 1ère dose', desc: 'Lorazépam 0.1 mg/kg IV (max 4mg) OU Midazolam buccal 0.5 mg/kg', minTime: 5, status: 'pending', action: 'pending' },
+  { time: '10-15 min', title: '2ème dose Benzos si échec', desc: 'Réévaluer après 5-10 min — ne pas dépasser 2 doses', minTime: 10, status: 'pending', action: 'pending' },
+  { time: '15-20 min', title: 'Examens urgents', desc: 'Glycémie, iono, calcémie, magnésémie, bilan hépatique, toxiques', minTime: 15, status: 'pending', action: 'pending' },
+  { time: '20-30 min', title: '2ème ligne — Antiépileptique', desc: 'Lévétiracétam 60 mg/kg IV (max 4500mg) OU Phénytoïne 20 mg/kg', minTime: 20, status: 'pending', action: 'pending' },
+  { time: '> 30 min', title: '⚠ État de mal réfractaire', desc: 'Réanimation — Propofol ou Thiopental, EEG continu', minTime: 30, status: 'urgent', action: 'pending' },
+  { time: 'Post-critique', title: 'Surveillance & Réévaluation', desc: 'Glasgow, SpO₂, confusion post-critique, étiologie', minTime: 999, status: 'pending', action: 'pending' }
 ];
 
 function initCTAG() {
@@ -1401,11 +1679,25 @@ function initCTAG() {
 function renderCTAG() {
   const timeline = document.getElementById('ctagTimeline');
   if (!timeline) return;
+  const elapsed = parseInt(document.getElementById('sElapsed').value);
+  const benzos = parseInt(document.getElementById('sBenzos').value);
+
+  ctagSteps.forEach((step, i) => {
+    if (step.action === 'done' || step.action === 'skipped') return;
+    if (step.minTime > 999) return;
+    if (elapsed >= step.minTime && step.minTime > 0) {
+      if (step.minTime <= 5 && benzos > 0) { step.action = 'done'; step.status = 'ok'; }
+      else if (step.minTime <= 10 && benzos >= 4) { step.action = 'done'; step.status = 'ok'; }
+      else if (step.minTime > 10 && benzos >= 8) { step.action = 'done'; step.status = 'ok'; }
+      else if (elapsed >= step.minTime && step.minTime >= 20) { step.status = 'urgent'; }
+      else if (elapsed >= step.minTime) { step.status = 'urgent'; }
+    }
+  });
+
   timeline.innerHTML = ctagSteps.map((step, i) => {
     let cls = 'ctag-step';
     if (step.action === 'done') cls += ' done';
-    if (step.status === 'urgent') cls += ' crit';
-    if (i === 0 && step.action !== 'done') cls += ' active';
+    if (step.status === 'urgent' && step.action !== 'done') cls += ' crit';
     const statusLabel = step.status === 'urgent' ? 'URGENT' : (step.action === 'done' ? 'FAIT' : 'EN ATTENTE');
     const statusCls = step.status === 'urgent' ? 'urgent' : (step.action === 'done' ? 'ok' : 'pending');
     return `
@@ -1446,29 +1738,79 @@ function renderCTAG() {
   });
 }
 
-document.getElementById('btnRegenerateCTAG').addEventListener('click', () => {
-  addToast('⚡ Régénération CTAG...', 'warn');
-  const delay = parseInt(document.getElementById('sDelay').value);
-  ctagSteps.forEach((s, i) => {
-    if (s.action === 'done') return;
-    if (i <= 2 && delay > 5) { s.action = 'done'; s.status = 'ok'; }
-    else if (i > 2 && delay > 10) { s.status = 'urgent'; }
-    else { s.status = 'pending'; }
-  });
-  setTimeout(() => {
-    renderCTAG();
-    addToast('✓ Séquence CTAG régénérée', 'ok');
-  }, 600);
+document.getElementById('sElapsed').addEventListener('input', e => {
+  const val = parseInt(e.target.value);
+  document.getElementById('vElapsed').textContent = val + ' min';
+  const phaseEl = document.getElementById('sePhase');
+  if (val < 5) { phaseEl.textContent = '— PHASE PRÉCOCE'; phaseEl.style.color = 'var(--green)'; }
+  else if (val < 20) { phaseEl.textContent = '— PHASE ÉTABLIE'; phaseEl.style.color = 'var(--yellow)'; }
+  else if (val < 30) { phaseEl.textContent = '— PHASE RÉFRACTAIRE'; phaseEl.style.color = 'var(--orange)'; }
+  else { phaseEl.textContent = '— SE RÉFRACTAIRE'; phaseEl.style.color = 'var(--red)'; }
+  checkTimeAlerts(val);
+  updateRealtimeAlert();
 });
 
-document.getElementById('sDelay').addEventListener('input', e => {
-  document.getElementById('vDelay').textContent = e.target.value + ' min';
-});
 document.getElementById('sBenzos').addEventListener('input', e => {
   document.getElementById('vBenzos').textContent = e.target.value + ' mg';
+  updateRealtimeAlert();
 });
 document.getElementById('sSpo2').addEventListener('input', e => {
   document.getElementById('vSpo2').textContent = e.target.value + '%';
+  updateRealtimeAlert();
+});
+document.getElementById('sGlyc').addEventListener('input', e => {
+  document.getElementById('vGlyc').textContent = (e.target.value / 100).toFixed(2) + ' g/L';
+  updateRealtimeAlert();
+});
+
+let lastAlertTime = 0;
+function checkTimeAlerts(elapsed) {
+  const now = Date.now();
+  if (now - lastAlertTime < 3000) return;
+  if (elapsed >= 5 && elapsed < 6) showAlert('⚠ SEUIL 5 MIN — APPEL SAMU REQUIS', 'crit');
+  else if (elapsed >= 20 && elapsed < 21) showAlert('⚠ SEUIL 20 MIN — 2ÈME LIGNE', 'crit');
+  else if (elapsed >= 30 && elapsed < 31) showAlert('⚠ SEUIL 30 MIN — ÉTAT DE MAL RÉFRACTAIRE', 'crit');
+  else if (elapsed >= 10 && elapsed < 11) showAlert('◈ 10 MIN — RÉÉVALUER BENZOS', 'warn');
+  lastAlertTime = now;
+}
+
+function showAlert(msg, type) {
+  const banner = document.getElementById('alertBanner');
+  banner.textContent = msg;
+  banner.className = 'alert-banner ' + type + ' active';
+  setTimeout(() => banner.classList.remove('active'), 4000);
+}
+
+function updateRealtimeAlert() {
+  const elapsed = parseInt(document.getElementById('sElapsed').value);
+  const benzos = parseInt(document.getElementById('sBenzos').value);
+  const spo2 = parseInt(document.getElementById('sSpo2').value);
+  const glyc = (parseInt(document.getElementById('sGlyc').value) / 100).toFixed(2);
+  const el = document.getElementById('realtimeAlert');
+  if (!el) return;
+  let html = `Crise GTC <strong>${elapsed} min</strong> — ${elapsed >= 30 ? 'RÉFRACTAIRE' : elapsed >= 20 ? 'ÉTABLIE' : 'EN COURS'}<br>`;
+  html += `SpO₂ : <strong style="color:${spo2 < 90 ? 'var(--red)' : spo2 < 94 ? 'var(--yellow)' : 'var(--green)'}">${spo2}%</strong> · Glycémie : <strong>${glyc} g/L</strong><br>`;
+  html += `Benzos : <strong style="color:${benzos >= 8 ? 'var(--green)' : benzos >= 4 ? 'var(--yellow)' : 'var(--red)'}">${benzos} mg</strong> administrés<br>`;
+  html += `Prochaine étape : <strong style="color:var(--cyan)">${getNextStep(elapsed, benzos)}</strong>`;
+  el.innerHTML = html;
+}
+
+function getNextStep(elapsed, benzos) {
+  if (elapsed < 5) return 'Surveiller — appeler si > 5 min';
+  if (elapsed < 10 && benzos < 4) return 'Benzodiazépine 1ère dose';
+  if (elapsed < 20 && benzos < 8) return '2ème dose Benzos si échec';
+  if (elapsed < 30 && benzos >= 8) return '2ème ligne Antiépileptique';
+  if (elapsed >= 30) return 'Réanimation — anesthésie générale';
+  return 'Réévaluer';
+}
+
+document.getElementById('btnRegenerateCTAG').addEventListener('click', () => {
+  addToast('⚡ Recalcul CTAG dynamique...', 'warn');
+  ctagSteps.forEach(s => { if (s.action !== 'done' && s.action !== 'skipped') { s.action = 'pending'; s.status = 'pending'; } });
+  setTimeout(() => {
+    renderCTAG();
+    addToast('✓ Séquence CTAG recalculée', 'ok');
+  }, 400);
 });
 
 /* ============================================================
@@ -1487,22 +1829,18 @@ function initCalendar() { renderCalendar(); }
 
 function renderCalendar() {
   const grid = document.getElementById('calGrid');
+  if (!grid) return;
   grid.innerHTML = `
     <div class="cal-day-name">L</div><div class="cal-day-name">M</div><div class="cal-day-name">M</div>
     <div class="cal-day-name">J</div><div class="cal-day-name">V</div><div class="cal-day-name">S</div><div class="cal-day-name">D</div>
   `;
-
   const year = currentMonth.getFullYear();
   const month = currentMonth.getMonth();
   const firstDay = new Date(year, month, 1);
   const lastDay = new Date(year, month + 1, 0);
   const startOffset = (firstDay.getDay() + 6) % 7;
   const today = new Date();
-
-  for (let i = 0; i < startOffset; i++) {
-    grid.innerHTML += `<div></div>`;
-  }
-
+  for (let i = 0; i < startOffset; i++) grid.innerHTML += `<div></div>`;
   for (let d = 1; d <= lastDay.getDate(); d++) {
     const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
     const isToday = year === today.getFullYear() && month === today.getMonth() && d === today.getDate();
@@ -1512,9 +1850,7 @@ function renderCalendar() {
     if (event) cls += ' event ' + (event.type === 'crit' ? 'crit' : '');
     grid.innerHTML += `<div class="${cls}" data-date="${dateStr}" title="${event ? event.title : ''}">${d}</div>`;
   }
-
   document.getElementById('calMonth').textContent = `${monthNames[month]} ${year}`;
-
   grid.querySelectorAll('.cal-day.event').forEach(el => {
     el.addEventListener('click', () => {
       const date = el.dataset.date;
@@ -1526,23 +1862,14 @@ function renderCalendar() {
           <p><strong>Date :</strong> ${date}</p>
           <p><strong>Type :</strong> ${ev.type === 'crit' ? 'URGENTE' : 'Programmée'}</p>
           <p><strong>Participants :</strong> 5 médecins</p>
-          <h4>▸ Actions</h4>
-          <p>• Rejoindre la visio (WebRTC)<br>• Consulter ordre du jour<br>• Ajouter documents</p>
         `, () => { toggleRCP(); });
       }
     });
   });
 }
 
-document.getElementById('calPrev').addEventListener('click', () => {
-  currentMonth.setMonth(currentMonth.getMonth() - 1);
-  renderCalendar();
-});
-
-document.getElementById('calNext').addEventListener('click', () => {
-  currentMonth.setMonth(currentMonth.getMonth() + 1);
-  renderCalendar();
-});
+document.getElementById('calPrev').addEventListener('click', () => { currentMonth.setMonth(currentMonth.getMonth() - 1); renderCalendar(); });
+document.getElementById('calNext').addEventListener('click', () => { currentMonth.setMonth(currentMonth.getMonth() + 1); renderCalendar(); });
 
 document.getElementById('btnNewRCP').addEventListener('click', () => {
   openModal('◈ Planifier une RCP', `
@@ -1550,9 +1877,7 @@ document.getElementById('btnNewRCP').addEventListener('click', () => {
     <p><strong>Patient :</strong> EPI-023 (État de mal)</p>
     <p><strong>Motif :</strong> Discussion stratégie thérapeutique</p>
     <h4>▸ Invités</h4>
-    <p>• Dr. CHEN (Urgentiste)<br>• Dr. MARTIN (Neurologue)<br>• Dr. DUBOIS (Réanimateur)<br>• Dr. BERNARD (Neurochirurgien)</p>
-    <h4>▸ Créneaux disponibles</h4>
-    <p>• Aujourd'hui 14h30<br>• Demain 09h00<br>• Jeudi 10h00</p>
+    <p>• Dr. CHEN (Urgentiste)<br>• Dr. MARTIN (Neurologue)<br>• Dr. DUBOIS (Réanimateur)</p>
   `, () => {
     addToast('✓ RCP planifiée — invitations envoyées', 'ok');
     rcpEvents['2024-11-14'] = { title: 'RCP URGENTE — EPI-023', type: 'crit' };
@@ -1564,8 +1889,9 @@ document.getElementById('btnNewRCP').addEventListener('click', () => {
    IA AUTO-APPRENANTE
    ============================================================ */
 let aiState = {
-  version: 'v5.1.392',
+  version: 'v6.2.847',
   accuracy: 96.2,
+  sensitivity: 87.8,
   cases: 1247583,
   epochProgress: 72,
   feedbackBuffer: 912
@@ -1584,11 +1910,11 @@ function initAI() {
 function updateAIDisplay() {
   document.getElementById('aiVersion').textContent = aiState.version;
   document.getElementById('aiAccuracy').textContent = aiState.accuracy.toFixed(1) + '%';
+  document.getElementById('aiSensitivity').textContent = aiState.sensitivity.toFixed(1) + '%';
   document.getElementById('aiCases').textContent = aiState.cases.toLocaleString('fr-FR');
   document.getElementById('epochPct').textContent = Math.floor(aiState.epochProgress) + '%';
   document.getElementById('epochBar').style.width = aiState.epochProgress + '%';
   document.getElementById('modelVer').textContent = aiState.version;
-  document.getElementById('confIA').textContent = aiState.accuracy.toFixed(1) + '%';
 }
 
 const feedbackLog = [];
@@ -1598,22 +1924,14 @@ document.querySelectorAll('.feedback-btn').forEach(btn => {
     const fb = btn.dataset.fb;
     const label = { correct: '✓ Exact', partial: '◐ Partiel', incorrect: '✗ Erreur', unknown: '? Incertain' }[fb];
     const delta = { correct: 0.3, partial: 0.1, incorrect: -0.4, unknown: 0 }[fb];
-
     aiState.accuracy = Math.min(99.9, Math.max(80, aiState.accuracy + delta));
     aiState.cases += 1;
     aiState.feedbackBuffer = Math.min(1000, aiState.feedbackBuffer + 1);
-
     if (fb === 'incorrect') {
-      aiState.version = `v5.${1 + Math.floor(Math.random() * 9)}.${300 + Math.floor(Math.random() * 200)}`;
+      aiState.version = `v6.${2 + Math.floor(Math.random() * 9)}.${800 + Math.floor(Math.random() * 200)}`;
       document.getElementById('aiLastUpdate').textContent = 'à l\'instant';
     }
-
-    feedbackLog.unshift({
-      type: fb,
-      label,
-      time: new Date().toTimeString().split(' ')[0]
-    });
-
+    feedbackLog.unshift({ type: fb, label, time: new Date().toTimeString().split(' ')[0] });
     const logEl = document.getElementById('feedbackLog');
     logEl.innerHTML = feedbackLog.slice(0, 5).map(f => {
       const color = { correct: 'var(--green)', partial: 'var(--yellow)', incorrect: 'var(--red)', unknown: 'var(--purple)' }[f.type];
@@ -1622,10 +1940,8 @@ document.querySelectorAll('.feedback-btn').forEach(btn => {
         <span style="color:${color};">${f.label}</span>
       </div>`;
     }).join('');
-
     updateAIDisplay();
     addToast(`🧠 Feedback enregistré — Précision ${aiState.accuracy.toFixed(1)}%`, delta > 0 ? 'ok' : 'warn');
-    addLog(`Feedback IA : ${label} (Δ ${delta > 0 ? '+' : ''}${delta}%)`, delta > 0 ? 'ok' : 'warn');
   });
 });
 
@@ -1637,7 +1953,6 @@ document.getElementById('btnTrainNow').addEventListener('click', () => {
   addToast('⚡ Ré-entraînement déclenché...', 'warn');
   aiState.epochProgress = 0;
   updateAIDisplay();
-
   let ep = 0;
   const trainInterval = setInterval(() => {
     ep += 5;
@@ -1645,19 +1960,17 @@ document.getElementById('btnTrainNow').addEventListener('click', () => {
     updateAIDisplay();
     if (ep >= 100) {
       clearInterval(trainInterval);
-      aiState.version = `v5.${1 + Math.floor(Math.random() * 9)}.${300 + Math.floor(Math.random() * 200)}`;
+      aiState.version = `v6.${2 + Math.floor(Math.random() * 9)}.${800 + Math.floor(Math.random() * 200)}`;
       aiState.accuracy = Math.min(99.9, aiState.accuracy + 0.5);
       aiState.feedbackBuffer = 0;
       updateAIDisplay();
       addToast(`✓ Nouveau modèle ${aiState.version} déployé`, 'ok');
-      addToast(`📈 Précision : ${aiState.accuracy.toFixed(1)}%`, 'ok');
-      addLog(`Ré-entraînement terminé — ${aiState.version}`, 'ok');
     }
   }, 200);
 });
 
 /* ============================================================
-   WEBRTC RÉEL
+   WEBRTC
    ============================================================ */
 let rcpActive = false;
 let rcpRecording = false;
@@ -1670,8 +1983,7 @@ let screenStream = null;
 async function startLocalVideo() {
   try {
     localStream = await navigator.mediaDevices.getUserMedia({
-      video: { width: 320, height: 240, facingMode: 'user' },
-      audio: true
+      video: { width: 320, height: 240, facingMode: 'user' }, audio: true
     });
     document.getElementById('localVideo').srcObject = localStream;
     document.getElementById('webrtcStatus').innerHTML = `
@@ -1681,11 +1993,9 @@ async function startLocalVideo() {
     `;
     document.getElementById('rtcStatus').textContent = 'STREAMING';
     addToast('📷 Caméra et micro activés', 'ok');
-    addLog('Stream local démarré (getUserMedia)', 'ok');
     return true;
   } catch (err) {
     addToast('⚠ Caméra indisponible — mode simulation', 'warn');
-    addLog('Fallback simulation (pas de caméra)', 'warn');
     document.getElementById('localVideo').style.background = 'linear-gradient(135deg, #061426, #0a2440)';
     document.getElementById('localVideo').innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:24px;">🧠</div>';
     document.getElementById('rtcStatus').textContent = 'SIMULATED';
@@ -1694,89 +2004,50 @@ async function startLocalVideo() {
 }
 
 function stopLocalVideo() {
-  if (localStream) {
-    localStream.getTracks().forEach(t => t.stop());
-    localStream = null;
-  }
-  if (screenStream) {
-    screenStream.getTracks().forEach(t => t.stop());
-    screenStream = null;
-  }
+  if (localStream) { localStream.getTracks().forEach(t => t.stop()); localStream = null; }
+  if (screenStream) { screenStream.getTracks().forEach(t => t.stop()); screenStream = null; }
   Object.values(peerConnections).forEach(pc => pc.close());
   peerConnections = {};
 }
 
 function createSimulatedPeer(videoEl, name) {
   const canvas = document.createElement('canvas');
-  canvas.width = 320;
-  canvas.height = 240;
+  canvas.width = 320; canvas.height = 240;
   const ctx = canvas.getContext('2d');
   let t = 0;
-
   const stream = canvas.captureStream(20);
-
   function draw() {
     if (!rcpActive) return;
     t += 0.02;
-
     const grad = ctx.createLinearGradient(0, 0, 320, 240);
-    grad.addColorStop(0, '#061426');
-    grad.addColorStop(1, '#0a2440');
-    ctx.fillStyle = grad;
-    ctx.fillRect(0, 0, 320, 240);
-
-    ctx.font = '80px Arial';
-    ctx.textAlign = 'center';
+    grad.addColorStop(0, '#061426'); grad.addColorStop(1, '#0a2440');
+    ctx.fillStyle = grad; ctx.fillRect(0, 0, 320, 240);
+    ctx.font = '80px Arial'; ctx.textAlign = 'center';
     ctx.fillText(name.icon, 160, 130 + Math.sin(t * 2) * 8);
-
-    ctx.fillStyle = 'rgba(0, 229, 255, 0.15)';
-    ctx.fillRect(0, 220, 320, 20);
-    ctx.fillStyle = '#00e5ff';
-    ctx.font = '12px monospace';
+    ctx.fillStyle = 'rgba(0, 229, 255, 0.15)'; ctx.fillRect(0, 220, 320, 20);
+    ctx.fillStyle = '#00e5ff'; ctx.font = '12px monospace';
     ctx.fillText(name.name, 160, 235);
-
     for (let i = 0; i < 240; i += 4) {
       ctx.fillStyle = `rgba(0, 229, 255, ${0.03 + Math.random() * 0.02})`;
       ctx.fillRect(0, i, 320, 1);
     }
-
-    if (Math.random() < 0.02) {
-      ctx.fillStyle = '#00ff9d';
-      ctx.beginPath();
-      ctx.arc(300, 20, 6, 0, Math.PI * 2);
-      ctx.fill();
-    }
-
     requestAnimationFrame(draw);
   }
-
-  videoEl.srcObject = stream;
-  videoEl.play();
-  draw();
+  videoEl.srcObject = stream; videoEl.play(); draw();
 }
 
 function toggleRCP() {
   rcpActive = !rcpActive;
   const bar = document.getElementById('rcpBar');
   const grid = document.getElementById('videoGrid');
-
   if (rcpActive) {
-    bar.classList.add('active');
-    grid.classList.add('active');
+    bar.classList.add('active'); grid.classList.add('active');
     addToast('🎥 Session RCP LIVE démarrée', 'purple');
-    addLog('RCP WebRTC initiée', 'ok');
-
-    startLocalVideo().then(hasCamera => {
-      if (hasCamera) {
-        addToast('✓ Flux local établi (WebRTC)', 'ok');
-      }
-    });
-
+    startLocalVideo();
     setTimeout(() => {
       createSimulatedPeer(document.getElementById('remoteVideo2'), { name: 'Dr. CHEN', icon: '🚑' });
       createSimulatedPeer(document.getElementById('remoteVideo3'), { name: 'Dr. MARTIN', icon: '🧠' });
       createSimulatedPeer(document.getElementById('remoteVideo4'), { name: 'Dr. DUBOIS', icon: '🫁' });
-
       [2, 3, 4].forEach((n, i) => {
         setTimeout(() => {
           document.getElementById('tile' + n).classList.add('active');
@@ -1785,43 +2056,34 @@ function toggleRCP() {
         }, i * 400);
       });
     }, 300);
-
     rcpInterval = setInterval(() => {
       document.querySelectorAll('.video-tile').forEach(t => t.classList.remove('speaking'));
       const tiles = document.querySelectorAll('.video-tile');
       tiles[Math.floor(Math.random() * tiles.length)].classList.add('speaking');
     }, 3500);
-
   } else {
-    bar.classList.remove('active');
-    grid.classList.remove('active');
+    bar.classList.remove('active'); grid.classList.remove('active');
     if (rcpInterval) clearInterval(rcpInterval);
-    stopRCPRecording();
-    stopLocalVideo();
-
+    stopRCPRecording(); stopLocalVideo();
     [2, 3, 4].forEach(n => {
       const tile = document.getElementById('tile' + n);
       tile.classList.remove('active', 'speaking');
       tile.style.opacity = '0';
     });
     document.querySelectorAll('.video-tile').forEach(t => t.classList.remove('speaking'));
-
     document.getElementById('rtcStatus').textContent = 'STANDBY';
     document.getElementById('webrtcStatus').innerHTML = `
       <div><span class="k">WEBRTC :</span> <span class="v" style="color:var(--green)">PRÊT</span></div>
       <div><span class="k">PEERS :</span> <span class="v" id="peerCount">0</span></div>
       <div><span class="k">LATENCE :</span> <span class="v" id="rtcLatency">-- ms</span></div>
     `;
-
     addToast('⏹ Session RCP terminée', 'warn');
-    addLog('RCP WebRTC clôturée', '');
   }
 }
 
 function startRCPRecording() {
   if (rcpRecording) return;
-  rcpRecording = true;
-  rcpSeconds = 0;
+  rcpRecording = true; rcpSeconds = 0;
   document.getElementById('rcpRecord').classList.add('recording');
   document.getElementById('rcpRecord').textContent = '⏹ Stop';
   window._rcpRecTimer = setInterval(() => {
@@ -1831,7 +2093,6 @@ function startRCPRecording() {
     document.getElementById('rcpTimer').textContent = `${m}:${s}`;
   }, 1000);
   addToast('⏺ Enregistrement RCP démarré', 'crit');
-  addLog('Recording RCP — MediaRecorder started', 'warn');
 }
 
 function stopRCPRecording() {
@@ -1871,30 +2132,47 @@ document.getElementById('rcpScreen').addEventListener('click', async e => {
     try {
       screenStream = await navigator.mediaDevices.getDisplayMedia({ video: true });
       addToast('📺 Partage d\'écran actif', 'ok');
-      addLog('getDisplayMedia activé', 'ok');
       screenStream.getVideoTracks()[0].addEventListener('ended', () => {
         e.currentTarget.classList.remove('recording');
         screenStream = null;
         addToast('📺 Partage terminé', 'warn');
       });
-    } catch {
-      addToast('📺 Partage d\'écran simulé', 'warn');
-    }
+    } catch { addToast('📺 Partage d\'écran simulé', 'warn'); }
   } else {
-    if (screenStream) {
-      screenStream.getTracks().forEach(t => t.stop());
-      screenStream = null;
-    }
+    if (screenStream) { screenStream.getTracks().forEach(t => t.stop()); screenStream = null; }
     addToast('📺 Partage arrêté', 'warn');
   }
 });
 
 document.getElementById('rcpRecord').addEventListener('click', () => {
-  if (rcpRecording) stopRCPRecording();
-  else startRCPRecording();
+  if (rcpRecording) stopRCPRecording(); else startRCPRecording();
 });
-
 document.getElementById('rcpEnd').addEventListener('click', toggleRCP);
+
+/* ============================================================
+   MONITORING TEMPS RÉEL
+   ============================================================ */
+function startRealtimeMonitor() {
+  setInterval(() => {
+    const elapsed = parseInt(document.getElementById('sElapsed').value);
+    const spo2 = parseInt(document.getElementById('sSpo2').value);
+    if (elapsed >= 30) {
+      predictionState.risk = Math.min(99, predictionState.risk + 2);
+      updatePredictionDisplay();
+    }
+    if (spo2 < 90) {
+      document.getElementById('crisisStatus').textContent = 'HYPOXIE';
+      document.getElementById('crisisStatus').style.color = 'var(--red)';
+    }
+  }, 5000);
+
+  setInterval(() => {
+    const wearables = document.querySelectorAll('.wearable-dot');
+    let online = 0;
+    wearables.forEach(w => { if (w.classList.contains('online') || w.classList.contains('warn')) online++; });
+    document.getElementById('wearStatus').textContent = `${online}/4`;
+  }, 8000);
+}
 
 /* ============================================================
    UI LOGIC
@@ -1910,10 +2188,10 @@ setInterval(() => {
 }, 1000);
 
 const patientData = {
-  'EPI-023': { name: 'EPI-023', type: 'GTC ≥5 min', stage: 4, pathology: 'Crise généralisée tonico-clonique (GTC)', location: 'État de mal épileptique' },
-  'EPI-041': { name: 'EPI-041', type: 'Focale', stage: 3, pathology: 'Crise focale avec altération de conscience', location: 'Épilepsie focale' },
-  'EPI-058': { name: 'EPI-058', type: 'Absence', stage: 2, pathology: 'Absence (petit mal)', location: 'Épilepsie généralisée' },
-  'EPI-072': { name: 'EPI-072', type: 'Première', stage: 1, pathology: 'Première crise — à évaluer', location: 'Bilan étiologique' }
+  'EPI-023': { name: 'EPI-023', type: 'GTC ≥5 min', stage: 2, pathology: 'Crise généralisée tonico-clonique (GTC)', risk: 68 },
+  'EPI-041': { name: 'EPI-041', type: 'Focale', stage: 2, pathology: 'Crise focale avec altération de conscience', risk: 45 },
+  'EPI-058': { name: 'EPI-058', type: 'Absence', stage: 1, pathology: 'Absence (petit mal)', risk: 18 },
+  'EPI-072': { name: 'EPI-072', type: 'Première', stage: 1, pathology: 'Première crise — à évaluer', risk: 32 }
 };
 
 document.querySelectorAll('.patient-card').forEach(card => {
@@ -1924,9 +2202,11 @@ document.querySelectorAll('.patient-card').forEach(card => {
     document.getElementById('activePatientTop').textContent = '#' + data.name;
     document.getElementById('vpPatient').textContent = data.name;
     document.getElementById('fSeizureType').value = data.pathology;
+    predictionState.risk = data.risk;
+    updatePredictionDisplay();
     document.querySelectorAll('.stage-btn').forEach(b => b.classList.toggle('active', parseInt(b.dataset.stage) === data.stage));
     updateStage(data.stage);
-    addToast(`📁 Dossier ${data.name} chargé`, 'ok');
+    addToast(`📁 Dossier ${data.name} chargé — Risque ${data.risk}%`, 'ok');
   });
 });
 
@@ -1971,8 +2251,7 @@ document.querySelectorAll('.tab').forEach(tab => {
 document.querySelectorAll('.vp-tool[data-view]').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.vp-tool[data-view]').forEach(b => {
-      b.style.background = 'transparent';
-      b.style.color = 'var(--text-dim)';
+      b.style.background = 'transparent'; b.style.color = 'var(--text-dim)';
     });
     btn.style.background = 'rgba(0, 229, 255, 0.2)';
     btn.style.color = 'var(--cyan)';
@@ -1993,15 +2272,42 @@ document.getElementById('btnPause').addEventListener('click', e => {
 
 document.getElementById('btnReset').addEventListener('click', () => {
   time = 0; hologram.rotation.y = 0; autoRotate = true;
-  updateStage(4);
-  document.querySelectorAll('.stage-btn').forEach(b => b.classList.toggle('active', b.dataset.stage === '4'));
-  document.getElementById('sDelay').value = 12; document.getElementById('vDelay').textContent = '12 min';
-  document.getElementById('sBenzos').value = 8; document.getElementById('vBenzos').textContent = '8 mg';
+  updateStage(2);
+  document.querySelectorAll('.stage-btn').forEach(b => b.classList.toggle('active', b.dataset.stage === '2'));
+  document.getElementById('sElapsed').value = 6; document.getElementById('vElapsed').textContent = '6 min';
+  document.getElementById('sBenzos').value = 4; document.getElementById('vBenzos').textContent = '4 mg';
   document.getElementById('sSpo2').value = 92; document.getElementById('vSpo2').textContent = '92%';
+  document.getElementById('sGlyc').value = 95; document.getElementById('vGlyc').textContent = '0.95 g/L';
+  predictionState.risk = 68; updatePredictionDisplay();
+  updateRealtimeAlert();
   addToast('↺ Réinitialisé', 'ok');
 });
 
 document.getElementById('btnSnapshot').addEventListener('click', () => addToast('📸 Snapshot capturé', 'ok'));
+
+/* Education modules */
+document.querySelectorAll('.edu-module').forEach(mod => {
+  mod.addEventListener('click', () => {
+    const title = mod.querySelector('.edu-title').textContent;
+    openModal('◈ Module éducatif', `
+      <h4>▸ ${title}</h4>
+      <p>Ce module interactif aide le patient à mieux comprendre et gérer son épilepsie.</p>
+      <h4>▸ Contenu</h4>
+      <ul>
+        <li>Vidéos explicatives (5 min)</li>
+        <li>Quiz interactif</li>
+        <li>Journal des déclencheurs</li>
+        <li>Conseils personnalisés</li>
+      </ul>
+      <p><em>Les programmes d'auto-gestion améliorent l'engagement et réduisent la fréquence des crises.</em></p>
+    `, () => {
+      mod.classList.add('completed');
+      mod.querySelector('.edu-progress-fill').style.width = '100%';
+      mod.querySelector('.edu-meta span:last-child').textContent = '✓ Complété';
+      addToast(`📖 Module "${title}" complété`, 'ok');
+    });
+  });
+});
 
 function openModal(title, content, onConfirm) {
   document.getElementById('modalTitle').textContent = title;
@@ -2026,8 +2332,7 @@ function addToast(msg, type = '') {
   t.textContent = msg;
   c.appendChild(t);
   setTimeout(() => {
-    t.style.opacity = '0';
-    t.style.transform = 'translateX(40px)';
+    t.style.opacity = '0'; t.style.transform = 'translateX(40px)';
     t.style.transition = 'all 0.4s';
     setTimeout(() => t.remove(), 400);
   }, 3500);
@@ -2038,13 +2343,14 @@ setInterval(() => {
   const logs = [
     { m: 'Sync EEG terminée', t: 'ok' },
     { m: 'Détection IA : décharge critique', t: 'warn' },
-    { m: 'Segmentation foyer MAJ', t: 'ok' },
-    { m: 'Heartbeat WebRTC OK', t: '' }
+    { m: 'Wearable sync OK', t: 'ok' },
+    { m: 'Prédiction recalculée', t: 'purple' }
   ];
   const l = logs[Math.floor(Math.random() * logs.length)];
   addLog(l.m, l.t);
 }, 12000);
 
+updateRealtimeAlert();
 </script>
 
 </body>
