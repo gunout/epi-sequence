@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EPI-SEQUENCE PRO v7.0 — Clinical Intelligence Edition</title>
+<title>EPI-SEQUENCE PRO v8.0 — Neural Hologram Edition</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -115,7 +115,6 @@
   }
   .app.visible { opacity: 1; }
 
-  /* Topbar */
   .topbar {
     grid-column: 1 / -1; background: var(--panel); border: 1px solid var(--border);
     border-radius: 4px; display: flex; align-items: center; justify-content: space-between;
@@ -158,7 +157,6 @@
   }
   .btn-logout:hover { background: rgba(255, 59, 107, 0.2); box-shadow: 0 0 12px rgba(255, 59, 107, 0.4); }
 
-  /* Panels */
   .panel {
     background: var(--panel); border: 1px solid var(--border); border-radius: 4px;
     backdrop-filter: blur(12px); display: flex; flex-direction: column;
@@ -177,7 +175,6 @@
   .panel-body::-webkit-scrollbar { width: 3px; }
   .panel-body::-webkit-scrollbar-thumb { background: var(--cyan-dim); border-radius: 2px; }
 
-  /* Patient list */
   .patient-search { padding: 8px 10px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
   .patient-search input {
     width: 100%; background: rgba(0, 229, 255, 0.05); border: 1px solid var(--border);
@@ -203,7 +200,6 @@
   .pc-tag.ok { background: rgba(0,255,157,0.15); color: var(--green); }
   .pc-tag.new { background: rgba(168,85,247,0.2); color: var(--purple); }
 
-  /* Forms */
   .section { border-bottom: 1px solid rgba(0, 229, 255, 0.1); padding: 10px 0; }
   .section:last-child { border-bottom: none; }
   .section-title { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--cyan); opacity: 0.8; margin-bottom: 8px; display: flex; justify-content: space-between; }
@@ -241,7 +237,6 @@
   .btn-group { display: flex; gap: 6px; margin-top: 8px; }
   .btn-group .btn { flex: 1; }
 
-  /* Viewport */
   .viewport { position: relative; background: radial-gradient(ellipse at center, #04101e 0%, #010409 100%); overflow: hidden; }
   #scene { width: 100%; height: 100%; display: block; }
   .vp-overlay { position: absolute; inset: 0; pointer-events: none; padding: 12px; display: flex; flex-direction: column; justify-content: space-between; }
@@ -263,7 +258,6 @@
   .corner.bl { bottom: 8px; left: 8px; border-right: none; border-top: none; }
   .corner.br { bottom: 8px; right: 8px; border-left: none; border-top: none; }
 
-  /* Alert banner */
   .alert-banner {
     position: absolute; top: 55px; left: 50%; transform: translateX(-50%);
     padding: 8px 16px; border-radius: 4px; font-size: 11px; font-weight: bold;
@@ -276,7 +270,6 @@
   .alert-banner.warn { background: rgba(255, 217, 59, 0.2); border: 1px solid var(--yellow); color: var(--yellow); box-shadow: 0 0 20px rgba(255, 217, 59, 0.4); }
   .alert-banner.ok { background: rgba(0, 255, 157, 0.15); border: 1px solid var(--green); color: var(--green); }
 
-  /* Video tiles */
   .video-grid {
     position: absolute; top: 60px; right: 12px;
     display: grid; grid-template-columns: 110px 110px;
@@ -305,7 +298,6 @@
   .video-tile.speaking .tile-status { background: var(--red); box-shadow: 0 0 8px var(--red); }
   .video-tile.muted { opacity: 0.4; }
 
-  /* RCP Controls */
   .rcp-bar {
     position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%);
     display: none; gap: 6px; background: rgba(6, 18, 34, 0.95);
@@ -322,7 +314,6 @@
   .rcp-btn:hover { background: rgba(168, 85, 247, 0.25); color: #fff; box-shadow: 0 0 15px rgba(168, 85, 247, 0.5); }
   .rcp-btn.recording { background: rgba(255, 59, 107, 0.3); border-color: var(--red); color: var(--red); animation: pulse 1s infinite; }
 
-  /* Right tabs */
   .tabs { display: flex; border-bottom: 1px solid var(--border); background: rgba(0, 229, 255, 0.02); flex-shrink: 0; overflow-x: auto; }
   .tabs::-webkit-scrollbar { height: 2px; }
   .tabs::-webkit-scrollbar-thumb { background: var(--cyan-dim); }
@@ -338,7 +329,6 @@
   .tab-content { display: none; }
   .tab-content.active { display: block; }
 
-  /* Charts */
   .chart-wrap {
     background: rgba(0, 229, 255, 0.03); border: 1px solid var(--border);
     border-radius: 3px; padding: 10px; margin-bottom: 10px; position: relative;
@@ -346,7 +336,6 @@
   .chart-title { font-size: 9.5px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--cyan); margin-bottom: 6px; display: flex; justify-content: space-between; }
   .chart-title span:last-child { color: var(--red); font-size: 9px; }
 
-  /* Score cards */
   .score-card { background: rgba(0, 229, 255, 0.04); border: 1px solid var(--border); border-radius: 3px; padding: 10px; margin-bottom: 10px; }
   .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
   .score-name { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--cyan); font-weight: bold; }
@@ -382,7 +371,6 @@
   .reco-text strong { color: var(--cyan); }
   .reco-text .drug { display: inline-block; background: rgba(0, 229, 255, 0.1); padding: 0 5px; border-radius: 2px; color: var(--cyan); font-weight: bold; margin: 0 2px; }
 
-  /* Calendar */
   .calendar { background: rgba(0, 229, 255, 0.03); border: 1px solid var(--border); border-radius: 3px; padding: 10px; margin-bottom: 10px; }
   .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
   .cal-month { font-size: 11px; letter-spacing: 1.5px; color: var(--cyan); font-weight: bold; }
@@ -412,7 +400,6 @@
   .rcp-event.crit .ev-title { color: var(--red); }
   .rcp-event .ev-meta { font-size: 9px; color: var(--text-dim); }
 
-  /* AI Learning */
   .learn-stat {
     background: rgba(0, 229, 255, 0.04); border: 1px solid var(--border);
     border-radius: 3px; padding: 10px; margin-bottom: 8px;
@@ -433,7 +420,6 @@
   .feedback-btn.partial:hover { background: rgba(255, 217, 59, 0.15); border-color: var(--yellow); color: var(--yellow); }
   .feedback-btn.unknown:hover { background: rgba(168, 85, 247, 0.15); border-color: var(--purple); color: var(--purple); }
 
-  /* CTAG Sequencer */
   .ctag-panel {
     background: rgba(0, 229, 255, 0.03); border: 1px solid var(--border);
     border-radius: 3px; padding: 10px; margin-bottom: 10px;
@@ -466,7 +452,6 @@
   .ctag-status.ok { background: rgba(0, 255, 157, 0.15); color: var(--green); }
   .ctag-status.urgent { background: rgba(255, 59, 107, 0.2); color: var(--red); }
 
-  /* Wearable panel */
   .wearable-card {
     background: rgba(0, 229, 255, 0.04); border: 1px solid var(--border);
     border-radius: 3px; padding: 9px; margin-bottom: 8px;
@@ -480,17 +465,12 @@
   .wearable-dot.offline { background: var(--red); color: var(--red); }
   .wearable-dot.warn { background: var(--yellow); color: var(--yellow); animation: pulse 1s infinite; }
 
-  /* Prediction gauge */
   .prediction-gauge {
     background: rgba(0, 229, 255, 0.04); border: 1px solid var(--border);
     border-radius: 4px; padding: 12px; margin-bottom: 10px; text-align: center;
   }
   .prediction-label { font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-dim); margin-bottom: 6px; }
   .prediction-value { font-size: 32px; font-weight: bold; font-family: 'Courier New', monospace; text-shadow: 0 0 20px currentColor; margin-bottom: 4px; }
-  .prediction-value.low { color: var(--green); }
-  .prediction-value.moderate { color: var(--yellow); }
-  .prediction-value.high { color: var(--orange); }
-  .prediction-value.critical { color: var(--red); animation: pulse 1.5s infinite; }
   .prediction-window { font-size: 9px; color: var(--text-dim); }
   .prediction-factors { margin-top: 8px; text-align: left; }
   .factor-item {
@@ -504,7 +484,6 @@
   .factor-weight.neg { color: var(--green); }
   .factor-weight.neu { color: var(--yellow); }
 
-  /* Education modules */
   .edu-module {
     background: rgba(168, 85, 247, 0.06); border: 1px solid rgba(168, 85, 247, 0.3);
     border-radius: 3px; padding: 9px; margin-bottom: 7px; cursor: pointer;
@@ -517,7 +496,6 @@
   .edu-progress { height: 2px; background: rgba(168, 85, 247, 0.2); border-radius: 1px; margin-top: 5px; overflow: hidden; }
   .edu-progress-fill { height: 100%; background: var(--purple); box-shadow: 0 0 6px var(--purple); transition: width 0.4s; }
 
-  /* Bottom bar */
   .bottombar {
     grid-column: 1 / -1; background: var(--panel); border: 1px solid var(--border);
     border-radius: 4px; display: flex; align-items: stretch; padding: 10px 16px;
@@ -541,7 +519,6 @@
   .timeline-marker { position: absolute; top: -4px; width: 2px; height: 11px; background: var(--cyan); box-shadow: 0 0 8px var(--cyan); left: 100%; transform: translateX(-50%); }
   .action-btns { display: flex; gap: 6px; }
 
-  /* Statusbar */
   .statusbar {
     grid-column: 1 / -1; background: var(--panel-2); border: 1px solid var(--border);
     border-radius: 3px; display: flex; align-items: center; justify-content: space-between;
@@ -550,7 +527,6 @@
   .status-left, .status-right { display: flex; gap: 14px; }
   .status-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin-right: 5px; box-shadow: 0 0 6px currentColor; animation: pulse 1.8s infinite; }
 
-  /* Modal */
   .modal-overlay {
     position: fixed; inset: 0; background: rgba(0, 0, 0, 0.8);
     backdrop-filter: blur(6px); display: none; align-items: center;
@@ -602,7 +578,7 @@
   <div class="login-container">
     <div class="login-logo"></div>
     <div class="login-title">EPI-SEQUENCE</div>
-    <div class="login-subtitle">Clinical Intelligence · v7.0</div>
+    <div class="login-subtitle">Neural Hologram · v8.0</div>
     <div class="login-role-tabs">
       <button class="role-tab active" data-role="neurologue"><span class="role-icon">🧠</span>Neurologue</button>
       <button class="role-tab" data-role="urgentiste"><span class="role-icon">🚑</span>Urgentiste</button>
@@ -643,7 +619,6 @@
 <!-- APP -->
 <div class="app" id="mainApp">
 
-  <!-- TOP BAR -->
   <div class="topbar">
     <div class="brand">
       <div class="brand-logo"></div>
@@ -654,7 +629,7 @@
       <div class="stat-item"><span class="stat-label">PATIENT</span><span class="stat-value yellow" id="activePatientTop">#EPI-023</span></div>
       <div class="stat-item"><span class="stat-label">CRISE</span><span class="stat-value red" id="crisisStatus">GTC ≥5 min</span></div>
       <div class="stat-item"><span class="stat-label">RISQUE 24h</span><span class="stat-value" id="riskTop" style="color:var(--orange)">68%</span></div>
-      <div class="stat-item"><span class="stat-label">MODÈLE</span><span class="stat-value cyan" id="modelVer">v6.2.847</span></div>
+      <div class="stat-item"><span class="stat-label">NEURONES</span><span class="stat-value purple" id="neuronCount">2 847</span></div>
     </div>
     <div class="topbar-user">
       <div class="session-timer" id="sessionTimer">⏱ 00:00:00</div>
@@ -664,7 +639,6 @@
     </div>
   </div>
 
-  <!-- LEFT — PATIENTS -->
   <div class="panel">
     <div class="panel-header">
       <span class="title">Dossiers Patients</span>
@@ -697,7 +671,6 @@
     </div>
   </div>
 
-  <!-- CENTER-LEFT — CTAG SEQUENCER + SE PROTOCOL -->
   <div class="panel">
     <div class="panel-header">
       <span class="title">Séquenceur CTAG</span>
@@ -757,10 +730,10 @@
           </div>
         </div>
         <div class="field">
-          <label>Glycémie (g/L)</label>
+          <label>Recrutement neuronal (%)</label>
           <div class="slider-row">
-            <input type="range" min="20" max="200" value="95" id="sGlyc">
-            <span class="slider-value" id="vGlyc">0.95 g/L</span>
+            <input type="range" min="0" max="100" value="35" id="sRecruit">
+            <span class="slider-value" id="vRecruit">35%</span>
           </div>
         </div>
       </div>
@@ -782,7 +755,6 @@
     <div class="corner bl"></div><div class="corner br"></div>
     <div class="crosshair"></div>
 
-    <!-- ALERT BANNER -->
     <div class="alert-banner" id="alertBanner"></div>
 
     <div class="vp-toolbar" style="position:absolute;top:12px;left:50%;transform:translateX(-50%);display:flex;gap:4px;background:rgba(0,0,0,0.65);border:1px solid var(--border);border-radius:4px;padding:4px;backdrop-filter:blur(8px);pointer-events:auto;z-index:10;">
@@ -793,7 +765,6 @@
       <button class="vp-tool" id="btnRCP" style="padding:5px 9px;background:rgba(168,85,247,0.2);border:1px solid var(--purple);color:var(--purple);font-family:inherit;font-size:10px;cursor:pointer;border-radius:2px;letter-spacing:1px;">🎥 RCP LIVE</button>
     </div>
 
-    <!-- WebRTC Video Grid -->
     <div class="video-grid" id="videoGrid">
       <div class="video-tile" data-p="1">
         <video id="localVideo" autoplay muted playsinline></video>
@@ -817,7 +788,6 @@
       </div>
     </div>
 
-    <!-- RCP Bar -->
     <div class="rcp-bar" id="rcpBar">
       <div style="display:flex;align-items:center;gap:10px;padding-right:10px;border-right:1px solid var(--purple);">
         <span style="font-size:9px;color:var(--purple);letter-spacing:1.5px;">● LIVE</span>
@@ -834,8 +804,8 @@
       <div class="vp-row">
         <div class="vp-info-box">
           <div><span class="k">PATIENT :</span> <span class="v" id="vpPatient">EPI-023</span></div>
-          <div><span class="k">MODALITÉ :</span> <span class="v">EEG — Vidéo-EEG</span></div>
-          <div><span class="k">SÉRIE :</span> <span class="v">EEG-2024-11-14</span></div>
+          <div><span class="k">MODALITÉ :</span> <span class="v">EEG — Réseau neuronal</span></div>
+          <div><span class="k">SÉRIE :</span> <span class="v">NEURAL-2024-11-14</span></div>
         </div>
         <div class="vp-info-box" style="text-align:right" id="webrtcStatus">
           <div><span class="k">WEBRTC :</span> <span class="v" style="color:var(--green)">PRÊT</span></div>
@@ -845,28 +815,27 @@
       </div>
       <div class="vp-row" style="align-items:flex-end">
         <div class="vp-info-box">
-          <div style="color:var(--red); font-weight:bold; letter-spacing:1.5px; margin-bottom:5px;">⚠ ALERTE TEMPS RÉEL</div>
+          <div style="color:var(--red); font-weight:bold; letter-spacing:1.5px; margin-bottom:5px;">⚠ FOYER ÉPILEPTIQUE</div>
           <div style="font-size:10px; line-height:1.6;" id="realtimeAlert">
             Crise GTC <strong>6 min 30 s</strong> — EN COURS<br>
-            SpO₂ : <strong>92%</strong> · FC : <strong>128 bpm</strong><br>
-            Benzos : <strong>4 mg</strong> administrés<br>
-            Glasgow post-critique : <strong>à évaluer</strong>
+            Recrutement neuronal : <strong>35%</strong><br>
+            SpO₂ : <strong>92%</strong> · FC : <strong>128 bpm</strong>
           </div>
         </div>
         <div class="vp-info-box" style="text-align:right">
-          <div style="color:var(--cyan); margin-bottom:5px;">◈ LÉGENDE EEG</div>
+          <div style="color:var(--cyan); margin-bottom:5px;">◈ LÉGENDE NEURONALE</div>
           <div style="font-size:9.5px; line-height:1.7;">
-            <div><span style="color:var(--red)">●</span> Décharges critiques</div>
-            <div><span style="color:var(--yellow)">●</span> Pointes-ondes</div>
-            <div><span style="color:var(--orange)">●</span> Ralentissement post-critique</div>
-            <div><span style="color:var(--cyan)">●</span> Activité de fond</div>
+            <div><span style="color:var(--red)">●</span> Neurones critiques</div>
+            <div><span style="color:var(--yellow)">●</span> Potentiels d'action</div>
+            <div><span style="color:var(--cyan)">●</span> Neurones sains</div>
+            <div><span style="color:var(--purple)">●</span> Synapses</div>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- RIGHT — DIAGNOSTIC + PREDICTION + WEARABLES + EDUCATION -->
+  <!-- RIGHT PANEL -->
   <div class="panel">
     <div class="tabs">
       <button class="tab active" data-tab="pred">🔮 Préd.</button>
@@ -880,41 +849,34 @@
     </div>
 
     <div class="panel-body">
-
       <!-- PREDICTION -->
       <div class="tab-content active" data-content="pred">
         <div class="section-title"><span>◈ Risque de crise imminente</span></div>
         <div class="prediction-gauge">
           <div class="prediction-label">Probabilité dans les 24h</div>
           <div class="prediction-value" id="predValue" style="color:var(--orange)">68%</div>
-          <div class="prediction-window">Fenêtre de prédiction : 0-24h · Confiance : 87%</div>
+          <div class="prediction-window">Fenêtre : 0-24h · Confiance : 87%</div>
         </div>
-
         <div class="section-title"><span>◈ Facteurs contributifs</span></div>
         <div class="prediction-factors" id="predFactors">
           <div class="factor-item"><span class="factor-name">Sommeil < 6h (3 derniers jours)</span><span class="factor-weight pos">+22%</span></div>
           <div class="factor-item"><span class="factor-name">Observance thérapeutique < 80%</span><span class="factor-weight pos">+18%</span></div>
-          <div class="factor-item"><span class="factor-name">Stress rapporté (échelle 8/10)</span><span class="factor-weight pos">+12%</span></div>
-          <div class="factor-item"><span class="factor-name">Activité EEG pré-ictale détectée</span><span class="factor-weight pos">+9%</span></div>
+          <div class="factor-item"><span class="factor-name">Stress rapporté (8/10)</span><span class="factor-weight pos">+12%</span></div>
+          <div class="factor-item"><span class="factor-name">Activité EEG pré-ictale</span><span class="factor-weight pos">+9%</span></div>
           <div class="factor-item"><span class="factor-name">Alcool (2 verres hier)</span><span class="factor-weight pos">+7%</span></div>
-          <div class="factor-item"><span class="factor-name">Respect des horaires de prise</span><span class="factor-weight neg">-8%</span></div>
-          <div class="factor-item"><span class="factor-name">Activité physique régulière</span><span class="factor-weight neg">-5%</span></div>
+          <div class="factor-item"><span class="factor-name">Respect horaires</span><span class="factor-weight neg">-8%</span></div>
+          <div class="factor-item"><span class="factor-name">Activité physique</span><span class="factor-weight neg">-5%</span></div>
         </div>
-
-        <div class="section-title" style="margin-top:12px;"><span>◈ Historique prédictions</span></div>
+        <div class="section-title" style="margin-top:12px;"><span>◈ Historique</span></div>
         <div style="font-size:9px; line-height:1.7; color:var(--text-dim);">
           <div style="display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px dashed rgba(0,229,255,0.1);">
-            <span>J-3 · 14:00</span><span style="color:var(--orange)">72%</span><span style="color:var(--green)">✓ Crise confirmée</span>
+            <span>J-3 · 14:00</span><span style="color:var(--orange)">72%</span><span style="color:var(--green)">✓ Confirmée</span>
           </div>
           <div style="display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px dashed rgba(0,229,255,0.1);">
-            <span>J-7 · 09:00</span><span style="color:var(--yellow)">45%</span><span style="color:var(--text-dim)">— Pas de crise</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px dashed rgba(0,229,255,0.1);">
-            <span>J-12 · 20:00</span><span style="color:var(--red)">88%</span><span style="color:var(--green)">✓ Crise confirmée</span>
+            <span>J-7 · 09:00</span><span style="color:var(--yellow)">45%</span><span>— Pas de crise</span>
           </div>
         </div>
-
-        <button class="btn success" style="width:100%;margin-top:12px;" id="btnRecalcPred">⟳ Recalculer (données temps réel)</button>
+        <button class="btn success" style="width:100%;margin-top:12px;" id="btnRecalcPred">⟳ Recalculer</button>
       </div>
 
       <!-- WEARABLES -->
@@ -922,113 +884,77 @@
         <div class="section-title"><span>◈ Dispositifs connectés</span></div>
         <div class="wearable-card">
           <div class="wearable-info">
-            <div class="wearable-name">📡 EEG portable (Emotiv EPOC)</div>
+            <div class="wearable-name">📡 EEG portable</div>
             <div class="wearable-status">Batterie 78% · Signal excellent</div>
           </div>
           <div class="wearable-dot online"></div>
         </div>
         <div class="wearable-card">
           <div class="wearable-info">
-            <div class="wearable-name">⌚ Montre connectée (Apple Watch)</div>
-            <div class="wearable-status">FC 128 bpm · Activité détectée</div>
+            <div class="wearable-name">⌚ Montre connectée</div>
+            <div class="wearable-status">FC 128 bpm · Activité</div>
           </div>
           <div class="wearable-dot warn"></div>
         </div>
         <div class="wearable-card">
           <div class="wearable-info">
-            <div class="wearable-name">📱 Smartphone (app EPI-LINK)</div>
-            <div class="wearable-status">Observance : 72% (7 derniers jours)</div>
+            <div class="wearable-name">📱 Smartphone (EPI-LINK)</div>
+            <div class="wearable-status">Observance : 72%</div>
           </div>
           <div class="wearable-dot online"></div>
         </div>
         <div class="wearable-card">
           <div class="wearable-info">
-            <div class="wearable-name">🛏 Capteur de sommeil (Withings)</div>
-            <div class="wearable-status">Dernière nuit : 5h12 (insuffisant)</div>
+            <div class="wearable-name">🛏 Capteur sommeil</div>
+            <div class="wearable-status">5h12 (insuffisant)</div>
           </div>
           <div class="wearable-dot warn"></div>
         </div>
-
-        <div class="section-title" style="margin-top:12px;"><span>◈ Alertes récentes</span></div>
-        <div class="reco-item crit" style="font-size:9.5px;">
-          <div class="reco-title">⚠ Détection crise 14/11 06:28</div>
-          <div class="reco-text">Mouvements convulsifs détectés par le bracelet<br>Confiance : <strong>94%</strong> · Fausse alarme : non</div>
-        </div>
-        <div class="reco-item warn" style="font-size:9.5px;">
-          <div class="reco-title">◈ Sommeil insuffisant 13/11</div>
-          <div class="reco-text">5h12 seulement — facteur de risque identifié</div>
-        </div>
-        <div class="reco-item warn" style="font-size:9.5px;">
-          <div class="reco-title">◈ Observance 72%</div>
-          <div class="reco-text">2 doses manquées cette semaine — risque accru</div>
-        </div>
-
-        <div class="section-title" style="margin-top:12px;"><span>◈ Limites des dispositifs</span></div>
+        <div class="section-title" style="margin-top:12px;"><span>◈ Limites</span></div>
         <div style="font-size:9px; color:var(--text-dim); line-height:1.5; padding:8px; background:rgba(255,217,59,0.05); border-left:2px solid var(--yellow); border-radius:2px;">
-          Les wearables grand public détectent les crises généralisées avec ~90% de sensibilité en milieu contrôlé, mais <strong style="color:var(--yellow)">manquent souvent les crises non motrices</strong>. Les fausses alarmes restent fréquentes en environnement domestique. Ne pas se substituer à la surveillance clinique.
+          Les wearables détectent ~90% des crises généralisées en milieu contrôlé, mais <strong style="color:var(--yellow)">manquent les crises non motrices</strong>. Fausses alarmes fréquentes à domicile.
         </div>
       </div>
 
       <!-- EDUCATION -->
       <div class="tab-content" data-content="edu">
-        <div class="section-title"><span>◈ Modules éducatifs personnalisés</span></div>
+        <div class="section-title"><span>◈ Modules éducatifs</span></div>
         <div class="edu-module" data-edu="triggers">
           <div class="edu-title">🎯 Identifier mes déclencheurs</div>
-          <div class="edu-meta"><span>Module 1 · 8 min</span><span>Non commencé</span></div>
+          <div class="edu-meta"><span>8 min</span><span>Non commencé</span></div>
           <div class="edu-progress"><div class="edu-progress-fill" style="width:0%"></div></div>
         </div>
         <div class="edu-module" data-edu="sleep">
           <div class="edu-title">😴 Hygiène du sommeil</div>
-          <div class="edu-meta"><span>Module 2 · 6 min</span><span>50% complété</span></div>
+          <div class="edu-meta"><span>6 min</span><span>50%</span></div>
           <div class="edu-progress"><div class="edu-progress-fill" style="width:50%"></div></div>
         </div>
         <div class="edu-module" data-edu="meds">
           <div class="edu-title">💊 Gérer mon traitement</div>
-          <div class="edu-meta"><span>Module 3 · 10 min</span><span>25% complété</span></div>
+          <div class="edu-meta"><span>10 min</span><span>25%</span></div>
           <div class="edu-progress"><div class="edu-progress-fill" style="width:25%"></div></div>
         </div>
         <div class="edu-module" data-edu="stress">
-          <div class="edu-title">🧘 Pleine conscience (UPLIFT)</div>
-          <div class="edu-meta"><span>Module 4 · 12 min</span><span>Non commencé</span></div>
+          <div class="edu-title">🧘 Pleine conscience</div>
+          <div class="edu-meta"><span>12 min</span><span>Non commencé</span></div>
           <div class="edu-progress"><div class="edu-progress-fill" style="width:0%"></div></div>
         </div>
-        <div class="edu-module completed" data-edu="first">
-          <div class="edu-title">🚨 Que faire en cas de crise ?</div>
-          <div class="edu-meta"><span>Module 0 · 5 min</span><span style="color:var(--green)">✓ Complété</span></div>
+        <div class="edu-module completed">
+          <div class="edu-title">🚨 Premiers secours</div>
+          <div class="edu-meta"><span>5 min</span><span style="color:var(--green)">✓ Complété</span></div>
           <div class="edu-progress"><div class="edu-progress-fill" style="width:100%"></div></div>
         </div>
-
-        <div class="section-title" style="margin-top:12px;"><span>◈ Journal des crises</span></div>
-        <div style="font-size:9px; color:var(--text-dim); line-height:1.6; max-height:150px; overflow-y:auto;">
-          <div style="padding:5px 0; border-bottom:1px dashed rgba(0,229,255,0.1);">
-            <strong style="color:var(--red);">14/11 · 06:28</strong> — GTC · Durée 6+ min<br>
-            <span style="font-size:8.5px;">Déclencheurs : sommeil 5h12, stress 8/10</span>
-          </div>
-          <div style="padding:5px 0; border-bottom:1px dashed rgba(0,229,255,0.1);">
-            <strong style="color:var(--yellow);">08/11 · 22:15</strong> — Focale · Durée 1 min<br>
-            <span style="font-size:8.5px;">Déclencheur : alcool (2 verres)</span>
-          </div>
-          <div style="padding:5px 0; border-bottom:1px dashed rgba(0,229,255,0.1);">
-            <strong style="color:var(--green);">02/11 · 10:30</strong> — Absence · Durée 10 s<br>
-            <span style="font-size:8.5px;">Aucun déclencheur identifié</span>
-          </div>
-        </div>
-
-        <div class="section-title" style="margin-top:12px;"><span>◈ Corrélations identifiées</span></div>
+        <div class="section-title" style="margin-top:12px;"><span>◈ Corrélations</span></div>
         <div class="metric">
-          <div class="metric-label"><span>Sommeil < 6h → crise</span><span class="metric-value red">r = 0.72</span></div>
+          <div class="metric-label"><span>Sommeil < 6h</span><span class="metric-value red">r = 0.72</span></div>
           <div class="metric-bar"><div class="metric-fill red" style="width:72%"></div></div>
         </div>
         <div class="metric">
-          <div class="metric-label"><span>Stress > 7/10 → crise</span><span class="metric-value red">r = 0.58</span></div>
+          <div class="metric-label"><span>Stress > 7/10</span><span class="metric-value red">r = 0.58</span></div>
           <div class="metric-bar"><div class="metric-fill red" style="width:58%"></div></div>
         </div>
         <div class="metric">
-          <div class="metric-label"><span>Alcool → crise</span><span class="metric-value yellow">r = 0.41</span></div>
-          <div class="metric-bar"><div class="metric-fill yellow" style="width:41%"></div></div>
-        </div>
-        <div class="metric">
-          <div class="metric-label"><span>Activité physique → protection</span><span class="metric-value green">r = -0.35</span></div>
+          <div class="metric-label"><span>Activité physique</span><span class="metric-value green">r = -0.35</span></div>
           <div class="metric-bar"><div class="metric-fill green" style="width:35%"></div></div>
         </div>
       </div>
@@ -1040,15 +966,15 @@
           <canvas id="chartSeizures" style="max-height:145px;"></canvas>
         </div>
         <div class="chart-wrap" style="height:160px;">
-          <div class="chart-title"><span>◈ EEG — Amplitude</span><span>↑ 240 µV</span></div>
+          <div class="chart-title"><span>◈ EEG</span><span>240 µV</span></div>
           <canvas id="chartEEG" style="max-height:130px;"></canvas>
         </div>
         <div class="chart-wrap" style="height:160px;">
-          <div class="chart-title"><span>◈ Antiépileptiques</span><span>Taux plasmatique</span></div>
+          <div class="chart-title"><span>◈ Antiépileptiques</span><span>Taux</span></div>
           <canvas id="chartASM" style="max-height:130px;"></canvas>
         </div>
         <div class="chart-wrap" style="height:150px;">
-          <div class="chart-title"><span>◈ Types de crises</span><span>12 mois</span></div>
+          <div class="chart-title"><span>◈ Types</span><span>12 mois</span></div>
           <canvas id="chartTypes" style="max-height:120px;"></canvas>
         </div>
       </div>
@@ -1057,58 +983,43 @@
       <div class="tab-content" data-content="scores">
         <div class="score-card">
           <div class="score-header"><span class="score-name">Glasgow</span><span class="score-value yellow">12/15</span></div>
-          <div class="score-detail"><strong>Y</strong> : 4 · <strong>V</strong> : 4 · <strong>M</strong> : 4<br>Post-critique immédiat.</div>
+          <div class="score-detail"><strong>Y</strong>4 · <strong>V</strong>4 · <strong>M</strong>4<br>Post-critique immédiat.</div>
         </div>
         <div class="score-card">
           <div class="score-header"><span class="score-name">STESS (Pronostic)</span><span class="score-value red">5/6</span></div>
-          <div class="score-detail">Status Epilepticus Severity Score.<br><strong>Pronostic défavorable</strong> si ≥3.<br><em>Ne pas confondre avec un diagnostic.</em></div>
+          <div class="score-detail">Status Epilepticus Severity Score.<br><strong>Pronostic défavorable</strong> si ≥3.</div>
         </div>
         <div class="score-card">
           <div class="score-header"><span class="score-name">EEG — Ictal</span><span class="score-value purple">POINTES-ONDES</span></div>
           <div class="score-detail"><strong>3 Hz</strong> généralisées<br>Amplitude : <strong>240 µV</strong></div>
         </div>
         <div class="score-card">
-          <div class="score-header"><span class="score-name">Étiologie</span><span class="score-value yellow">EN COURS D'ÉVALUATION</span></div>
-          <div class="score-detail">Bilan en cours : IRM, bilan sanguin, PL.<br><strong>Ne pas conclure prématurément.</strong></div>
-        </div>
-        <div class="score-card">
-          <div class="score-header"><span class="score-name">Examens urgents</span><span class="score-value green">À FAIRE</span></div>
-          <div class="score-detail">
-            ☐ Glycémie capillaire<br>
-            ☐ Ionogramme, calcémie, magnésémie<br>
-            ☐ Bilan hépatique et rénal<br>
-            ☐ Dosage antiépileptiques<br>
-            ☐ Toxiques urinaires<br>
-            ☐ Gaz du sang
-          </div>
+          <div class="score-header"><span class="score-name">Étiologie</span><span class="score-value yellow">EN COURS</span></div>
+          <div class="score-detail">IRM, bilan sanguin, PL en cours.<br><strong>Ne pas conclure prématurément.</strong></div>
         </div>
       </div>
 
       <!-- RECO -->
       <div class="tab-content" data-content="reco">
         <div class="reco-item crit">
-          <div class="reco-title">⚠ 1ère ligne — Benzos (5-30 min)</div>
-          <div class="reco-text">
-            <span class="drug">Lorazépam</span> IV 0.1 mg/kg (max 4 mg)<br>
-            <em>OU Midazolam buccal 0.5 mg/kg</em><br>
-            <em>OU Diazépam rectal 0.5 mg/kg</em>
-          </div>
+          <div class="reco-title">⚠ 1ère ligne (5-30 min)</div>
+          <div class="reco-text"><span class="drug">Lorazépam</span> IV 0.1 mg/kg (max 4mg)<br><em>OU Midazolam buccal 0.5 mg/kg</em></div>
         </div>
         <div class="reco-item warn">
-          <div class="reco-title">◈ 2ème ligne — Établi (>20 min)</div>
-          <div class="reco-text"><span class="drug">Lévétiracétam</span> 60 mg/kg IV (max 4500 mg)<br><em>OU Phénytoïne 20 mg/kg IV</em><br><em>OU Valproate 40 mg/kg IV</em></div>
+          <div class="reco-title">◈ 2ème ligne (>20 min)</div>
+          <div class="reco-text"><span class="drug">Lévétiracétam</span> 60 mg/kg IV<br><em>OU Phénytoïne 20 mg/kg</em></div>
         </div>
         <div class="reco-item warn">
-          <div class="reco-title">◈ 3ème ligne — Réfractaire (>30-60 min)</div>
-          <div class="reco-text">Réanimation — anesthésie générale<br><span class="drug">Propofol</span> ou <span class="drug">Thiopental</span><br>EEG continu obligatoire</div>
+          <div class="reco-title">◈ 3ème ligne (>30-60 min)</div>
+          <div class="reco-text"><span class="drug">Propofol</span> ou <span class="drug">Thiopental</span><br>EEG continu</div>
         </div>
         <div class="reco-item crit">
-          <div class="reco-title">⚠ Contre-indications absolues</div>
-          <div class="reco-text">Ne <strong>rien</strong> introduire dans la bouche<br>Ne pas <strong>immobiliser</strong> le patient<br>Ne pas <strong>retarder</strong> les benzodiazépines</div>
+          <div class="reco-title">⚠ Contre-indications</div>
+          <div class="reco-text">Ne <strong>rien</strong> dans la bouche<br>Ne pas <strong>immobiliser</strong></div>
         </div>
         <div class="reco-item">
-          <div class="reco-title">◈ Cas particulier — Grossesse</div>
-          <div class="reco-text"><strong>Éviter le valproate</strong> (tératogène)<br>Préférer <span class="drug">Lévétiracétam</span> ou <span class="drug">Lamotrigine</span></div>
+          <div class="reco-title">◈ Grossesse</div>
+          <div class="reco-text"><strong>Éviter valproate</strong><br>Préférer Lévétiracétam / Lamotrigine</div>
         </div>
       </div>
 
@@ -1134,65 +1045,47 @@
             <div class="ev-meta">Aujourd'hui 14h30 · Salle B2</div>
           </div>
           <div class="rcp-event">
-            <div class="ev-title">RCP Épileptologie hebdo</div>
+            <div class="ev-title">RCP Épileptologie</div>
             <div class="ev-meta">Jeudi 10h00 · Visio</div>
           </div>
-          <div class="rcp-event">
-            <div class="ev-title">RCP Chirurgie de l'épilepsie</div>
-            <div class="ev-meta">Vendredi 15h00 · Salle A1</div>
-          </div>
         </div>
-        <button class="btn primary" style="margin-top:12px;" id="btnNewRCP">➕ Planifier une RCP</button>
+        <button class="btn primary" style="margin-top:12px;" id="btnNewRCP">➕ Planifier RCP</button>
       </div>
 
-      <!-- AI LEARNING -->
+      <!-- AI -->
       <div class="tab-content" data-content="ai">
         <div class="learn-stat">
-          <div class="ls-label">Modèle actuel</div>
+          <div class="ls-label">Modèle</div>
           <div class="ls-value" id="aiVersion">v6.2.847</div>
-          <div class="ls-detail">Dernière MAJ : <span id="aiLastUpdate">il y a 2h</span></div>
+          <div class="ls-detail">MAJ : <span id="aiLastUpdate">il y a 2h</span></div>
         </div>
         <div class="learn-stat">
-          <div class="ls-label">Précision détection</div>
+          <div class="ls-label">Précision</div>
           <div class="ls-value" style="color:var(--green)" id="aiAccuracy">96.2%</div>
-          <div class="ls-detail">↑ +0.4% depuis dernier feedback</div>
+          <div class="ls-detail">↑ +0.4%</div>
         </div>
         <div class="learn-stat">
           <div class="ls-label">Sensibilité pré-ictale</div>
           <div class="ls-value" style="color:var(--purple)" id="aiSensitivity">87.8%</div>
-          <div class="ls-detail">Fenêtre 0-24h · Fausses alarmes 0.8/j</div>
-        </div>
-        <div class="learn-stat">
-          <div class="ls-label">Cas EEG validés</div>
-          <div class="ls-value" id="aiCases">1 247 583</div>
-          <div class="ls-detail">+89 aujourd'hui</div>
+          <div class="ls-detail">Fausses alarmes 0.8/j</div>
         </div>
         <div class="section-title" style="margin-top:12px;"><span>◈ Votre feedback</span></div>
-        <div style="font-size:10px; color:var(--text-dim); margin-bottom:8px; line-height:1.5;">
-          Évaluez la précision de la détection IA sur ce cas.
-        </div>
         <div class="feedback-btns">
           <button class="feedback-btn correct" data-fb="correct">✓ Exact</button>
           <button class="feedback-btn partial" data-fb="partial">◐ Partiel</button>
           <button class="feedback-btn incorrect" data-fb="incorrect">✗ Erreur</button>
           <button class="feedback-btn unknown" data-fb="unknown">? Incertain</button>
         </div>
-        <div class="section-title" style="margin-top:12px;"><span>◈ Historique feedbacks</span></div>
+        <div class="section-title" style="margin-top:12px;"><span>◈ Historique</span></div>
         <div id="feedbackLog" style="font-size:10px; line-height:1.7; color:var(--text-dim);">
-          <div>Aucun feedback pour ce cas</div>
+          <div>Aucun feedback</div>
         </div>
-        <div class="section-title" style="margin-top:12px;"><span>◈ Apprentissage en cours</span></div>
-        <div class="metric">
-          <div class="metric-label"><span>Progression epoch</span><span class="metric-value green" id="epochPct">72%</span></div>
+        <div class="metric" style="margin-top:12px;">
+          <div class="metric-label"><span>Epoch</span><span class="metric-value green" id="epochPct">72%</span></div>
           <div class="metric-bar"><div class="metric-fill green" id="epochBar" style="width:72%"></div></div>
         </div>
-        <div class="metric">
-          <div class="metric-label"><span>Buffer de cas</span><span class="metric-value green">912 / 1000</span></div>
-          <div class="metric-bar"><div class="metric-fill green" style="width:91.2%"></div></div>
-        </div>
-        <button class="btn success" style="width:100%;margin-top:12px;" id="btnTrainNow">⚡ Déclencher ré-entraînement</button>
+        <button class="btn success" style="width:100%;margin-top:12px;" id="btnTrainNow">⚡ Ré-entraînement</button>
       </div>
-
     </div>
   </div>
 
@@ -1245,7 +1138,6 @@
       <span id="statusTime">--:--:--</span>
     </div>
   </div>
-
 </div>
 
 <div class="modal-overlay" id="modalOverlay">
@@ -1318,7 +1210,6 @@ document.getElementById('btnLogin').addEventListener('click', () => {
       badge.textContent = selectedRole.charAt(0).toUpperCase() + selectedRole.slice(1);
       badge.className = 'role-badge ' + selectedRole;
       addToast(`✓ Connecté — ${cfg.name}`, 'ok');
-      addToast(`👤 Rôle : ${selectedRole}`, 'purple');
       initCharts();
       initCalendar();
       initAI();
@@ -1331,10 +1222,8 @@ document.getElementById('btnLogin').addEventListener('click', () => {
 
 document.getElementById('btnLogout').addEventListener('click', () => {
   openModal('◈ Déconnexion', `
-    <h4>▸ Session en cours</h4>
-    <p>Fermer votre session sécurisée et déconnecter tous les services ?</p>
-    <h4>▸ RCP active</h4>
-    <p>${rcpActive ? '<strong>⚠ Une RCP est en cours — elle sera terminée</strong>' : 'Aucune RCP active'}</p>
+    <h4>▸ Session</h4>
+    <p>Fermer votre session sécurisée ?</p>
   `, () => {
     if (rcpActive) toggleRCP();
     document.getElementById('mainApp').classList.remove('visible');
@@ -1344,23 +1233,24 @@ document.getElementById('btnLogout').addEventListener('click', () => {
       document.getElementById('twoFA').classList.remove('active');
       document.getElementById('btnLogin').textContent = '▶ Se Connecter';
       document.getElementById('btnLogin').disabled = false;
-      document.getElementById('mainApp').classList.remove('visible');
       addToast('⏻ Session fermée', 'warn');
     }, 400);
   });
 });
 
 /* ============================================================
-   THREE.JS
+   THREE.JS — NEURAL NETWORK HOLOGRAM (REALISTIC)
    ============================================================ */
 const canvas = document.getElementById('scene');
 const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setClearColor(0x000000, 0);
 
 const scene = new THREE.Scene();
-scene.fog = new THREE.FogExp2(0x000308, 0.045);
-const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
-camera.position.set(0, 0.5, 9.5);
+scene.fog = new THREE.FogExp2(0x000308, 0.028);
+
+const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 200);
+camera.position.set(0, 0.8, 11);
 
 function resizeRenderer() {
   const w = canvas.clientWidth;
@@ -1371,152 +1261,447 @@ function resizeRenderer() {
   camera.updateProjectionMatrix();
 }
 
-scene.add(new THREE.AmbientLight(0x00e5ff, 0.5));
-const keyLight = new THREE.PointLight(0x00e5ff, 2.5, 25);
-keyLight.position.set(4, 5, 5);
+// === LIGHTS ===
+scene.add(new THREE.AmbientLight(0x001a2e, 1.2));
+const hemiLight = new THREE.HemisphereLight(0x00e5ff, 0x220011, 0.5);
+scene.add(hemiLight);
+const keyLight = new THREE.PointLight(0x00e5ff, 2.2, 40);
+keyLight.position.set(6, 8, 6);
 scene.add(keyLight);
-const rimLight = new THREE.PointLight(0xff3b6b, 1.8, 20);
-rimLight.position.set(-5, -2, -3);
+const rimLight = new THREE.PointLight(0xa855f7, 1.6, 30);
+rimLight.position.set(-7, -3, -5);
 scene.add(rimLight);
-const seizureLight = new THREE.PointLight(0xff3b6b, 3, 8);
-seizureLight.position.set(1.5, 1.5, 1);
-scene.add(seizureLight);
+const redLight = new THREE.PointLight(0xff3b6b, 3.5, 15);
+redLight.position.set(2.5, 2.5, 2);
+scene.add(redLight);
+const pulseLight = new THREE.PointLight(0xffd93b, 0, 25);
+pulseLight.position.set(3, 2, 1);
+scene.add(pulseLight);
 
+// === ROOT GROUP ===
 const hologram = new THREE.Group();
 scene.add(hologram);
 
-const holoCyan = new THREE.MeshBasicMaterial({ color: 0x00e5ff, wireframe: true, transparent: true, opacity: 0.35 });
-const holoCyanSolid = new THREE.MeshPhongMaterial({
-  color: 0x00e5ff, emissive: 0x00a8cc, emissiveIntensity: 0.6,
-  transparent: true, opacity: 0.12, shininess: 80, side: THREE.DoubleSide
-});
-const dischargeRed = new THREE.MeshPhongMaterial({
-  color: 0xff3b6b, emissive: 0xff1a4a, emissiveIntensity: 1.2,
-  transparent: true, opacity: 0.65, shininess: 100
-});
-const dischargeWire = new THREE.MeshBasicMaterial({ color: 0xff5577, wireframe: true, transparent: true, opacity: 0.6 });
-const spikeYellow = new THREE.MeshPhongMaterial({
-  color: 0xffd93b, emissive: 0xffaa00, emissiveIntensity: 1.4, transparent: true, opacity: 0.9
-});
+// === NEURAL NETWORK GENERATOR ===
+// Génère un réseau de neurones dans un volume ellipsoïdal (forme de cerveau)
+const NEURON_COUNT = 280;
+const neurons = [];
+const neuronGroup = new THREE.Group();
+hologram.add(neuronGroup);
 
-function createBrain() {
-  const group = new THREE.Group();
-  const geo = new THREE.IcosahedronGeometry(1.6, 3);
-  const pos = geo.attributes.position;
-  for (let i = 0; i < pos.count; i++) {
-    let x = pos.getX(i), y = pos.getY(i), z = pos.getZ(i);
-    const noise = (Math.sin(x * 4) + Math.cos(y * 5) + Math.sin(z * 4)) * 0.12;
-    const len = Math.sqrt(x*x + y*y + z*z);
-    if (len > 0) {
-      const s = 1 + noise;
-      pos.setXYZ(i, x * s * 1.1, y * s * 0.9, z * s * 1.0);
+// Brain volume : ellipsoïde asymétrique
+function brainVolume() {
+  // Retourne un point aléatoire dans un volume en forme de cerveau
+  while (true) {
+    const x = (Math.random() - 0.5) * 2;
+    const y = (Math.random() - 0.5) * 2;
+    const z = (Math.random() - 0.5) * 2;
+    // Ellipsoïde : x/2.2, y/1.6, z/1.9
+    const d = (x * x) / (2.2 * 2.2) + (y * y) / (1.6 * 1.6) + (z * z) / (1.9 * 1.9);
+    if (d < 1) {
+      // Éviter la zone centrale (ventricules)
+      if (Math.sqrt(x*x + y*y + z*z) > 0.4) {
+        return new THREE.Vector3(x * 2.2, y * 1.6, z * 1.9);
+      }
     }
   }
-  geo.computeVertexNormals();
-  const solid = new THREE.Mesh(geo, holoCyanSolid.clone());
-  const wire = new THREE.Mesh(geo, holoCyan.clone());
-  group.add(solid, wire);
-  group.userData.solid = solid;
-  group.userData.wire = wire;
-  return group;
 }
 
-const brain = createBrain();
-hologram.add(brain);
+// Créer les neurones avec somas + dendrites
+const somaGeometry = new THREE.SphereGeometry(0.045, 8, 8);
+const somaMaterials = {
+  healthy: new THREE.MeshPhongMaterial({ color: 0x00e5ff, emissive: 0x007799, emissiveIntensity: 0.7, transparent: true, opacity: 0.85, shininess: 90 }),
+  critical: new THREE.MeshPhongMaterial({ color: 0xff3b6b, emissive: 0xff1a4a, emissiveIntensity: 1.6, transparent: true, opacity: 0.95, shininess: 100 }),
+  recruiting: new THREE.MeshPhongMaterial({ color: 0xffd93b, emissive: 0xffaa00, emissiveIntensity: 1.2, transparent: true, opacity: 0.9, shininess: 80 })
+};
 
-function createSeizureFocus() {
-  const group = new THREE.Group();
-  const geo = new THREE.IcosahedronGeometry(0.45, 2);
-  const pos = geo.attributes.position;
-  for (let i = 0; i < pos.count; i++) {
-    const x = pos.getX(i), y = pos.getY(i), z = pos.getZ(i);
-    const noise = (Math.sin(x * 10) + Math.cos(y * 9) + Math.sin(z * 11)) * 0.1;
-    const len = Math.sqrt(x*x + y*y + z*z);
-    if (len > 0) { const s = 1 + noise; pos.setXYZ(i, x * s, y * s, z * s); }
+// Axones et dendrites (lignes courbes)
+const axonGeometry = new THREE.BufferGeometry();
+const axonPositions = [];
+const axonColors = [];
+const axonSegments = [];
+
+for (let i = 0; i < NEURON_COUNT; i++) {
+  const pos = brainVolume();
+  const soma = new THREE.Mesh(somaGeometry, somaMaterials.healthy.clone());
+  soma.position.copy(pos);
+  soma.userData.basePos = pos.clone();
+  soma.userData.phase = Math.random() * Math.PI * 2;
+  soma.userData.isCritical = false;
+  soma.userData.isRecruiting = false;
+  soma.userData.fireTime = 0;
+  neuronGroup.add(soma);
+  neurons.push(soma);
+  
+  // Dendrites locales (petites projections)
+  const dendriteCount = 4 + Math.floor(Math.random() * 4);
+  for (let d = 0; d < dendriteCount; d++) {
+    const angle = Math.random() * Math.PI * 2;
+    const phi = Math.acos(2 * Math.random() - 1);
+    const length = 0.08 + Math.random() * 0.12;
+    const end = new THREE.Vector3(
+      pos.x + Math.sin(phi) * Math.cos(angle) * length,
+      pos.y + Math.cos(phi) * length,
+      pos.z + Math.sin(phi) * Math.sin(angle) * length
+    );
+    const geo = new THREE.BufferGeometry().setFromPoints([pos, end]);
+    const mat = new THREE.LineBasicMaterial({ color: 0x00e5ff, transparent: true, opacity: 0.15 });
+    const line = new THREE.Line(geo, mat);
+    neuronGroup.add(line);
+    soma.userData.dendrites = soma.userData.dendrites || [];
+    soma.userData.dendrites.push(line);
   }
-  geo.computeVertexNormals();
-  group.add(new THREE.Mesh(geo, dischargeRed));
-  group.add(new THREE.Mesh(geo, dischargeWire));
-  for (let i = 0; i < 16; i++) {
-    const spike = new THREE.Mesh(new THREE.ConeGeometry(0.03, 0.3 + Math.random() * 0.2, 6),
-      new THREE.MeshBasicMaterial({ color: 0xffd93b, transparent: true, opacity: 0.8 }));
-    const theta = Math.random() * Math.PI * 2;
-    const phi = Math.random() * Math.PI;
-    spike.position.set(0.45 * Math.sin(phi) * Math.cos(theta), 0.45 * Math.cos(phi), 0.45 * Math.sin(phi) * Math.sin(theta));
-    spike.lookAt(0, 0, 0);
-    spike.rotateX(Math.PI / 2);
-    group.add(spike);
+}
+
+// Créer les connexions synaptiques entre neurones proches
+const synapseGeometry = new THREE.BufferGeometry();
+const synapsePositions = [];
+const synapseColors = [];
+const synapseData = [];
+
+for (let i = 0; i < NEURON_COUNT; i++) {
+  for (let j = i + 1; j < NEURON_COUNT; j++) {
+    const a = neurons[i].position;
+    const b = neurons[j].position;
+    const dist = a.distanceTo(b);
+    if (dist < 0.65 && Math.random() < 0.55) {
+      // Courbe de connexion (axone courbé)
+      const mid = new THREE.Vector3().addVectors(a, b).multiplyScalar(0.5);
+      const perp = new THREE.Vector3(
+        (Math.random() - 0.5) * 0.15,
+        (Math.random() - 0.5) * 0.15,
+        (Math.random() - 0.5) * 0.15
+      );
+      mid.add(perp);
+      
+      // Arc entre a et b via mid
+      const curve = new THREE.QuadraticBezierCurve3(a, mid, b);
+      const points = curve.getPoints(8);
+      
+      for (let k = 0; k < points.length - 1; k++) {
+        synapsePositions.push(points[k].x, points[k].y, points[k].z);
+        synapsePositions.push(points[k+1].x, points[k+1].y, points[k+1].z);
+        synapseColors.push(0.0, 0.9, 1.0);
+        synapseColors.push(0.0, 0.9, 1.0);
+        synapseData.push({ neuronA: i, neuronB: j, t: k / (points.length - 1) });
+      }
+    }
   }
-  return group;
 }
 
-const seizureFocus = createSeizureFocus();
-seizureFocus.position.set(1.2, 1.0, 0.3);
-hologram.add(seizureFocus);
+synapseGeometry.setAttribute('position', new THREE.Float32BufferAttribute(synapsePositions, 3));
+synapseGeometry.setAttribute('color', new THREE.Float32BufferAttribute(synapseColors, 3));
+const synapseMaterial = new THREE.LineBasicMaterial({ vertexColors: true, transparent: true, opacity: 0.25, blending: THREE.AdditiveBlending });
+const synapseLines = new THREE.LineSegments(synapseGeometry, synapseMaterial);
+hologram.add(synapseLines);
 
-const eegRings = [];
-for (let i = 0; i < 4; i++) {
-  const ring = new THREE.Mesh(new THREE.TorusGeometry(2.0 + i * 0.5, 0.008, 8, 64),
-    new THREE.MeshBasicMaterial({ color: i < 2 ? 0xff3b6b : 0x00e5ff, transparent: true, opacity: 0.5 - i * 0.1 }));
-  ring.rotation.x = Math.PI / 2;
-  ring.rotation.z = i * 0.3;
-  ring.position.y = -1.5 + i * 1.0;
-  hologram.add(ring);
-  eegRings.push(ring);
+// === POTENTIELS D'ACTION (particules qui voyagent le long des synapses) ===
+const ACTION_POTENTIAL_COUNT = 120;
+const actionPotentials = [];
+const apGeometry = new THREE.BufferGeometry();
+const apPositions = new Float32Array(ACTION_POTENTIAL_COUNT * 3);
+const apColors = new Float32Array(ACTION_POTENTIAL_COUNT * 3);
+const apData = [];
+
+for (let i = 0; i < ACTION_POTENTIAL_COUNT; i++) {
+  const synIdx = Math.floor(Math.random() * (synapsePositions.length / 6));
+  const ax = synapsePositions[synIdx * 6];
+  const ay = synapsePositions[synIdx * 6 + 1];
+  const az = synapsePositions[synIdx * 6 + 2];
+  apPositions[i * 3] = ax;
+  apPositions[i * 3 + 1] = ay;
+  apPositions[i * 3 + 2] = az;
+  apColors[i * 3] = 1.0;
+  apColors[i * 3 + 1] = 0.85;
+  apColors[i * 3 + 2] = 0.2;
+  apData.push({
+    synIdx,
+    progress: Math.random(),
+    speed: 0.5 + Math.random() * 1.5,
+    color: Math.random() < 0.2 ? 'red' : 'yellow'
+  });
 }
 
-const particleCount = 600;
-const particleGeo = new THREE.BufferGeometry();
-const particlePos = new Float32Array(particleCount * 3);
-const particleVel = [];
-for (let i = 0; i < particleCount; i++) {
-  particlePos[i * 3] = (Math.random() - 0.5) * 10;
-  particlePos[i * 3 + 1] = (Math.random() - 0.5) * 8;
-  particlePos[i * 3 + 2] = (Math.random() - 0.5) * 10;
-  particleVel.push({ y: 0.008 + Math.random() * 0.02 });
-}
-particleGeo.setAttribute('position', new THREE.BufferAttribute(particlePos, 3));
-const particles = new THREE.Points(particleGeo, new THREE.PointsMaterial({
-  color: 0x00e5ff, size: 0.035, transparent: true, opacity: 0.7,
+apGeometry.setAttribute('position', new THREE.BufferAttribute(apPositions, 3));
+apGeometry.setAttribute('color', new THREE.BufferAttribute(apColors, 3));
+const apMaterial = new THREE.PointsMaterial({
+  size: 0.08, vertexColors: true, transparent: true, opacity: 0.95,
+  blending: THREE.AdditiveBlending, depthWrite: false, sizeAttenuation: true
+});
+const actionPotentialPoints = new THREE.Points(apGeometry, apMaterial);
+hologram.add(actionPotentialPoints);
+
+// === FOYER CRITIQUE (core de décharges) ===
+const seizureFocusGroup = new THREE.Group();
+seizureFocusGroup.position.set(2.2, 2.0, 1.2);
+
+// Core dense
+const coreGeo = new THREE.IcosahedronGeometry(0.15, 2);
+const coreMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 1 });
+const coreMesh = new THREE.Mesh(coreGeo, coreMat);
+seizureFocusGroup.add(coreMesh);
+
+// Halo rouge
+const haloGeo = new THREE.SphereGeometry(0.4, 24, 24);
+const haloMat = new THREE.MeshBasicMaterial({
+  color: 0xff3b6b, transparent: true, opacity: 0.15,
   blending: THREE.AdditiveBlending, depthWrite: false
-}));
-scene.add(particles);
+});
+const haloMesh = new THREE.Mesh(haloGeo, haloMat);
+seizureFocusGroup.add(haloMesh);
 
+// Halo externe
+const haloGeo2 = new THREE.SphereGeometry(0.7, 24, 24);
+const haloMat2 = new THREE.MeshBasicMaterial({
+  color: 0xff3b6b, transparent: true, opacity: 0.06,
+  blending: THREE.AdditiveBlending, depthWrite: false
+});
+const haloMesh2 = new THREE.Mesh(haloGeo2, haloMat2);
+seizureFocusGroup.add(haloMesh2);
+
+// Ondes de choc (anneaux)
+const shockwaves = [];
+for (let i = 0; i < 3; i++) {
+  const ring = new THREE.Mesh(
+    new THREE.TorusGeometry(0.5, 0.008, 8, 64),
+    new THREE.MeshBasicMaterial({ color: 0xff3b6b, transparent: true, opacity: 0.6, blending: THREE.AdditiveBlending })
+  );
+  ring.rotation.x = Math.PI / 2;
+  seizureFocusGroup.add(ring);
+  shockwaves.push(ring);
+}
+
+hologram.add(seizureFocusGroup);
+
+// === ÉCLAIRS ÉLECTRIQUES (arcs entre neurones) ===
+const lightningGroup = new THREE.Group();
+hologram.add(lightningGroup);
+
+function createLightningArc(from, to, color = 0xffd93b) {
+  const points = [];
+  const segments = 6;
+  for (let i = 0; i <= segments; i++) {
+    const t = i / segments;
+    const p = new THREE.Vector3().lerpVectors(from, to, t);
+    if (i > 0 && i < segments) {
+      p.x += (Math.random() - 0.5) * 0.2;
+      p.y += (Math.random() - 0.5) * 0.2;
+      p.z += (Math.random() - 0.5) * 0.2;
+    }
+    points.push(p);
+  }
+  const geo = new THREE.BufferGeometry().setFromPoints(points);
+  const mat = new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.9, blending: THREE.AdditiveBlending });
+  const line = new THREE.Line(geo, mat);
+  lightningGroup.add(line);
+  
+  setTimeout(() => {
+    lightningGroup.remove(line);
+    geo.dispose();
+    mat.dispose();
+  }, 150);
+}
+
+// === PARTICULES AMBIANTES (poussière neuronale) ===
+const ambientCount = 800;
+const ambientGeo = new THREE.BufferGeometry();
+const ambientPos = new Float32Array(ambientCount * 3);
+const ambientVel = [];
+const ambientColors = new Float32Array(ambientCount * 3);
+for (let i = 0; i < ambientCount; i++) {
+  ambientPos[i * 3] = (Math.random() - 0.5) * 14;
+  ambientPos[i * 3 + 1] = (Math.random() - 0.5) * 12;
+  ambientPos[i * 3 + 2] = (Math.random() - 0.5) * 14;
+  const c = Math.random();
+  if (c < 0.7) { ambientColors[i*3]=0; ambientColors[i*3+1]=0.9; ambientColors[i*3+2]=1; }
+  else if (c < 0.9) { ambientColors[i*3]=0.66; ambientColors[i*3+1]=0.33; ambientColors[i*3+2]=0.97; }
+  else { ambientColors[i*3]=1; ambientColors[i*3+1]=0.23; ambientColors[i*3+2]=0.42; }
+  ambientVel.push({
+    x: (Math.random() - 0.5) * 0.005,
+    y: 0.005 + Math.random() * 0.015,
+    z: (Math.random() - 0.5) * 0.005
+  });
+}
+ambientGeo.setAttribute('position', new THREE.BufferAttribute(ambientPos, 3));
+ambientGeo.setAttribute('color', new THREE.BufferAttribute(ambientColors, 3));
+const ambientMat = new THREE.PointsMaterial({
+  size: 0.025, vertexColors: true, transparent: true, opacity: 0.6,
+  blending: THREE.AdditiveBlending, depthWrite: false
+});
+const ambientParticles = new THREE.Points(ambientGeo, ambientMat);
+scene.add(ambientParticles);
+
+// === HALO GLOBAL (grille holographique) ===
+const gridHelper = new THREE.GridHelper(20, 40, 0x00e5ff, 0x003344);
+gridHelper.position.y = -4;
+gridHelper.material.opacity = 0.15;
+gridHelper.material.transparent = true;
+scene.add(gridHelper);
+
+// === ANIMATION LOOP ===
 let time = 0;
 let isPaused = false;
 let autoRotate = true;
 const clock = new THREE.Clock();
 let frameCount = 0, lastFpsTime = performance.now();
 
+let recruitmentLevel = 0.35; // 0-1, contrôle le recrutement
+let criticalNeurons = new Set();
+let firingNeurons = [];
+
+// Fonction pour recruter les neurones autour du foyer critique
+function updateRecruitment(level) {
+  recruitmentLevel = level;
+  const focusPos = seizureFocusGroup.position;
+  
+  neurons.forEach((n, i) => {
+    const dist = n.position.distanceTo(focusPos);
+    const threshold = 0.5 + level * 3.5; // rayon de recrutement
+    if (dist < threshold) {
+      if (!n.userData.isCritical) {
+        n.userData.isCritical = true;
+        n.material.color.setHex(0xff3b6b);
+        n.material.emissive.setHex(0xff1a4a);
+        n.material.emissiveIntensity = 1.6;
+        criticalNeurons.add(i);
+      }
+    } else if (n.userData.isCritical && dist > threshold + 0.5) {
+      n.userData.isCritical = false;
+      n.material.color.setHex(0x00e5ff);
+      n.material.emissive.setHex(0x007799);
+      n.material.emissiveIntensity = 0.7;
+      criticalNeurons.delete(i);
+    }
+  });
+}
+
 function animate() {
   requestAnimationFrame(animate);
   const delta = Math.min(clock.getDelta(), 0.1);
   if (!isPaused) time += delta;
-  if (autoRotate) hologram.rotation.y = Math.sin(time * 0.3) * 0.5 + time * 0.12;
-  hologram.position.y = Math.sin(time * 0.8) * 0.1;
-  seizureFocus.scale.setScalar(1 + Math.sin(time * 4) * 0.15);
-  seizureLight.intensity = 2.5 + Math.sin(time * 4) * 1.5;
-  eegRings.forEach((ring, i) => {
-    ring.rotation.z += delta * (0.3 + i * 0.2);
-    ring.material.opacity = 0.2 + Math.sin(time * 3 + i) * 0.2;
+  
+  if (autoRotate) {
+    hologram.rotation.y = Math.sin(time * 0.15) * 0.3 + time * 0.08;
+  }
+  hologram.position.y = Math.sin(time * 0.6) * 0.05;
+  
+  // === NEURONES : pulsation + firing ===
+  neurons.forEach((n, i) => {
+    const phase = time * 2 + n.userData.phase;
+    const isCrit = n.userData.isCritical;
+    const baseScale = isCrit ? 1.4 : 1.0;
+    const pulse = 1 + Math.sin(phase) * (isCrit ? 0.25 : 0.08);
+    n.scale.setScalar(baseScale * pulse);
+    
+    // Firing aléatoire
+    if (isCrit && Math.random() < 0.015) {
+      n.userData.fireTime = time;
+      // Éclair vers un autre neurone proche
+      const nearby = neurons.filter((o, j) => j !== i && n.position.distanceTo(o.position) < 0.8);
+      if (nearby.length > 0) {
+        const target = nearby[Math.floor(Math.random() * nearby.length)];
+        createLightningArc(n.position.clone(), target.position.clone(), 0xffd93b);
+      }
+    }
+    
+    // Flash de firing
+    if (time - n.userData.fireTime < 0.15) {
+      n.material.emissiveIntensity = 3.5;
+    } else if (isCrit) {
+      n.material.emissiveIntensity = 1.6;
+    }
+    
+    // Dendrites : opacité variable
+    if (n.userData.dendrites) {
+      n.userData.dendrites.forEach(d => {
+        d.material.opacity = isCrit ? 0.3 + Math.sin(phase * 2) * 0.2 : 0.1;
+        d.material.color.setHex(isCrit ? 0xff3b6b : 0x00e5ff);
+      });
+    }
   });
-  const pos = particleGeo.attributes.position.array;
-  for (let i = 0; i < particleCount; i++) {
-    pos[i * 3 + 1] += particleVel[i].y;
-    if (pos[i * 3 + 1] > 4) {
-      pos[i * 3 + 1] = -4;
-      pos[i * 3] = (Math.random() - 0.5) * 10;
-      pos[i * 3 + 2] = (Math.random() - 0.5) * 10;
+  
+  // === FOYER CRITIQUE : pulsation intense ===
+  const focusPulse = 1 + Math.sin(time * 6) * 0.3;
+  coreMesh.scale.setScalar(focusPulse);
+  haloMesh.scale.setScalar(1 + Math.sin(time * 4) * 0.4);
+  haloMesh.material.opacity = 0.15 + Math.sin(time * 4) * 0.1;
+  haloMesh2.scale.setScalar(1 + Math.sin(time * 2.5) * 0.3);
+  haloMesh2.material.opacity = 0.06 + Math.sin(time * 2.5) * 0.04;
+  
+  // Ondes de choc
+  shockwaves.forEach((ring, i) => {
+    const t = (time * 0.8 + i * 0.33) % 1;
+    ring.scale.setScalar(0.5 + t * 3);
+    ring.material.opacity = (1 - t) * 0.5;
+  });
+  
+  // Lumière rouge pulsante
+  redLight.intensity = 3.5 + Math.sin(time * 6) * 2;
+  redLight.position.copy(seizureFocusGroup.position);
+  pulseLight.intensity = 1.5 + Math.sin(time * 8) * 1.5;
+  
+  // === POTENTIELS D'ACTION : voyage le long des synapses ===
+  const apPos = apGeometry.attributes.position.array;
+  const apCol = apGeometry.attributes.color.array;
+  apData.forEach((ap, i) => {
+    ap.progress += delta * ap.speed;
+    if (ap.progress > 1) {
+      ap.progress = 0;
+      ap.synIdx = Math.floor(Math.random() * (synapsePositions.length / 6));
+      ap.color = Math.random() < 0.3 ? 'red' : 'yellow';
+    }
+    // Trouver la position interpolée sur la synapse
+    const synBase = ap.synIdx * 6;
+    const p1x = synapsePositions[synBase];
+    const p1y = synapsePositions[synBase + 1];
+    const p1z = synapsePositions[synBase + 2];
+    const p2x = synapsePositions[synBase + 3];
+    const p2y = synapsePositions[synBase + 4];
+    const p2z = synapsePositions[synBase + 5];
+    
+    // Interpolation avec courbe (approximation)
+    const t = ap.progress;
+    const arc = Math.sin(t * Math.PI) * 0.15;
+    apPos[i * 3] = p1x + (p2x - p1x) * t;
+    apPos[i * 3 + 1] = p1y + (p2y - p1y) * t + arc;
+    apPos[i * 3 + 2] = p1z + (p2z - p1z) * t;
+    
+    if (ap.color === 'red') {
+      apCol[i * 3] = 1.0; apCol[i * 3 + 1] = 0.2; apCol[i * 3 + 2] = 0.4;
+    } else {
+      apCol[i * 3] = 1.0; apCol[i * 3 + 1] = 0.85; apCol[i * 3 + 2] = 0.2;
+    }
+  });
+  apGeometry.attributes.position.needsUpdate = true;
+  apGeometry.attributes.color.needsUpdate = true;
+  
+  // === PARTICULES AMBIANTES ===
+  const ambPos = ambientGeo.attributes.position.array;
+  for (let i = 0; i < ambientCount; i++) {
+    ambPos[i * 3] += ambientVel[i].x;
+    ambPos[i * 3 + 1] += ambientVel[i].y;
+    ambPos[i * 3 + 2] += ambientVel[i].z;
+    if (ambPos[i * 3 + 1] > 6) {
+      ambPos[i * 3 + 1] = -6;
+      ambPos[i * 3] = (Math.random() - 0.5) * 14;
+      ambPos[i * 3 + 2] = (Math.random() - 0.5) * 14;
     }
   }
-  particleGeo.attributes.position.needsUpdate = true;
-  brain.rotation.z = Math.sin(time * 0.4) * 0.02;
+  ambientGeo.attributes.position.needsUpdate = true;
+  
+  // === GRID ===
+  gridHelper.rotation.y = time * 0.02;
+  
   renderer.render(scene, camera);
+  
   frameCount++;
   const now = performance.now();
   if (now - lastFpsTime > 1000) {
     document.getElementById('statusFps').textContent = `FPS : ${frameCount}`;
     document.getElementById('statusLatency').textContent = `LATENCE : ${Math.floor(30 + Math.random() * 25)} ms`;
+    // Nombre de neurones critiques
+    const countEl = document.getElementById('neuronCount');
+    if (countEl) countEl.textContent = (NEURON_COUNT - criticalNeurons.size) + ' / ' + NEURON_COUNT;
     frameCount = 0;
     lastFpsTime = now;
   }
@@ -1524,6 +1709,9 @@ function animate() {
 
 window.addEventListener('resize', resizeRenderer);
 setTimeout(() => { resizeRenderer(); animate(); }, 200);
+
+// Initialisation du recrutement
+setTimeout(() => updateRecruitment(0.35), 500);
 
 /* ============================================================
    CHARTS
@@ -1603,7 +1791,7 @@ function initCharts() {
 }
 
 /* ============================================================
-   PREDICTION MOTEUR
+   PREDICTION
    ============================================================ */
 let predictionState = {
   risk: 68,
@@ -1611,32 +1799,27 @@ let predictionState = {
   factors: [
     { name: 'Sommeil < 6h (3 derniers jours)', weight: 22 },
     { name: 'Observance thérapeutique < 80%', weight: 18 },
-    { name: 'Stress rapporté (échelle 8/10)', weight: 12 },
-    { name: 'Activité EEG pré-ictale détectée', weight: 9 },
+    { name: 'Stress rapporté (8/10)', weight: 12 },
+    { name: 'Activité EEG pré-ictale', weight: 9 },
     { name: 'Alcool (2 verres hier)', weight: 7 },
-    { name: 'Respect des horaires de prise', weight: -8 },
-    { name: 'Activité physique régulière', weight: -5 }
+    { name: 'Respect des horaires', weight: -8 },
+    { name: 'Activité physique', weight: -5 }
   ]
 };
 
-function initPrediction() {
-  updatePredictionDisplay();
-}
+function initPrediction() { updatePredictionDisplay(); }
 
 function updatePredictionDisplay() {
   const valEl = document.getElementById('predValue');
   if (!valEl) return;
   const risk = predictionState.risk;
   valEl.textContent = Math.round(risk) + '%';
-  valEl.className = 'prediction-value';
   if (risk < 25) valEl.style.color = 'var(--green)';
   else if (risk < 50) valEl.style.color = 'var(--yellow)';
   else if (risk < 75) valEl.style.color = 'var(--orange)';
   else valEl.style.color = 'var(--red)';
-
   document.getElementById('riskTop').textContent = Math.round(risk) + '%';
   document.getElementById('riskTop').style.color = risk >= 75 ? 'var(--red)' : risk >= 50 ? 'var(--orange)' : 'var(--yellow)';
-
   const factorsEl = document.getElementById('predFactors');
   if (factorsEl) {
     factorsEl.innerHTML = predictionState.factors.map(f => {
@@ -1648,41 +1831,38 @@ function updatePredictionDisplay() {
 }
 
 document.getElementById('btnRecalcPred').addEventListener('click', () => {
-  addToast('⟳ Recalcul des prédictions avec données temps réel...', 'purple');
+  addToast('⟳ Recalcul prédictions...', 'purple');
   setTimeout(() => {
     predictionState.risk = Math.min(98, Math.max(5, predictionState.risk + (Math.random() - 0.4) * 20));
     predictionState.confidence = Math.min(98, Math.max(70, predictionState.confidence + (Math.random() - 0.5) * 5));
     updatePredictionDisplay();
-    addToast(`🔮 Risque recalculé : ${Math.round(predictionState.risk)}%`, predictionState.risk > 70 ? 'crit' : 'ok');
+    addToast(`🔮 Risque : ${Math.round(predictionState.risk)}%`, predictionState.risk > 70 ? 'crit' : 'ok');
   }, 800);
 });
 
 /* ============================================================
-   CTAG SEQUENCER DYNAMIQUE
+   CTAG
    ============================================================ */
 const ctagSteps = [
   { time: '0-1 min', title: 'Reconnaissance & Sécurisation', desc: 'Protéger, ne pas immobiliser, noter l\'heure', minTime: 0, status: 'done', action: 'done' },
-  { time: '1-5 min', title: 'Position Latérale de Sécurité', desc: 'Libérer les voies aériennes, desserrer les vêtements', minTime: 1, status: 'done', action: 'done' },
+  { time: '1-5 min', title: 'Position Latérale de Sécurité', desc: 'Libérer les voies aériennes', minTime: 1, status: 'done', action: 'done' },
   { time: '5 min', title: '⚠ APPEL SAMU / 15', desc: 'Crise > 5 min = état de mal imminent', minTime: 5, status: 'urgent', action: 'pending' },
-  { time: '5-10 min', title: 'Benzodiazépine 1ère dose', desc: 'Lorazépam 0.1 mg/kg IV (max 4mg) OU Midazolam buccal 0.5 mg/kg', minTime: 5, status: 'pending', action: 'pending' },
-  { time: '10-15 min', title: '2ème dose Benzos si échec', desc: 'Réévaluer après 5-10 min — ne pas dépasser 2 doses', minTime: 10, status: 'pending', action: 'pending' },
-  { time: '15-20 min', title: 'Examens urgents', desc: 'Glycémie, iono, calcémie, magnésémie, bilan hépatique, toxiques', minTime: 15, status: 'pending', action: 'pending' },
-  { time: '20-30 min', title: '2ème ligne — Antiépileptique', desc: 'Lévétiracétam 60 mg/kg IV (max 4500mg) OU Phénytoïne 20 mg/kg', minTime: 20, status: 'pending', action: 'pending' },
-  { time: '> 30 min', title: '⚠ État de mal réfractaire', desc: 'Réanimation — Propofol ou Thiopental, EEG continu', minTime: 30, status: 'urgent', action: 'pending' },
-  { time: 'Post-critique', title: 'Surveillance & Réévaluation', desc: 'Glasgow, SpO₂, confusion post-critique, étiologie', minTime: 999, status: 'pending', action: 'pending' }
+  { time: '5-10 min', title: 'Benzodiazépine 1ère dose', desc: 'Lorazépam 0.1 mg/kg IV (max 4mg)', minTime: 5, status: 'pending', action: 'pending' },
+  { time: '10-15 min', title: '2ème dose Benzos si échec', desc: 'Réévaluer après 5-10 min', minTime: 10, status: 'pending', action: 'pending' },
+  { time: '15-20 min', title: 'Examens urgents', desc: 'Glycémie, iono, calcémie, toxiques', minTime: 15, status: 'pending', action: 'pending' },
+  { time: '20-30 min', title: '2ème ligne — Antiépileptique', desc: 'Lévétiracétam 60 mg/kg IV', minTime: 20, status: 'pending', action: 'pending' },
+  { time: '> 30 min', title: '⚠ État de mal réfractaire', desc: 'Réanimation — Propofol ou Thiopental', minTime: 30, status: 'urgent', action: 'pending' },
+  { time: 'Post-critique', title: 'Surveillance & Réévaluation', desc: 'Glasgow, SpO₂, confusion post-critique', minTime: 999, status: 'pending', action: 'pending' }
 ];
 
-function initCTAG() {
-  renderCTAG();
-}
+function initCTAG() { renderCTAG(); }
 
 function renderCTAG() {
   const timeline = document.getElementById('ctagTimeline');
   if (!timeline) return;
   const elapsed = parseInt(document.getElementById('sElapsed').value);
   const benzos = parseInt(document.getElementById('sBenzos').value);
-
-  ctagSteps.forEach((step, i) => {
+  ctagSteps.forEach((step) => {
     if (step.action === 'done' || step.action === 'skipped') return;
     if (step.minTime > 999) return;
     if (elapsed >= step.minTime && step.minTime > 0) {
@@ -1693,7 +1873,6 @@ function renderCTAG() {
       else if (elapsed >= step.minTime) { step.status = 'urgent'; }
     }
   });
-
   timeline.innerHTML = ctagSteps.map((step, i) => {
     let cls = 'ctag-step';
     if (step.action === 'done') cls += ' done';
@@ -1717,20 +1896,16 @@ function renderCTAG() {
       </div>
     `;
   }).join('');
-
   timeline.querySelectorAll('.ctag-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
       const idx = parseInt(btn.dataset.idx);
       const action = btn.dataset.action;
       if (action === 'done') {
-        ctagSteps[idx].action = 'done';
-        ctagSteps[idx].status = 'ok';
+        ctagSteps[idx].action = 'done'; ctagSteps[idx].status = 'ok';
         addToast(`✓ ${ctagSteps[idx].title} — complété`, 'ok');
-        addLog(`CTAG : ${ctagSteps[idx].title} validé`, 'ok');
       } else if (action === 'skip') {
-        ctagSteps[idx].action = 'skipped';
-        ctagSteps[idx].status = 'pending';
+        ctagSteps[idx].action = 'skipped'; ctagSteps[idx].status = 'pending';
         addToast(`↷ ${ctagSteps[idx].title} — ignoré`, 'warn');
       }
       renderCTAG();
@@ -1758,8 +1933,10 @@ document.getElementById('sSpo2').addEventListener('input', e => {
   document.getElementById('vSpo2').textContent = e.target.value + '%';
   updateRealtimeAlert();
 });
-document.getElementById('sGlyc').addEventListener('input', e => {
-  document.getElementById('vGlyc').textContent = (e.target.value / 100).toFixed(2) + ' g/L';
+document.getElementById('sRecruit').addEventListener('input', e => {
+  const val = parseInt(e.target.value) / 100;
+  document.getElementById('vRecruit').textContent = e.target.value + '%';
+  updateRecruitment(val);
   updateRealtimeAlert();
 });
 
@@ -1767,9 +1944,9 @@ let lastAlertTime = 0;
 function checkTimeAlerts(elapsed) {
   const now = Date.now();
   if (now - lastAlertTime < 3000) return;
-  if (elapsed >= 5 && elapsed < 6) showAlert('⚠ SEUIL 5 MIN — APPEL SAMU REQUIS', 'crit');
+  if (elapsed >= 5 && elapsed < 6) showAlert('⚠ SEUIL 5 MIN — APPEL SAMU', 'crit');
   else if (elapsed >= 20 && elapsed < 21) showAlert('⚠ SEUIL 20 MIN — 2ÈME LIGNE', 'crit');
-  else if (elapsed >= 30 && elapsed < 31) showAlert('⚠ SEUIL 30 MIN — ÉTAT DE MAL RÉFRACTAIRE', 'crit');
+  else if (elapsed >= 30 && elapsed < 31) showAlert('⚠ SEUIL 30 MIN — RÉFRACTAIRE', 'crit');
   else if (elapsed >= 10 && elapsed < 11) showAlert('◈ 10 MIN — RÉÉVALUER BENZOS', 'warn');
   lastAlertTime = now;
 }
@@ -1785,13 +1962,13 @@ function updateRealtimeAlert() {
   const elapsed = parseInt(document.getElementById('sElapsed').value);
   const benzos = parseInt(document.getElementById('sBenzos').value);
   const spo2 = parseInt(document.getElementById('sSpo2').value);
-  const glyc = (parseInt(document.getElementById('sGlyc').value) / 100).toFixed(2);
+  const recruit = parseInt(document.getElementById('sRecruit').value);
   const el = document.getElementById('realtimeAlert');
   if (!el) return;
   let html = `Crise GTC <strong>${elapsed} min</strong> — ${elapsed >= 30 ? 'RÉFRACTAIRE' : elapsed >= 20 ? 'ÉTABLIE' : 'EN COURS'}<br>`;
-  html += `SpO₂ : <strong style="color:${spo2 < 90 ? 'var(--red)' : spo2 < 94 ? 'var(--yellow)' : 'var(--green)'}">${spo2}%</strong> · Glycémie : <strong>${glyc} g/L</strong><br>`;
-  html += `Benzos : <strong style="color:${benzos >= 8 ? 'var(--green)' : benzos >= 4 ? 'var(--yellow)' : 'var(--red)'}">${benzos} mg</strong> administrés<br>`;
-  html += `Prochaine étape : <strong style="color:var(--cyan)">${getNextStep(elapsed, benzos)}</strong>`;
+  html += `Recrutement : <strong style="color:${recruit > 60 ? 'var(--red)' : recruit > 30 ? 'var(--orange)' : 'var(--yellow)'}">${recruit}%</strong><br>`;
+  html += `SpO₂ : <strong style="color:${spo2 < 90 ? 'var(--red)' : spo2 < 94 ? 'var(--yellow)' : 'var(--green)'}">${spo2}%</strong> · Benzos : <strong>${benzos} mg</strong><br>`;
+  html += `Prochaine : <strong style="color:var(--cyan)">${getNextStep(elapsed, benzos)}</strong>`;
   el.innerHTML = html;
 }
 
@@ -1805,16 +1982,13 @@ function getNextStep(elapsed, benzos) {
 }
 
 document.getElementById('btnRegenerateCTAG').addEventListener('click', () => {
-  addToast('⚡ Recalcul CTAG dynamique...', 'warn');
+  addToast('⚡ Recalcul CTAG...', 'warn');
   ctagSteps.forEach(s => { if (s.action !== 'done' && s.action !== 'skipped') { s.action = 'pending'; s.status = 'pending'; } });
-  setTimeout(() => {
-    renderCTAG();
-    addToast('✓ Séquence CTAG recalculée', 'ok');
-  }, 400);
+  setTimeout(() => { renderCTAG(); addToast('✓ CTAG recalculée', 'ok'); }, 400);
 });
 
 /* ============================================================
-   CALENDRIER RCP
+   CALENDAR
    ============================================================ */
 let currentMonth = new Date(2024, 10, 1);
 const rcpEvents = {
@@ -1861,7 +2035,6 @@ function renderCalendar() {
           <h4>▸ ${ev.title}</h4>
           <p><strong>Date :</strong> ${date}</p>
           <p><strong>Type :</strong> ${ev.type === 'crit' ? 'URGENTE' : 'Programmée'}</p>
-          <p><strong>Participants :</strong> 5 médecins</p>
         `, () => { toggleRCP(); });
       }
     });
@@ -1874,19 +2047,17 @@ document.getElementById('calNext').addEventListener('click', () => { currentMont
 document.getElementById('btnNewRCP').addEventListener('click', () => {
   openModal('◈ Planifier une RCP', `
     <h4>▸ Nouvelle réunion</h4>
-    <p><strong>Patient :</strong> EPI-023 (État de mal)</p>
-    <p><strong>Motif :</strong> Discussion stratégie thérapeutique</p>
-    <h4>▸ Invités</h4>
-    <p>• Dr. CHEN (Urgentiste)<br>• Dr. MARTIN (Neurologue)<br>• Dr. DUBOIS (Réanimateur)</p>
+    <p><strong>Patient :</strong> EPI-023</p>
+    <p><strong>Motif :</strong> Discussion stratégie</p>
   `, () => {
-    addToast('✓ RCP planifiée — invitations envoyées', 'ok');
+    addToast('✓ RCP planifiée', 'ok');
     rcpEvents['2024-11-14'] = { title: 'RCP URGENTE — EPI-023', type: 'crit' };
     renderCalendar();
   });
 });
 
 /* ============================================================
-   IA AUTO-APPRENANTE
+   AI
    ============================================================ */
 let aiState = {
   version: 'v6.2.847',
@@ -1911,10 +2082,8 @@ function updateAIDisplay() {
   document.getElementById('aiVersion').textContent = aiState.version;
   document.getElementById('aiAccuracy').textContent = aiState.accuracy.toFixed(1) + '%';
   document.getElementById('aiSensitivity').textContent = aiState.sensitivity.toFixed(1) + '%';
-  document.getElementById('aiCases').textContent = aiState.cases.toLocaleString('fr-FR');
   document.getElementById('epochPct').textContent = Math.floor(aiState.epochProgress) + '%';
   document.getElementById('epochBar').style.width = aiState.epochProgress + '%';
-  document.getElementById('modelVer').textContent = aiState.version;
 }
 
 const feedbackLog = [];
@@ -1941,16 +2110,16 @@ document.querySelectorAll('.feedback-btn').forEach(btn => {
       </div>`;
     }).join('');
     updateAIDisplay();
-    addToast(`🧠 Feedback enregistré — Précision ${aiState.accuracy.toFixed(1)}%`, delta > 0 ? 'ok' : 'warn');
+    addToast(`🧠 Feedback — Précision ${aiState.accuracy.toFixed(1)}%`, delta > 0 ? 'ok' : 'warn');
   });
 });
 
 document.getElementById('btnTrainNow').addEventListener('click', () => {
   if (aiState.feedbackBuffer < 100) {
-    addToast('⚠ Buffer insuffisant (min 100 cas)', 'warn');
+    addToast('⚠ Buffer insuffisant', 'warn');
     return;
   }
-  addToast('⚡ Ré-entraînement déclenché...', 'warn');
+  addToast('⚡ Ré-entraînement...', 'warn');
   aiState.epochProgress = 0;
   updateAIDisplay();
   let ep = 0;
@@ -1964,7 +2133,7 @@ document.getElementById('btnTrainNow').addEventListener('click', () => {
       aiState.accuracy = Math.min(99.9, aiState.accuracy + 0.5);
       aiState.feedbackBuffer = 0;
       updateAIDisplay();
-      addToast(`✓ Nouveau modèle ${aiState.version} déployé`, 'ok');
+      addToast(`✓ Modèle ${aiState.version} déployé`, 'ok');
     }
   }, 200);
 });
@@ -1977,7 +2146,6 @@ let rcpRecording = false;
 let rcpSeconds = 0;
 let rcpInterval = null;
 let localStream = null;
-let peerConnections = {};
 let screenStream = null;
 
 async function startLocalVideo() {
@@ -1992,10 +2160,10 @@ async function startLocalVideo() {
       <div><span class="k">LATENCE :</span> <span class="v" id="rtcLatency">28 ms</span></div>
     `;
     document.getElementById('rtcStatus').textContent = 'STREAMING';
-    addToast('📷 Caméra et micro activés', 'ok');
+    addToast('📷 Caméra activée', 'ok');
     return true;
   } catch (err) {
-    addToast('⚠ Caméra indisponible — mode simulation', 'warn');
+    addToast('⚠ Caméra indisponible — simulation', 'warn');
     document.getElementById('localVideo').style.background = 'linear-gradient(135deg, #061426, #0a2440)';
     document.getElementById('localVideo').innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:24px;">🧠</div>';
     document.getElementById('rtcStatus').textContent = 'SIMULATED';
@@ -2006,8 +2174,6 @@ async function startLocalVideo() {
 function stopLocalVideo() {
   if (localStream) { localStream.getTracks().forEach(t => t.stop()); localStream = null; }
   if (screenStream) { screenStream.getTracks().forEach(t => t.stop()); screenStream = null; }
-  Object.values(peerConnections).forEach(pc => pc.close());
-  peerConnections = {};
 }
 
 function createSimulatedPeer(videoEl, name) {
@@ -2042,7 +2208,7 @@ function toggleRCP() {
   const grid = document.getElementById('videoGrid');
   if (rcpActive) {
     bar.classList.add('active'); grid.classList.add('active');
-    addToast('🎥 Session RCP LIVE démarrée', 'purple');
+    addToast('🎥 RCP LIVE', 'purple');
     startLocalVideo();
     setTimeout(() => {
       createSimulatedPeer(document.getElementById('remoteVideo2'), { name: 'Dr. CHEN', icon: '🚑' });
@@ -2052,7 +2218,7 @@ function toggleRCP() {
         setTimeout(() => {
           document.getElementById('tile' + n).classList.add('active');
           document.getElementById('tile' + n).style.opacity = '1';
-          addToast(`👥 Dr. ${['CHEN', 'MARTIN', 'DUBOIS'][i]} a rejoint`, 'ok');
+          addToast(`👥 Dr. ${['CHEN', 'MARTIN', 'DUBOIS'][i]}`, 'ok');
         }, i * 400);
       });
     }, 300);
@@ -2072,12 +2238,7 @@ function toggleRCP() {
     });
     document.querySelectorAll('.video-tile').forEach(t => t.classList.remove('speaking'));
     document.getElementById('rtcStatus').textContent = 'STANDBY';
-    document.getElementById('webrtcStatus').innerHTML = `
-      <div><span class="k">WEBRTC :</span> <span class="v" style="color:var(--green)">PRÊT</span></div>
-      <div><span class="k">PEERS :</span> <span class="v" id="peerCount">0</span></div>
-      <div><span class="k">LATENCE :</span> <span class="v" id="rtcLatency">-- ms</span></div>
-    `;
-    addToast('⏹ Session RCP terminée', 'warn');
+    addToast('⏹ RCP terminée', 'warn');
   }
 }
 
@@ -2092,7 +2253,7 @@ function startRCPRecording() {
     const s = String(rcpSeconds % 60).padStart(2, '0');
     document.getElementById('rcpTimer').textContent = `${m}:${s}`;
   }, 1000);
-  addToast('⏺ Enregistrement RCP démarré', 'crit');
+  addToast('⏺ Enregistrement', 'crit');
 }
 
 function stopRCPRecording() {
@@ -2101,7 +2262,7 @@ function stopRCPRecording() {
   document.getElementById('rcpRecord').classList.remove('recording');
   document.getElementById('rcpRecord').textContent = '⏺ Enregistrer';
   if (window._rcpRecTimer) clearInterval(window._rcpRecTimer);
-  if (rcpSeconds > 0) addToast(`✓ Enregistrement sauvegardé (${rcpSeconds}s)`, 'ok');
+  if (rcpSeconds > 0) addToast(`✓ Enregistrement (${rcpSeconds}s)`, 'ok');
   rcpSeconds = 0;
   document.getElementById('rcpTimer').textContent = '00:00';
 }
@@ -2131,13 +2292,13 @@ document.getElementById('rcpScreen').addEventListener('click', async e => {
   if (sharing) {
     try {
       screenStream = await navigator.mediaDevices.getDisplayMedia({ video: true });
-      addToast('📺 Partage d\'écran actif', 'ok');
+      addToast('📺 Partage actif', 'ok');
       screenStream.getVideoTracks()[0].addEventListener('ended', () => {
         e.currentTarget.classList.remove('recording');
         screenStream = null;
         addToast('📺 Partage terminé', 'warn');
       });
-    } catch { addToast('📺 Partage d\'écran simulé', 'warn'); }
+    } catch { addToast('📺 Partage simulé', 'warn'); }
   } else {
     if (screenStream) { screenStream.getTracks().forEach(t => t.stop()); screenStream = null; }
     addToast('📺 Partage arrêté', 'warn');
@@ -2150,7 +2311,7 @@ document.getElementById('rcpRecord').addEventListener('click', () => {
 document.getElementById('rcpEnd').addEventListener('click', toggleRCP);
 
 /* ============================================================
-   MONITORING TEMPS RÉEL
+   MONITORING
    ============================================================ */
 function startRealtimeMonitor() {
   setInterval(() => {
@@ -2165,17 +2326,10 @@ function startRealtimeMonitor() {
       document.getElementById('crisisStatus').style.color = 'var(--red)';
     }
   }, 5000);
-
-  setInterval(() => {
-    const wearables = document.querySelectorAll('.wearable-dot');
-    let online = 0;
-    wearables.forEach(w => { if (w.classList.contains('online') || w.classList.contains('warn')) online++; });
-    document.getElementById('wearStatus').textContent = `${online}/4`;
-  }, 8000);
 }
 
 /* ============================================================
-   UI LOGIC
+   UI
    ============================================================ */
 const sessionStart = Date.now();
 setInterval(() => {
@@ -2188,10 +2342,10 @@ setInterval(() => {
 }, 1000);
 
 const patientData = {
-  'EPI-023': { name: 'EPI-023', type: 'GTC ≥5 min', stage: 2, pathology: 'Crise généralisée tonico-clonique (GTC)', risk: 68 },
-  'EPI-041': { name: 'EPI-041', type: 'Focale', stage: 2, pathology: 'Crise focale avec altération de conscience', risk: 45 },
-  'EPI-058': { name: 'EPI-058', type: 'Absence', stage: 1, pathology: 'Absence (petit mal)', risk: 18 },
-  'EPI-072': { name: 'EPI-072', type: 'Première', stage: 1, pathology: 'Première crise — à évaluer', risk: 32 }
+  'EPI-023': { name: 'EPI-023', stage: 2, pathology: 'Crise généralisée tonico-clonique (GTC)', risk: 68, recruit: 35 },
+  'EPI-041': { name: 'EPI-041', stage: 2, pathology: 'Crise focale avec altération de conscience', risk: 45, recruit: 20 },
+  'EPI-058': { name: 'EPI-058', stage: 1, pathology: 'Absence (petit mal)', risk: 18, recruit: 8 },
+  'EPI-072': { name: 'EPI-072', stage: 1, pathology: 'Première crise — à évaluer', risk: 32, recruit: 12 }
 };
 
 document.querySelectorAll('.patient-card').forEach(card => {
@@ -2204,9 +2358,12 @@ document.querySelectorAll('.patient-card').forEach(card => {
     document.getElementById('fSeizureType').value = data.pathology;
     predictionState.risk = data.risk;
     updatePredictionDisplay();
+    document.getElementById('sRecruit').value = data.recruit;
+    document.getElementById('vRecruit').textContent = data.recruit + '%';
+    updateRecruitment(data.recruit / 100);
     document.querySelectorAll('.stage-btn').forEach(b => b.classList.toggle('active', parseInt(b.dataset.stage) === data.stage));
     updateStage(data.stage);
-    addToast(`📁 Dossier ${data.name} chargé — Risque ${data.risk}%`, 'ok');
+    addToast(`📁 ${data.name} — Risque ${data.risk}%`, 'ok');
   });
 });
 
@@ -2233,8 +2390,10 @@ function updateStage(stage) {
   const widths = [25, 50, 75, 100];
   document.getElementById('timelineFill').style.width = widths[stage-1] + '%';
   document.getElementById('timelineMarker').style.left = widths[stage-1] + '%';
-  const scales = [0.4, 0.7, 1.0, 1.3];
-  seizureFocus.scale.setScalar(scales[stage-1]);
+  const recruitLevels = [0.1, 0.35, 0.65, 0.95];
+  document.getElementById('sRecruit').value = Math.round(recruitLevels[stage-1] * 100);
+  document.getElementById('vRecruit').textContent = Math.round(recruitLevels[stage-1] * 100) + '%';
+  updateRecruitment(recruitLevels[stage-1]);
 }
 
 document.querySelectorAll('.tab').forEach(tab => {
@@ -2256,10 +2415,10 @@ document.querySelectorAll('.vp-tool[data-view]').forEach(btn => {
     btn.style.background = 'rgba(0, 229, 255, 0.2)';
     btn.style.color = 'var(--cyan)';
     const view = btn.dataset.view;
-    if (view === '3d') { autoRotate = true; camera.position.set(0, 0.5, 9.5); }
-    else if (view === 'axial') { autoRotate = false; camera.position.set(0, 8, 0.1); }
-    else if (view === 'coronal') { autoRotate = false; camera.position.set(0, 0.3, 9.5); }
-    else if (view === 'sagittal') { autoRotate = false; camera.position.set(9.5, 0.3, 0.1); }
+    if (view === '3d') { autoRotate = true; camera.position.set(0, 0.8, 11); }
+    else if (view === 'axial') { autoRotate = false; camera.position.set(0, 12, 0.1); }
+    else if (view === 'coronal') { autoRotate = false; camera.position.set(0, 0.5, 11); }
+    else if (view === 'sagittal') { autoRotate = false; camera.position.set(11, 0.5, 0.1); }
     camera.lookAt(0, 0, 0);
     addToast(`Vue ${view.toUpperCase()}`, 'ok');
   });
@@ -2277,34 +2436,34 @@ document.getElementById('btnReset').addEventListener('click', () => {
   document.getElementById('sElapsed').value = 6; document.getElementById('vElapsed').textContent = '6 min';
   document.getElementById('sBenzos').value = 4; document.getElementById('vBenzos').textContent = '4 mg';
   document.getElementById('sSpo2').value = 92; document.getElementById('vSpo2').textContent = '92%';
-  document.getElementById('sGlyc').value = 95; document.getElementById('vGlyc').textContent = '0.95 g/L';
   predictionState.risk = 68; updatePredictionDisplay();
   updateRealtimeAlert();
   addToast('↺ Réinitialisé', 'ok');
 });
 
-document.getElementById('btnSnapshot').addEventListener('click', () => addToast('📸 Snapshot capturé', 'ok'));
+document.getElementById('btnSnapshot').addEventListener('click', () => {
+  renderer.render(scene, camera);
+  const dataURL = canvas.toDataURL('image/png');
+  const link = document.createElement('a');
+  link.download = `epi-neural-${Date.now()}.png`;
+  link.href = dataURL;
+  link.click();
+  addToast('📸 Snapshot téléchargé', 'ok');
+});
 
-/* Education modules */
 document.querySelectorAll('.edu-module').forEach(mod => {
   mod.addEventListener('click', () => {
     const title = mod.querySelector('.edu-title').textContent;
     openModal('◈ Module éducatif', `
       <h4>▸ ${title}</h4>
-      <p>Ce module interactif aide le patient à mieux comprendre et gérer son épilepsie.</p>
+      <p>Module interactif d'aide à la gestion de l'épilepsie.</p>
       <h4>▸ Contenu</h4>
-      <ul>
-        <li>Vidéos explicatives (5 min)</li>
-        <li>Quiz interactif</li>
-        <li>Journal des déclencheurs</li>
-        <li>Conseils personnalisés</li>
-      </ul>
-      <p><em>Les programmes d'auto-gestion améliorent l'engagement et réduisent la fréquence des crises.</em></p>
+      <ul><li>Vidéos explicatives</li><li>Quiz interactif</li><li>Journal des déclencheurs</li></ul>
     `, () => {
       mod.classList.add('completed');
       mod.querySelector('.edu-progress-fill').style.width = '100%';
       mod.querySelector('.edu-meta span:last-child').textContent = '✓ Complété';
-      addToast(`📖 Module "${title}" complété`, 'ok');
+      addToast(`📖 "${title}" complété`, 'ok');
     });
   });
 });
@@ -2337,18 +2496,6 @@ function addToast(msg, type = '') {
     setTimeout(() => t.remove(), 400);
   }, 3500);
 }
-function addLog(msg, type = '') { console.log(`[${new Date().toTimeString().split(' ')[0]}] ${msg}`); }
-
-setInterval(() => {
-  const logs = [
-    { m: 'Sync EEG terminée', t: 'ok' },
-    { m: 'Détection IA : décharge critique', t: 'warn' },
-    { m: 'Wearable sync OK', t: 'ok' },
-    { m: 'Prédiction recalculée', t: 'purple' }
-  ];
-  const l = logs[Math.floor(Math.random() * logs.length)];
-  addLog(l.m, l.t);
-}, 12000);
 
 updateRealtimeAlert();
 </script>
