@@ -1,0 +1,2051 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EPI-SEQUENCE PRO v6.0 — Ultimate Edition</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --cyan: #00e5ff; --cyan-dim: #0095aa;
+    --red: #ff3b6b; --yellow: #ffd93b; --green: #00ff9d;
+    --purple: #a855f7; --orange: #ff8b3b; --pink: #ff5cc8;
+    --bg: #030812; --panel: rgba(6, 18, 34, 0.82); --panel-2: rgba(10, 24, 44, 0.9);
+    --border: rgba(0, 229, 255, 0.22); --border-strong: rgba(0, 229, 255, 0.5);
+    --text: #c9e8f5; --text-dim: #6a8fa3; --grid-line: rgba(0, 229, 255, 0.06);
+  }
+  html, body {
+    height: 100%; overflow: hidden; background: var(--bg); color: var(--text);
+    font-family: 'SF Mono', 'Courier New', monospace; font-size: 12px; user-select: none;
+  }
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background-image: linear-gradient(var(--grid-line) 1px, transparent 1px),
+                      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 40px 40px; pointer-events: none; z-index: 0;
+  }
+
+  /* ========== LOGIN ========== */
+  #loginScreen {
+    position: fixed; inset: 0; z-index: 5000;
+    display: flex; align-items: center; justify-content: center;
+    background: radial-gradient(ellipse at center, #061426 0%, #020610 60%, #000 100%);
+    transition: opacity 0.6s;
+  }
+  #loginScreen.hidden { opacity: 0; pointer-events: none; }
+  .login-bg-grid {
+    position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(0, 229, 255, 0.08) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(0, 229, 255, 0.08) 1px, transparent 1px);
+    background-size: 50px 50px; animation: gridScroll 8s linear infinite; opacity: 0.5;
+  }
+  @keyframes gridScroll { 0% { background-position: 0 0; } 100% { background-position: 0 50px; } }
+  .login-container {
+    position: relative; z-index: 2;
+    background: rgba(6, 18, 34, 0.9); border: 1px solid var(--border-strong);
+    border-radius: 6px; backdrop-filter: blur(20px);
+    box-shadow: 0 0 80px rgba(0, 229, 255, 0.25), inset 0 0 40px rgba(0, 229, 255, 0.04);
+    width: 460px; padding: 40px 36px; animation: loginFadeIn 0.8s ease-out;
+  }
+  @keyframes loginFadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  .login-logo {
+    width: 72px; height: 72px; margin: 0 auto 20px; border: 2px solid var(--cyan);
+    border-radius: 50%; position: relative; box-shadow: 0 0 30px var(--cyan), inset 0 0 20px rgba(0, 229, 255, 0.3);
+    animation: spin 12s linear infinite;
+  }
+  .login-logo::after {
+    content: ''; position: absolute; inset: 12px; border-radius: 50%;
+    background: radial-gradient(circle, var(--red), var(--red) 40%, transparent 70%);
+    box-shadow: 0 0 20px var(--red); animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.9); } }
+  .login-title { text-align: center; font-size: 20px; letter-spacing: 4px; font-weight: bold; color: var(--cyan); margin-bottom: 4px; text-shadow: 0 0 20px var(--cyan); }
+  .login-subtitle { text-align: center; font-size: 10px; letter-spacing: 3px; color: var(--text-dim); text-transform: uppercase; margin-bottom: 30px; }
+  .login-role-tabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 20px; }
+  .role-tab {
+    padding: 10px 6px; background: rgba(0, 229, 255, 0.04); border: 1px solid var(--border);
+    border-radius: 4px; color: var(--text-dim); font-family: inherit; font-size: 9px;
+    letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: all 0.25s; text-align: center;
+  }
+  .role-tab .role-icon { display: block; font-size: 18px; margin-bottom: 4px; filter: grayscale(1); transition: filter 0.25s; }
+  .role-tab:hover { background: rgba(0, 229, 255, 0.1); color: var(--cyan); }
+  .role-tab:hover .role-icon { filter: grayscale(0); }
+  .role-tab.active { background: rgba(0, 229, 255, 0.15); border-color: var(--cyan); color: var(--cyan); box-shadow: 0 0 15px rgba(0, 229, 255, 0.4); }
+  .role-tab.active .role-icon { filter: grayscale(0); }
+  .login-field { margin-bottom: 14px; }
+  .login-field label { display: block; font-size: 9.5px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-dim); margin-bottom: 5px; }
+  .login-field input {
+    width: 100%; background: rgba(0, 229, 255, 0.05); border: 1px solid var(--border);
+    color: var(--text); padding: 10px 12px; font-family: inherit; font-size: 12px;
+    border-radius: 3px; outline: none; transition: all 0.25s;
+  }
+  .login-field input:focus { border-color: var(--cyan); box-shadow: 0 0 15px rgba(0, 229, 255, 0.3); background: rgba(0, 229, 255, 0.08); }
+  .login-2fa { display: none; margin-bottom: 14px; }
+  .login-2fa.active { display: block; }
+  .otp-boxes { display: flex; gap: 8px; justify-content: center; margin-top: 6px; }
+  .otp-box {
+    width: 46px; height: 52px; background: rgba(0, 229, 255, 0.05); border: 1px solid var(--border);
+    color: var(--cyan); font-family: inherit; font-size: 22px; text-align: center; border-radius: 3px;
+    outline: none; transition: all 0.2s;
+  }
+  .otp-box:focus { border-color: var(--cyan); box-shadow: 0 0 15px rgba(0, 229, 255, 0.5); background: rgba(0, 229, 255, 0.12); }
+  .btn-login {
+    width: 100%; padding: 14px;
+    background: linear-gradient(135deg, rgba(0, 229, 255, 0.2), rgba(168, 85, 247, 0.15));
+    border: 1px solid var(--cyan); color: var(--cyan); font-family: inherit;
+    font-size: 12px; font-weight: bold; letter-spacing: 3px; text-transform: uppercase;
+    border-radius: 3px; cursor: pointer; transition: all 0.3s; position: relative; overflow: hidden;
+  }
+  .btn-login:hover { background: linear-gradient(135deg, rgba(0, 229, 255, 0.35), rgba(168, 85, 247, 0.3)); color: #fff; box-shadow: 0 0 30px rgba(0, 229, 255, 0.5); }
+  .login-footer {
+    margin-top: 24px; padding-top: 18px; border-top: 1px solid rgba(0, 229, 255, 0.15);
+    text-align: center; font-size: 9px; letter-spacing: 1.5px; color: var(--text-dim); line-height: 1.8;
+  }
+  .login-footer .badges { display: flex; justify-content: center; gap: 8px; margin-top: 10px; }
+  .login-badge { padding: 3px 8px; border: 1px solid rgba(0, 255, 157, 0.4); color: var(--green); border-radius: 2px; font-size: 8.5px; letter-spacing: 1px; }
+
+  /* ========== APP ========== */
+  .app {
+    position: relative; z-index: 1; height: 100vh;
+    display: grid; grid-template-columns: 240px 320px 1fr 340px;
+    grid-template-rows: 48px 1fr 100px 26px; gap: 6px; padding: 6px;
+    opacity: 0; transition: opacity 0.6s;
+  }
+  .app.visible { opacity: 1; }
+
+  /* Topbar */
+  .topbar {
+    grid-column: 1 / -1; background: var(--panel); border: 1px solid var(--border);
+    border-radius: 4px; display: flex; align-items: center; justify-content: space-between;
+    padding: 0 16px; backdrop-filter: blur(12px);
+    box-shadow: 0 0 30px rgba(0, 229, 255, 0.08); position: relative; overflow: hidden;
+  }
+  .topbar::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--cyan), var(--red), transparent);
+    animation: scanH 5s linear infinite;
+  }
+  @keyframes scanH { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: bold; letter-spacing: 2.5px; font-size: 14px; }
+  .brand-logo {
+    width: 24px; height: 24px; border: 2px solid var(--cyan); border-radius: 50%;
+    position: relative; box-shadow: 0 0 12px var(--cyan); animation: spin 10s linear infinite;
+  }
+  .brand-logo::after {
+    content: ''; position: absolute; inset: 5px; border-radius: 50%;
+    background: var(--red); box-shadow: 0 0 10px var(--red); animation: pulse 2s ease-in-out infinite;
+  }
+  .topbar-stats { display: flex; gap: 22px; font-size: 11px; }
+  .stat-item { display: flex; flex-direction: column; gap: 1px; }
+  .stat-label { opacity: 0.5; font-size: 9px; letter-spacing: 1px; }
+  .stat-value { font-weight: bold; }
+  .stat-value.red { color: var(--red); } .stat-value.yellow { color: var(--yellow); }
+  .stat-value.green { color: var(--green); } .stat-value.cyan { color: var(--cyan); }
+  .topbar-user { display: flex; align-items: center; gap: 14px; font-size: 11px; }
+  .role-badge { padding: 3px 10px; border-radius: 2px; letter-spacing: 1px; font-size: 9.5px; text-transform: uppercase; font-weight: bold; }
+  .role-badge.neurologue { background: rgba(168, 85, 247, 0.15); border: 1px solid var(--purple); color: var(--purple); }
+  .role-badge.urgentiste { background: rgba(0, 229, 255, 0.15); border: 1px solid var(--cyan); color: var(--cyan); }
+  .role-badge.interne { background: rgba(255, 217, 59, 0.15); border: 1px solid var(--yellow); color: var(--yellow); }
+  .role-badge.admin { background: rgba(255, 59, 107, 0.15); border: 1px solid var(--red); color: var(--red); }
+  .session-timer { color: var(--green); font-size: 10.5px; letter-spacing: 1px; }
+  .btn-logout {
+    padding: 4px 10px; background: transparent; border: 1px solid rgba(255, 59, 107, 0.4);
+    color: var(--red); font-family: inherit; font-size: 9.5px; letter-spacing: 1px;
+    cursor: pointer; border-radius: 2px; transition: all 0.2s;
+  }
+  .btn-logout:hover { background: rgba(255, 59, 107, 0.2); box-shadow: 0 0 12px rgba(255, 59, 107, 0.4); }
+
+  /* Panels */
+  .panel {
+    background: var(--panel); border: 1px solid var(--border); border-radius: 4px;
+    backdrop-filter: blur(12px); display: flex; flex-direction: column;
+    overflow: hidden; position: relative;
+  }
+  .panel-header {
+    padding: 8px 12px; border-bottom: 1px solid var(--border); font-size: 10px;
+    letter-spacing: 2px; text-transform: uppercase; display: flex;
+    justify-content: space-between; align-items: center;
+    background: rgba(0, 229, 255, 0.04); flex-shrink: 0;
+  }
+  .panel-header .title { color: var(--cyan); display: flex; align-items: center; gap: 6px; }
+  .panel-header .title::before { content: '▸'; color: var(--red); animation: blink 1.2s infinite; }
+  @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
+  .panel-body { padding: 10px 12px; overflow-y: auto; flex: 1; }
+  .panel-body::-webkit-scrollbar { width: 3px; }
+  .panel-body::-webkit-scrollbar-thumb { background: var(--cyan-dim); border-radius: 2px; }
+
+  /* Patient list */
+  .patient-search { padding: 8px 10px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+  .patient-search input {
+    width: 100%; background: rgba(0, 229, 255, 0.05); border: 1px solid var(--border);
+    color: var(--cyan); padding: 6px 10px; font-family: inherit; font-size: 11px;
+    border-radius: 3px; outline: none;
+  }
+  .patient-list { flex: 1; overflow-y: auto; }
+  .patient-list::-webkit-scrollbar { width: 3px; }
+  .patient-list::-webkit-scrollbar-thumb { background: var(--cyan-dim); }
+  .patient-card {
+    padding: 9px 12px; border-bottom: 1px solid rgba(0, 229, 255, 0.08);
+    cursor: pointer; transition: all 0.2s; position: relative;
+  }
+  .patient-card:hover { background: rgba(0, 229, 255, 0.06); }
+  .patient-card.active { background: rgba(0, 229, 255, 0.12); border-left: 3px solid var(--cyan); padding-left: 9px; }
+  .patient-card.active::after { content: ''; position: absolute; right: 0; top: 0; bottom: 0; width: 2px; background: var(--cyan); box-shadow: 0 0 10px var(--cyan); }
+  .pc-name { font-size: 12px; font-weight: bold; margin-bottom: 3px; display: flex; justify-content: space-between; }
+  .pc-id { font-size: 9px; color: var(--cyan-dim); letter-spacing: 0.5px; }
+  .pc-meta { display: flex; gap: 8px; font-size: 9px; color: var(--text-dim); margin-top: 3px; }
+  .pc-tag { padding: 1px 6px; border-radius: 2px; font-size: 9px; letter-spacing: 0.5px; }
+  .pc-tag.crit { background: rgba(255,59,107,0.2); color: var(--red); }
+  .pc-tag.warn { background: rgba(255,217,59,0.2); color: var(--yellow); }
+  .pc-tag.ok { background: rgba(0,255,157,0.15); color: var(--green); }
+  .pc-tag.new { background: rgba(168,85,247,0.2); color: var(--purple); }
+
+  /* Forms */
+  .section { border-bottom: 1px solid rgba(0, 229, 255, 0.1); padding: 10px 0; }
+  .section:last-child { border-bottom: none; }
+  .section-title { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--cyan); opacity: 0.8; margin-bottom: 8px; display: flex; justify-content: space-between; }
+  .field { margin-bottom: 10px; }
+  .field label { display: block; font-size: 9px; letter-spacing: 1.2px; text-transform: uppercase; opacity: 0.65; margin-bottom: 4px; }
+  .field input, .field select, .field textarea {
+    width: 100%; background: rgba(0, 229, 255, 0.05); border: 1px solid var(--border);
+    color: var(--text); padding: 6px 9px; font-family: inherit; font-size: 11px;
+    border-radius: 3px; outline: none; transition: all 0.2s;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--cyan); box-shadow: 0 0 10px rgba(0, 229, 255, 0.3); }
+  .field textarea { resize: vertical; min-height: 55px; font-size: 10.5px; line-height: 1.5; }
+  .tag-group { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 4px; }
+  .tag { padding: 3px 8px; border: 1px solid var(--border); border-radius: 2px; font-size: 9.5px; cursor: pointer; transition: all 0.2s; background: rgba(0, 229, 255, 0.04); letter-spacing: 0.5px; }
+  .tag:hover { background: rgba(0, 229, 255, 0.14); }
+  .tag.active { background: rgba(0, 229, 255, 0.18); border-color: var(--cyan); box-shadow: 0 0 10px rgba(0, 229, 255, 0.3); color: #fff; }
+  .tag.red.active { background: rgba(255,59,107,0.22); border-color: var(--red); color: var(--red); }
+  .tag.yellow.active { background: rgba(255,217,59,0.2); border-color: var(--yellow); color: var(--yellow); }
+  .slider-row { display: flex; align-items: center; gap: 8px; margin-top: 3px; }
+  .slider-row input[type="range"] { flex: 1; -webkit-appearance: none; height: 3px; background: rgba(0, 229, 255, 0.15); border-radius: 2px; padding: 0; }
+  .slider-row input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 12px; height: 12px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 10px var(--cyan); cursor: pointer; }
+  .slider-value { font-size: 10px; color: var(--green); min-width: 42px; text-align: right; font-weight: bold; }
+
+  .btn {
+    padding: 8px 12px; background: rgba(0, 229, 255, 0.08); border: 1px solid var(--border);
+    color: var(--cyan); font-family: inherit; font-size: 10px; letter-spacing: 1.5px;
+    cursor: pointer; border-radius: 3px; transition: all 0.2s; text-transform: uppercase; font-weight: bold;
+  }
+  .btn:hover { background: rgba(0, 229, 255, 0.2); box-shadow: 0 0 15px rgba(0, 229, 255, 0.35); color: #fff; }
+  .btn.primary { background: linear-gradient(135deg, rgba(255, 59, 107, 0.2), rgba(0, 229, 255, 0.15)); border-color: var(--red); color: var(--red); width: 100%; }
+  .btn.primary:hover { background: linear-gradient(135deg, rgba(255, 59, 107, 0.35), rgba(0, 229, 255, 0.3)); color: #fff; }
+  .btn.danger { border-color: var(--red); color: var(--red); }
+  .btn.success { border-color: var(--green); color: var(--green); }
+  .btn.purple { border-color: var(--purple); color: var(--purple); }
+  .btn-group { display: flex; gap: 6px; margin-top: 8px; }
+  .btn-group .btn { flex: 1; }
+
+  /* Viewport */
+  .viewport { position: relative; background: radial-gradient(ellipse at center, #04101e 0%, #010409 100%); overflow: hidden; }
+  #scene { width: 100%; height: 100%; display: block; }
+  .vp-overlay { position: absolute; inset: 0; pointer-events: none; padding: 12px; display: flex; flex-direction: column; justify-content: space-between; }
+  .vp-row { display: flex; justify-content: space-between; align-items: flex-start; }
+  .vp-info-box {
+    background: rgba(0, 0, 0, 0.55); border: 1px solid var(--border); border-radius: 3px;
+    padding: 8px 10px; backdrop-filter: blur(6px); font-size: 10px;
+    letter-spacing: 0.8px; line-height: 1.5;
+  }
+  .vp-info-box .k { color: var(--cyan); opacity: 0.75; }
+  .vp-info-box .v { color: var(--text); }
+  .crosshair { position: absolute; top: 50%; left: 50%; width: 60px; height: 60px; transform: translate(-50%, -50%); pointer-events: none; opacity: 0.35; }
+  .crosshair::before, .crosshair::after { content: ''; position: absolute; background: var(--cyan); box-shadow: 0 0 6px var(--cyan); }
+  .crosshair::before { top: 50%; left: 0; right: 0; height: 1px; }
+  .crosshair::after { left: 50%; top: 0; bottom: 0; width: 1px; }
+  .annotation {
+    position: absolute; pointer-events: auto; cursor: pointer; font-size: 9px;
+    letter-spacing: 0.8px; color: var(--red); text-shadow: 0 0 6px var(--red);
+    padding: 3px 7px; background: rgba(0, 0, 0, 0.7); border: 1px solid var(--red);
+    border-radius: 2px; transition: all 0.2s;
+  }
+  .annotation::before { content: ''; position: absolute; width: 6px; height: 6px; background: var(--red); border-radius: 50%; box-shadow: 0 0 8px var(--red); left: -3px; top: 50%; transform: translateY(-50%); }
+  .annotation:hover { background: rgba(255, 59, 107, 0.3); transform: scale(1.05); }
+  .annotation.yellow { color: var(--yellow); border-color: var(--yellow); }
+  .annotation.yellow::before { background: var(--yellow); box-shadow: 0 0 8px var(--yellow); }
+  .annotation.orange { color: var(--orange); border-color: var(--orange); }
+  .annotation.orange::before { background: var(--orange); box-shadow: 0 0 8px var(--orange); }
+  .corner { position: absolute; width: 18px; height: 18px; border: 2px solid var(--cyan); opacity: 0.55; }
+  .corner.tl { top: 8px; left: 8px; border-right: none; border-bottom: none; }
+  .corner.tr { top: 8px; right: 8px; border-left: none; border-bottom: none; }
+  .corner.bl { bottom: 8px; left: 8px; border-right: none; border-top: none; }
+  .corner.br { bottom: 8px; right: 8px; border-left: none; border-top: none; }
+
+  /* Video tiles RCP (WebRTC) */
+  .video-grid {
+    position: absolute; top: 60px; right: 12px;
+    display: grid; grid-template-columns: 110px 110px;
+    gap: 6px; pointer-events: auto;
+    opacity: 0; transition: opacity 0.4s;
+    z-index: 15;
+  }
+  .video-grid.active { opacity: 1; }
+  .video-tile {
+    background: linear-gradient(135deg, rgba(6, 18, 34, 0.95), rgba(10, 24, 44, 0.95));
+    border: 1px solid var(--border); border-radius: 4px; overflow: hidden;
+    font-size: 8px; position: relative;
+  }
+  .video-tile video { width: 100%; height: 65px; object-fit: cover; background: #000; display: block; }
+  .video-tile .tile-label {
+    padding: 2px 5px; background: rgba(0, 0, 0, 0.85); color: var(--cyan);
+    font-size: 8px; letter-spacing: 0.5px; text-overflow: ellipsis;
+    overflow: hidden; white-space: nowrap;
+  }
+  .video-tile .tile-status {
+    position: absolute; top: 3px; right: 3px; width: 6px; height: 6px;
+    border-radius: 50%; background: var(--green); box-shadow: 0 0 6px var(--green);
+    animation: pulse 1.5s infinite;
+  }
+  .video-tile.speaking { border-color: var(--green); box-shadow: 0 0 15px rgba(0, 255, 157, 0.4); }
+  .video-tile.speaking .tile-status { background: var(--red); box-shadow: 0 0 8px var(--red); }
+  .video-tile.muted { opacity: 0.4; }
+
+  /* RCP Controls */
+  .rcp-bar {
+    position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%);
+    display: none; gap: 6px; background: rgba(6, 18, 34, 0.95);
+    border: 1px solid var(--purple); border-radius: 4px; padding: 8px 12px;
+    backdrop-filter: blur(10px); box-shadow: 0 0 25px rgba(168, 85, 247, 0.4);
+    pointer-events: auto; z-index: 20;
+  }
+  .rcp-bar.active { display: flex; }
+  .rcp-btn {
+    padding: 6px 12px; background: rgba(168, 85, 247, 0.1); border: 1px solid var(--purple);
+    color: var(--purple); font-family: inherit; font-size: 10px; letter-spacing: 1px;
+    cursor: pointer; border-radius: 2px; transition: all 0.2s; text-transform: uppercase;
+  }
+  .rcp-btn:hover { background: rgba(168, 85, 247, 0.25); color: #fff; box-shadow: 0 0 15px rgba(168, 85, 247, 0.5); }
+  .rcp-btn.recording { background: rgba(255, 59, 107, 0.3); border-color: var(--red); color: var(--red); animation: pulse 1s infinite; }
+
+  /* Right tabs */
+  .tabs { display: flex; border-bottom: 1px solid var(--border); background: rgba(0, 229, 255, 0.02); flex-shrink: 0; overflow-x: auto; }
+  .tabs::-webkit-scrollbar { height: 2px; }
+  .tabs::-webkit-scrollbar-thumb { background: var(--cyan-dim); }
+  .tab {
+    flex: 1; min-width: 55px; padding: 8px 4px; text-align: center;
+    font-size: 9px; letter-spacing: 1px; text-transform: uppercase;
+    color: var(--text-dim); cursor: pointer; border-bottom: 2px solid transparent;
+    transition: all 0.2s; background: transparent; border-top: none;
+    border-left: none; border-right: none; font-family: inherit;
+  }
+  .tab:hover { color: var(--cyan); }
+  .tab.active { color: var(--cyan); border-bottom-color: var(--cyan); background: rgba(0, 229, 255, 0.06); }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* Charts */
+  .chart-wrap {
+    background: rgba(0, 229, 255, 0.03); border: 1px solid var(--border);
+    border-radius: 3px; padding: 10px; margin-bottom: 10px; position: relative;
+  }
+  .chart-title { font-size: 9.5px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--cyan); margin-bottom: 6px; display: flex; justify-content: space-between; }
+  .chart-title span:last-child { color: var(--red); font-size: 9px; }
+
+  /* Score cards */
+  .score-card { background: rgba(0, 229, 255, 0.04); border: 1px solid var(--border); border-radius: 3px; padding: 10px; margin-bottom: 10px; }
+  .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+  .score-name { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--cyan); font-weight: bold; }
+  .score-value { font-size: 15px; font-weight: bold; font-family: 'Courier New', monospace; }
+  .score-value.red { color: var(--red); text-shadow: 0 0 10px var(--red); }
+  .score-value.yellow { color: var(--yellow); text-shadow: 0 0 10px var(--yellow); }
+  .score-value.green { color: var(--green); text-shadow: 0 0 10px var(--green); }
+  .score-value.purple { color: var(--purple); text-shadow: 0 0 10px var(--purple); }
+  .score-detail { font-size: 9.5px; color: var(--text-dim); line-height: 1.6; letter-spacing: 0.3px; }
+  .score-detail strong { color: var(--text); }
+
+  .metric { margin-bottom: 11px; }
+  .metric-label { display: flex; justify-content: space-between; font-size: 9.5px; letter-spacing: 1px; text-transform: uppercase; opacity: 0.75; margin-bottom: 4px; }
+  .metric-bar { height: 4px; background: rgba(0, 229, 255, 0.08); border-radius: 2px; overflow: hidden; }
+  .metric-fill { height: 100%; border-radius: 2px; transition: width 0.6s; }
+  .metric-fill.red { background: linear-gradient(90deg, #ff3b6b, #ff8899); box-shadow: 0 0 8px #ff3b6b; }
+  .metric-fill.yellow { background: linear-gradient(90deg, #ffd93b, #ffee88); box-shadow: 0 0 8px #ffd93b; }
+  .metric-fill.green { background: linear-gradient(90deg, #00ff9d, #88ffcc); box-shadow: 0 0 8px #00ff9d; }
+  .metric-value { font-size: 10px; font-weight: bold; }
+  .metric-value.red { color: var(--red); }
+  .metric-value.yellow { color: var(--yellow); }
+  .metric-value.green { color: var(--green); }
+
+  .reco-item { background: rgba(0, 255, 157, 0.04); border-left: 3px solid var(--green); padding: 8px 10px; margin-bottom: 7px; border-radius: 2px; font-size: 10.5px; line-height: 1.5; }
+  .reco-item.warn { background: rgba(255, 217, 59, 0.04); border-left-color: var(--yellow); }
+  .reco-item.crit { background: rgba(255, 59, 107, 0.04); border-left-color: var(--red); }
+  .reco-title { font-size: 9px; letter-spacing: 1.2px; text-transform: uppercase; font-weight: bold; margin-bottom: 4px; opacity: 0.85; }
+  .reco-item .reco-title { color: var(--green); }
+  .reco-item.warn .reco-title { color: var(--yellow); }
+  .reco-item.crit .reco-title { color: var(--red); }
+  .reco-text strong { color: var(--cyan); }
+  .reco-text .drug { display: inline-block; background: rgba(0, 229, 255, 0.1); padding: 0 5px; border-radius: 2px; color: var(--cyan); font-weight: bold; margin: 0 2px; }
+
+  /* Calendar RCP */
+  .calendar { background: rgba(0, 229, 255, 0.03); border: 1px solid var(--border); border-radius: 3px; padding: 10px; margin-bottom: 10px; }
+  .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .cal-month { font-size: 11px; letter-spacing: 1.5px; color: var(--cyan); font-weight: bold; }
+  .cal-nav { display: flex; gap: 4px; }
+  .cal-nav button { background: transparent; border: 1px solid var(--border); color: var(--cyan); width: 20px; height: 20px; cursor: pointer; border-radius: 2px; font-family: inherit; font-size: 11px; }
+  .cal-nav button:hover { background: rgba(0, 229, 255, 0.15); }
+  .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; }
+  .cal-day-name { text-align: center; font-size: 8px; color: var(--text-dim); padding: 3px 0; }
+  .cal-day {
+    aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+    background: rgba(0, 229, 255, 0.03); border: 1px solid transparent;
+    border-radius: 2px; font-size: 10px; cursor: pointer; transition: all 0.15s;
+    position: relative;
+  }
+  .cal-day:hover { background: rgba(0, 229, 255, 0.12); }
+  .cal-day.today { border-color: var(--cyan); color: var(--cyan); font-weight: bold; }
+  .cal-day.event { background: rgba(168, 85, 247, 0.15); border-color: var(--purple); color: var(--purple); }
+  .cal-day.event.crit { background: rgba(255, 59, 107, 0.15); border-color: var(--red); color: var(--red); }
+  .cal-day.event::after { content: ''; position: absolute; bottom: 2px; left: 50%; transform: translateX(-50%); width: 4px; height: 4px; border-radius: 50%; background: currentColor; box-shadow: 0 0 6px currentColor; }
+
+  .rcp-event {
+    background: rgba(168, 85, 247, 0.06); border-left: 3px solid var(--purple);
+    padding: 8px 10px; margin-bottom: 6px; border-radius: 2px; font-size: 10px;
+  }
+  .rcp-event.crit { background: rgba(255, 59, 107, 0.06); border-left-color: var(--red); }
+  .rcp-event .ev-title { font-size: 10px; font-weight: bold; color: var(--purple); margin-bottom: 3px; }
+  .rcp-event.crit .ev-title { color: var(--red); }
+  .rcp-event .ev-meta { font-size: 9px; color: var(--text-dim); }
+
+  /* AI Learning */
+  .learn-stat {
+    background: rgba(0, 229, 255, 0.04); border: 1px solid var(--border);
+    border-radius: 3px; padding: 10px; margin-bottom: 8px;
+  }
+  .learn-stat .ls-label { font-size: 9px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--text-dim); margin-bottom: 4px; }
+  .learn-stat .ls-value { font-size: 18px; font-weight: bold; color: var(--cyan); text-shadow: 0 0 12px var(--cyan); }
+  .learn-stat .ls-detail { font-size: 9px; color: var(--text-dim); margin-top: 4px; }
+
+  .feedback-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin: 8px 0; }
+  .feedback-btn {
+    padding: 8px; background: rgba(0, 229, 255, 0.05); border: 1px solid var(--border);
+    color: var(--text); font-family: inherit; font-size: 9.5px; cursor: pointer;
+    border-radius: 3px; transition: all 0.2s; letter-spacing: 0.5px;
+  }
+  .feedback-btn:hover { background: rgba(0, 229, 255, 0.15); color: var(--cyan); }
+  .feedback-btn.correct:hover { background: rgba(0, 255, 157, 0.15); border-color: var(--green); color: var(--green); }
+  .feedback-btn.incorrect:hover { background: rgba(255, 59, 107, 0.15); border-color: var(--red); color: var(--red); }
+  .feedback-btn.partial:hover { background: rgba(255, 217, 59, 0.15); border-color: var(--yellow); color: var(--yellow); }
+  .feedback-btn.unknown:hover { background: rgba(168, 85, 247, 0.15); border-color: var(--purple); color: var(--purple); }
+
+  /* Bottom bar */
+  .bottombar {
+    grid-column: 1 / -1; background: var(--panel); border: 1px solid var(--border);
+    border-radius: 4px; display: flex; align-items: stretch; padding: 10px 16px;
+    gap: 16px; backdrop-filter: blur(12px); box-shadow: 0 0 24px rgba(0, 229, 255, 0.06);
+  }
+  .bb-section { display: flex; flex-direction: column; gap: 6px; justify-content: center; }
+  .bb-section.grow { flex: 1; }
+  .bb-label { font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; opacity: 0.55; }
+  .stage-selector { display: flex; gap: 4px; }
+  .stage-btn {
+    padding: 7px 12px; background: rgba(0, 229, 255, 0.05); border: 1px solid var(--border);
+    color: var(--cyan); font-family: inherit; font-size: 10px; letter-spacing: 1px;
+    cursor: pointer; border-radius: 3px; transition: all 0.2s;
+  }
+  .stage-btn:hover { background: rgba(0, 229, 255, 0.15); }
+  .stage-btn.active { background: var(--red); border-color: var(--red); color: #fff; box-shadow: 0 0 18px rgba(255, 59, 107, 0.6); }
+  .timeline { flex: 1; position: relative; padding-top: 20px; }
+  .timeline-labels { position: absolute; top: 0; left: 0; right: 0; display: flex; justify-content: space-between; font-size: 8.5px; letter-spacing: 0.8px; opacity: 0.55; text-transform: uppercase; }
+  .timeline-track { height: 3px; background: rgba(0, 229, 255, 0.15); border-radius: 2px; position: relative; }
+  .timeline-fill { height: 100%; background: linear-gradient(90deg, var(--green), var(--yellow), var(--red)); border-radius: 2px; width: 85%; transition: width 0.5s; box-shadow: 0 0 12px var(--red); }
+  .timeline-marker { position: absolute; top: -4px; width: 2px; height: 11px; background: var(--cyan); box-shadow: 0 0 8px var(--cyan); left: 85%; transform: translateX(-50%); }
+  .action-btns { display: flex; gap: 6px; }
+
+  /* Statusbar */
+  .statusbar {
+    grid-column: 1 / -1; background: var(--panel-2); border: 1px solid var(--border);
+    border-radius: 3px; display: flex; align-items: center; justify-content: space-between;
+    padding: 0 12px; font-size: 9.5px; letter-spacing: 0.8px; color: var(--text-dim);
+  }
+  .status-left, .status-right { display: flex; gap: 16px; }
+  .status-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin-right: 5px; box-shadow: 0 0 6px currentColor; animation: pulse 1.8s infinite; }
+
+  /* Modal */
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(6px); display: none; align-items: center;
+    justify-content: center; z-index: 1000;
+  }
+  .modal-overlay.active { display: flex; }
+  .modal {
+    background: var(--panel-2); border: 1px solid var(--cyan); border-radius: 6px;
+    box-shadow: 0 0 60px rgba(0, 229, 255, 0.3); max-width: 660px;
+    width: 90%; max-height: 82vh; overflow: hidden;
+    display: flex; flex-direction: column;
+  }
+  .modal-header { padding: 12px 16px; border-bottom: 1px solid var(--border); font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--cyan); display: flex; justify-content: space-between; align-items: center; }
+  .modal-close { background: transparent; border: 1px solid var(--border); color: var(--cyan); width: 26px; height: 26px; cursor: pointer; border-radius: 3px; font-family: inherit; font-size: 14px; }
+  .modal-close:hover { background: rgba(255, 59, 107, 0.2); border-color: var(--red); color: var(--red); }
+  .modal-body { padding: 16px; overflow-y: auto; font-size: 11.5px; line-height: 1.7; color: var(--text); }
+  .modal-body h4 { color: var(--cyan); font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin: 14px 0 8px; padding-bottom: 4px; border-bottom: 1px solid rgba(0, 229, 255, 0.15); }
+  .modal-body h4:first-child { margin-top: 0; }
+  .modal-body p { margin-bottom: 8px; color: var(--text); opacity: 0.9; }
+  .modal-body strong { color: var(--red); }
+  .modal-footer { padding: 12px 16px; border-top: 1px solid var(--border); display: flex; gap: 8px; justify-content: flex-end; }
+
+  .scanlines {
+    position: fixed; inset: 0;
+    background: repeating-linear-gradient(to bottom, transparent 0px, transparent 2px, rgba(0, 229, 255, 0.022) 3px, rgba(0, 229, 255, 0.022) 4px);
+    pointer-events: none; z-index: 999;
+  }
+  .toast-container { position: fixed; bottom: 40px; right: 20px; display: flex; flex-direction: column; gap: 8px; z-index: 1001; }
+  .toast {
+    padding: 10px 14px; background: var(--panel-2); border: 1px solid var(--cyan);
+    border-left: 3px solid var(--cyan); border-radius: 3px; font-size: 11px;
+    letter-spacing: 0.5px; color: var(--text); box-shadow: 0 0 20px rgba(0, 229, 255, 0.25);
+    min-width: 240px; animation: slideInRight 0.3s ease-out;
+  }
+  .toast.warn { border-color: var(--yellow); border-left-color: var(--yellow); }
+  .toast.crit { border-color: var(--red); border-left-color: var(--red); }
+  .toast.ok { border-color: var(--green); border-left-color: var(--green); }
+  .toast.purple { border-color: var(--purple); border-left-color: var(--purple); }
+  @keyframes slideInRight { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: translateX(0); } }
+
+  /* CTAG Sequencer */
+  .ctag-panel {
+    background: rgba(0, 229, 255, 0.03); border: 1px solid var(--border);
+    border-radius: 3px; padding: 12px; margin-bottom: 10px;
+  }
+  .ctag-timeline { display: flex; flex-direction: column; gap: 8px; }
+  .ctag-step {
+    display: flex; align-items: flex-start; gap: 10px; padding: 8px 10px;
+    border-radius: 3px; border-left: 3px solid var(--text-dim);
+    background: rgba(0, 0, 0, 0.2); transition: all 0.3s;
+  }
+  .ctag-step.active { border-left-color: var(--cyan); background: rgba(0, 229, 255, 0.08); box-shadow: 0 0 12px rgba(0, 229, 255, 0.2); }
+  .ctag-step.done { border-left-color: var(--green); opacity: 0.7; }
+  .ctag-step.crit { border-left-color: var(--red); }
+  .ctag-time { font-size: 9px; font-weight: bold; color: var(--cyan); min-width: 50px; letter-spacing: 0.5px; }
+  .ctag-content { flex: 1; }
+  .ctag-title { font-size: 10px; font-weight: bold; margin-bottom: 2px; color: var(--text); }
+  .ctag-desc { font-size: 9px; color: var(--text-dim); line-height: 1.4; }
+  .ctag-actions { display: flex; gap: 4px; margin-top: 4px; }
+  .ctag-btn {
+    padding: 3px 8px; font-size: 8px; letter-spacing: 0.5px; text-transform: uppercase;
+    background: rgba(0, 229, 255, 0.1); border: 1px solid var(--border);
+    color: var(--cyan); border-radius: 2px; cursor: pointer; font-family: inherit;
+    transition: all 0.2s;
+  }
+  .ctag-btn:hover { background: rgba(0, 229, 255, 0.25); }
+  .ctag-btn.done { background: rgba(0, 255, 157, 0.15); border-color: var(--green); color: var(--green); }
+  .ctag-btn.skip { border-color: var(--yellow); color: var(--yellow); }
+  .ctag-status { font-size: 8px; padding: 2px 6px; border-radius: 2px; letter-spacing: 0.5px; }
+  .ctag-status.pending { background: rgba(255, 217, 59, 0.15); color: var(--yellow); }
+  .ctag-status.ok { background: rgba(0, 255, 157, 0.15); color: var(--green); }
+  .ctag-status.urgent { background: rgba(255, 59, 107, 0.2); color: var(--red); }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="login-bg-grid"></div>
+  <div class="login-container">
+    <div class="login-logo"></div>
+    <div class="login-title">EPI-SEQUENCE</div>
+    <div class="login-subtitle">Crisis Management & CTAG · v6.0</div>
+    <div class="login-role-tabs">
+      <button class="role-tab active" data-role="neurologue"><span class="role-icon">🧠</span>Neurologue</button>
+      <button class="role-tab" data-role="urgentiste"><span class="role-icon">🚑</span>Urgentiste</button>
+      <button class="role-tab" data-role="interne"><span class="role-icon">📚</span>Interne</button>
+      <button class="role-tab" data-role="admin"><span class="role-icon">⚙️</span>Admin</button>
+    </div>
+    <div class="login-field">
+      <label>Identifiant RPPS / Email</label>
+      <input type="text" id="loginUser" value="dr.lefebvre@aphp.fr">
+    </div>
+    <div class="login-field">
+      <label>Mot de passe</label>
+      <input type="password" id="loginPass" value="••••••••">
+    </div>
+    <div class="login-2fa" id="twoFA">
+      <label style="display:block; font-size:9.5px; letter-spacing:1.5px; text-transform:uppercase; color:var(--text-dim); margin-bottom:8px; text-align:center;">Code 2FA</label>
+      <div class="otp-boxes">
+        <input class="otp-box" maxlength="1">
+        <input class="otp-box" maxlength="1">
+        <input class="otp-box" maxlength="1">
+        <input class="otp-box" maxlength="1">
+        <input class="otp-box" maxlength="1">
+        <input class="otp-box" maxlength="1">
+      </div>
+    </div>
+    <button class="btn-login" id="btnLogin">▶ Se Connecter</button>
+    <div class="login-footer">
+      ACCÈS RÉSERVÉ AU PERSONNEL MÉDICAL AUTORISÉ
+      <div class="badges">
+        <span class="login-badge">✓ MDR IIa</span>
+        <span class="login-badge">✓ HDS</span>
+        <span class="login-badge">✓ RGPD</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- APP -->
+<div class="app" id="mainApp">
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div class="brand">
+      <div class="brand-logo"></div>
+      EPI-SEQUENCE <span style="opacity:0.4">PRO</span>
+    </div>
+    <div class="topbar-stats">
+      <div class="stat-item"><span class="stat-label">SESSION</span><span class="stat-value cyan" id="sessionId">SES-9182-B7</span></div>
+      <div class="stat-item"><span class="stat-label">PATIENT</span><span class="stat-value yellow" id="activePatientTop">#EPI-023</span></div>
+      <div class="stat-item"><span class="stat-label">CRISE</span><span class="stat-value red">GTC ≥5 min</span></div>
+      <div class="stat-item"><span class="stat-label">CONF. IA</span><span class="stat-value green" id="confIA">96.2%</span></div>
+      <div class="stat-item"><span class="stat-label">MODÈLE</span><span class="stat-value cyan" id="modelVer">v5.1.392</span></div>
+    </div>
+    <div class="topbar-user">
+      <div class="session-timer" id="sessionTimer">⏱ 00:00:00</div>
+      <span style="font-size:10px; opacity:0.6;" id="userNameTop">Dr. M. LEFEBVRE</span>
+      <span class="role-badge neurologue" id="roleBadge">Neurologue</span>
+      <button class="btn-logout" id="btnLogout">⏻</button>
+    </div>
+  </div>
+
+  <!-- LEFT — PATIENTS -->
+  <div class="panel">
+    <div class="panel-header">
+      <span class="title">Dossiers Patients</span>
+      <span style="opacity:0.5">4</span>
+    </div>
+    <div class="patient-search">
+      <input type="text" placeholder="🔍 Rechercher..." id="patientSearch">
+    </div>
+    <div class="patient-list">
+      <div class="patient-card active" data-id="EPI-023">
+        <div class="pc-name">EPI-023 <span class="pc-tag crit">CRITIQUE</span></div>
+        <div class="pc-id">ÉTAT DE MAL ÉPILEPTIQUE</div>
+        <div class="pc-meta"><span>♂ 52a</span><span>GTC en cours</span></div>
+      </div>
+      <div class="patient-card" data-id="EPI-041">
+        <div class="pc-name">EPI-041 <span class="pc-tag warn">SUIVI</span></div>
+        <div class="pc-id">ÉPILEPSIE FOCALE</div>
+        <div class="pc-meta"><span>♀ 38a</span><span>Crises hebdo.</span></div>
+      </div>
+      <div class="patient-card" data-id="EPI-058">
+        <div class="pc-name">EPI-058 <span class="pc-tag ok">STABLE</span></div>
+        <div class="pc-id">ABSENCES (PETIT MAL)</div>
+        <div class="pc-meta"><span>♂ 19a</span><span>Sous contrôle</span></div>
+      </div>
+      <div class="patient-card" data-id="EPI-072">
+        <div class="pc-name">EPI-072 <span class="pc-tag new">NOUVEAU</span></div>
+        <div class="pc-id">PREMIÈRE CRISE</div>
+        <div class="pc-meta"><span>♀ 67a</span><span>À évaluer</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CENTER-LEFT — CTAG SEQUENCER -->
+  <div class="panel">
+    <div class="panel-header">
+      <span class="title">Séquenceur CTAG</span>
+      <span style="opacity:0.5; color:var(--purple)">TIMELINE</span>
+    </div>
+    <div class="panel-body">
+      <div class="section">
+        <div class="section-title"><span>◈ Contexte de la crise</span></div>
+        <div class="field">
+          <label>Type de crise</label>
+          <select id="fSeizureType">
+            <option>Crise généralisée tonico-clonique (GTC)</option>
+            <option>Crise focale avec altération de conscience</option>
+            <option>État de mal épileptique (SE)</option>
+            <option>Absence (petit mal)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Durée estimée</label>
+          <input type="text" id="fDuration" value="6 min 30 s — EN COURS">
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><span>◈ Signes associés</span></div>
+        <div class="tag-group">
+          <span class="tag active red">Convulsions</span>
+          <span class="tag active red">Perte de conscience</span>
+          <span class="tag active yellow">Morsure de langue</span>
+          <span class="tag yellow">Incontinence</span>
+          <span class="tag">Post-critique confusion</span>
+          <span class="tag">Automatismes</span>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><span>◈ Paramètres temporels</span></div>
+        <div class="field">
+          <label>Délai avant prise en charge</label>
+          <div class="slider-row">
+            <input type="range" min="0" max="60" value="12" id="sDelay">
+            <span class="slider-value" id="vDelay">12 min</span>
+          </div>
+        </div>
+        <div class="field">
+          <label>Dose de benzodiazépine (mg)</label>
+          <div class="slider-row">
+            <input type="range" min="0" max="20" value="8" id="sBenzos">
+            <span class="slider-value" id="vBenzos">8 mg</span>
+          </div>
+        </div>
+        <div class="field">
+          <label>SpO₂ (%)</label>
+          <div class="slider-row">
+            <input type="range" min="70" max="100" value="92" id="sSpo2">
+            <span class="slider-value" id="vSpo2">92%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><span>◈ Séquence CTAG générée</span></div>
+        <div class="ctag-panel" id="ctagPanel">
+          <div class="ctag-timeline" id="ctagTimeline"></div>
+        </div>
+        <button class="btn primary" id="btnRegenerateCTAG">⟳ Régénérer Séquence</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- VIEWPORT -->
+  <div class="panel viewport">
+    <canvas id="scene"></canvas>
+    <div class="corner tl"></div><div class="corner tr"></div>
+    <div class="corner bl"></div><div class="corner br"></div>
+    <div class="crosshair"></div>
+
+    <div class="vp-toolbar" style="position:absolute;top:12px;left:50%;transform:translateX(-50%);display:flex;gap:4px;background:rgba(0,0,0,0.65);border:1px solid var(--border);border-radius:4px;padding:4px;backdrop-filter:blur(8px);pointer-events:auto;z-index:10;">
+      <button class="vp-tool" data-view="3d" style="padding:5px 9px;background:rgba(0,229,255,0.2);border:none;color:var(--cyan);font-family:inherit;font-size:10px;cursor:pointer;border-radius:2px;">🌐 3D</button>
+      <button class="vp-tool" data-view="axial" style="padding:5px 9px;background:transparent;border:none;color:var(--text-dim);font-family:inherit;font-size:10px;cursor:pointer;border-radius:2px;">⬛ Axial</button>
+      <button class="vp-tool" data-view="coronal" style="padding:5px 9px;background:transparent;border:none;color:var(--text-dim);font-family:inherit;font-size:10px;cursor:pointer;border-radius:2px;">▭ Coronal</button>
+      <button class="vp-tool" data-view="sagittal" style="padding:5px 9px;background:transparent;border:none;color:var(--text-dim);font-family:inherit;font-size:10px;cursor:pointer;border-radius:2px;">▯ Sagittal</button>
+      <button class="vp-tool" id="btnRCP" style="padding:5px 9px;background:rgba(168,85,247,0.2);border:1px solid var(--purple);color:var(--purple);font-family:inherit;font-size:10px;cursor:pointer;border-radius:2px;letter-spacing:1px;">🎥 RCP LIVE</button>
+    </div>
+
+    <!-- WebRTC Video Grid -->
+    <div class="video-grid" id="videoGrid">
+      <div class="video-tile" data-p="1">
+        <video id="localVideo" autoplay muted playsinline></video>
+        <div class="tile-label" id="localLabel">Moi (Dr. LEFEBVRE)</div>
+        <div class="tile-status"></div>
+      </div>
+      <div class="video-tile" data-p="2" id="tile2">
+        <video id="remoteVideo2" autoplay playsinline></video>
+        <div class="tile-label">Dr. CHEN — Urgences</div>
+        <div class="tile-status"></div>
+      </div>
+      <div class="video-tile" data-p="3" id="tile3">
+        <video id="remoteVideo3" autoplay playsinline></video>
+        <div class="tile-label">Dr. MARTIN — Neuro</div>
+        <div class="tile-status"></div>
+      </div>
+      <div class="video-tile" data-p="4" id="tile4">
+        <video id="remoteVideo4" autoplay playsinline></video>
+        <div class="tile-label">Dr. DUBOIS — Réa</div>
+        <div class="tile-status"></div>
+      </div>
+    </div>
+
+    <!-- RCP Bar -->
+    <div class="rcp-bar" id="rcpBar">
+      <div style="display:flex;align-items:center;gap:10px;padding-right:10px;border-right:1px solid var(--purple);">
+        <span style="font-size:9px;color:var(--purple);letter-spacing:1.5px;">● LIVE</span>
+        <span style="font-size:9px;color:var(--green);" id="rcpTimer">00:00</span>
+      </div>
+      <button class="rcp-btn" id="rcpMic">🎙 Micro</button>
+      <button class="rcp-btn" id="rcpCam">📷 Caméra</button>
+      <button class="rcp-btn" id="rcpScreen">📺 Partager</button>
+      <button class="rcp-btn" id="rcpRecord">⏺ Enregistrer</button>
+      <button class="rcp-btn" id="rcpEnd" style="border-color:var(--red);color:var(--red);">✕ Fin RCP</button>
+    </div>
+
+    <div class="vp-overlay">
+      <div class="vp-row">
+        <div class="vp-info-box">
+          <div><span class="k">PATIENT :</span> <span class="v" id="vpPatient">EPI-023</span></div>
+          <div><span class="k">MODALITÉ :</span> <span class="v">EEG — Vidéo-EEG</span></div>
+          <div><span class="k">SÉRIE :</span> <span class="v">EEG-2024-11-14</span></div>
+        </div>
+        <div class="vp-info-box" style="text-align:right" id="webrtcStatus">
+          <div><span class="k">WEBRTC :</span> <span class="v" style="color:var(--green)">PRÊT</span></div>
+          <div><span class="k">PEERS :</span> <span class="v" id="peerCount">0</span></div>
+          <div><span class="k">LATENCE :</span> <span class="v" id="rtcLatency">-- ms</span></div>
+        </div>
+      </div>
+      <div class="vp-row" style="align-items:flex-end">
+        <div class="vp-info-box">
+          <div style="color:var(--red); font-weight:bold; letter-spacing:1.5px; margin-bottom:5px;">⚠ ALERTE</div>
+          <div style="font-size:10px; line-height:1.6;">
+            Crise GTC <strong>6 min 30 s</strong> — EN COURS<br>
+            SpO₂ : <strong>92%</strong> · FC : <strong>128 bpm</strong><br>
+            Benzodiazépine : <strong>8 mg</strong> administrés<br>
+            Glasgow post-critique : <strong>à évaluer</strong>
+          </div>
+        </div>
+        <div class="vp-info-box" style="text-align:right">
+          <div style="color:var(--cyan); margin-bottom:5px;">◈ LÉGENDE EEG</div>
+          <div style="font-size:9.5px; line-height:1.7;">
+            <div><span style="color:var(--red)">●</span> Décharges critiques</div>
+            <div><span style="color:var(--yellow)">●</span> Pointes-ondes</div>
+            <div><span style="color:var(--orange)">●</span> Ralentissement post-critique</div>
+            <div><span style="color:var(--cyan)">●</span> Activité de fond</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT — DIAGNOSTIC -->
+  <div class="panel">
+    <div class="tabs">
+      <button class="tab active" data-tab="charts">📈</button>
+      <button class="tab" data-tab="cal">📅 RCP</button>
+      <button class="tab" data-tab="ai">🧠 IA</button>
+      <button class="tab" data-tab="scores">Scores</button>
+      <button class="tab" data-tab="reco">Thérapie</button>
+    </div>
+
+    <div class="panel-body">
+
+      <!-- CHARTS -->
+      <div class="tab-content active" data-content="charts">
+        <div class="chart-wrap" style="height:180px;">
+          <div class="chart-title"><span>◈ Fréquence crises</span><span>+3/sem</span></div>
+          <canvas id="chartSeizures" style="max-height:145px;"></canvas>
+        </div>
+        <div class="chart-wrap" style="height:160px;">
+          <div class="chart-title"><span>◈ EEG — Amplitude</span><span>↑ 240 µV</span></div>
+          <canvas id="chartEEG" style="max-height:130px;"></canvas>
+        </div>
+        <div class="chart-wrap" style="height:160px;">
+          <div class="chart-title"><span>◈ Antiépileptiques</span><span>Taux plasmatique</span></div>
+          <canvas id="chartASM" style="max-height:130px;"></canvas>
+        </div>
+        <div class="chart-wrap" style="height:150px;">
+          <div class="chart-title"><span>◈ Types de crises</span><span>12 mois</span></div>
+          <canvas id="chartTypes" style="max-height:120px;"></canvas>
+        </div>
+      </div>
+
+      <!-- CALENDAR RCP -->
+      <div class="tab-content" data-content="cal">
+        <div class="calendar">
+          <div class="cal-header">
+            <span class="cal-month" id="calMonth">Novembre 2024</span>
+            <div class="cal-nav">
+              <button id="calPrev">‹</button>
+              <button id="calNext">›</button>
+            </div>
+          </div>
+          <div class="cal-grid" id="calGrid">
+            <div class="cal-day-name">L</div><div class="cal-day-name">M</div><div class="cal-day-name">M</div>
+            <div class="cal-day-name">J</div><div class="cal-day-name">V</div><div class="cal-day-name">S</div><div class="cal-day-name">D</div>
+          </div>
+        </div>
+
+        <div class="section-title" style="margin-top:12px;"><span>◈ RCP à venir</span></div>
+        <div id="eventsList">
+          <div class="rcp-event crit">
+            <div class="ev-title">⚠ RCP URGENTE — EPI-023</div>
+            <div class="ev-meta">Aujourd'hui 14h30 · Salle B2 · 5 participants</div>
+          </div>
+          <div class="rcp-event">
+            <div class="ev-title">RCP Épileptologie hebdo</div>
+            <div class="ev-meta">Jeudi 10h00 · Visio · 12 participants</div>
+          </div>
+          <div class="rcp-event">
+            <div class="ev-title">RCP Chirurgie de l'épilepsie</div>
+            <div class="ev-meta">Vendredi 15h00 · Salle A1</div>
+          </div>
+        </div>
+
+        <button class="btn primary" style="margin-top:12px;" id="btnNewRCP">➕ Planifier une RCP</button>
+      </div>
+
+      <!-- AI LEARNING -->
+      <div class="tab-content" data-content="ai">
+        <div class="learn-stat">
+          <div class="ls-label">Modèle actuel</div>
+          <div class="ls-value" id="aiVersion">v5.1.392</div>
+          <div class="ls-detail">Dernière MAJ : <span id="aiLastUpdate">il y a 3h</span></div>
+        </div>
+
+        <div class="learn-stat">
+          <div class="ls-label">Précision détection</div>
+          <div class="ls-value" style="color:var(--green)" id="aiAccuracy">96.2%</div>
+          <div class="ls-detail">↑ +0.4% depuis dernier feedback</div>
+        </div>
+
+        <div class="learn-stat">
+          <div class="ls-label">Cas EEG validés</div>
+          <div class="ls-value" id="aiCases">1 247 583</div>
+          <div class="ls-detail">+89 aujourd'hui</div>
+        </div>
+
+        <div class="section-title" style="margin-top:12px;"><span>◈ Votre feedback</span></div>
+        <div style="font-size:10px; color:var(--text-dim); margin-bottom:8px; line-height:1.5;">
+          Évaluez la précision de la détection IA sur ce cas pour améliorer le modèle.
+        </div>
+
+        <div class="feedback-btns">
+          <button class="feedback-btn correct" data-fb="correct">✓ Exact</button>
+          <button class="feedback-btn partial" data-fb="partial">◐ Partiel</button>
+          <button class="feedback-btn incorrect" data-fb="incorrect">✗ Erreur</button>
+          <button class="feedback-btn unknown" data-fb="unknown">? Incertain</button>
+        </div>
+
+        <div class="section-title" style="margin-top:12px;"><span>◈ Historique feedbacks</span></div>
+        <div id="feedbackLog" style="font-size:10px; line-height:1.7; color:var(--text-dim);">
+          <div>Aucun feedback pour ce cas</div>
+        </div>
+
+        <div class="section-title" style="margin-top:12px;"><span>◈ Apprentissage en cours</span></div>
+        <div class="metric">
+          <div class="metric-label"><span>Progression epoch</span><span class="metric-value green" id="epochPct">72%</span></div>
+          <div class="metric-bar"><div class="metric-fill green" id="epochBar" style="width:72%"></div></div>
+        </div>
+        <div class="metric">
+          <div class="metric-label"><span>Buffer de cas</span><span class="metric-value green">912 / 1000</span></div>
+          <div class="metric-bar"><div class="metric-fill green" style="width:91.2%"></div></div>
+        </div>
+
+        <button class="btn success" style="width:100%;margin-top:12px;" id="btnTrainNow">⚡ Déclencher ré-entraînement</button>
+      </div>
+
+      <!-- SCORES -->
+      <div class="tab-content" data-content="scores">
+        <div class="score-card">
+          <div class="score-header"><span class="score-name">Glasgow</span><span class="score-value yellow">12/15</span></div>
+          <div class="score-detail"><strong>Y</strong> : 4 · <strong>V</strong> : 4 · <strong>M</strong> : 4<br>Post-critique immédiat.</div>
+        </div>
+        <div class="score-card">
+          <div class="score-header"><span class="score-name">STESS</span><span class="score-value red">5/6</span></div>
+          <div class="score-detail">Status Epilepticus Severity Score.<br><strong>Pronostic défavorable</strong> si ≥3.</div>
+        </div>
+        <div class="score-card">
+          <div class="score-header"><span class="score-name">EEG — Ictal</span><span class="score-value purple">POINTES-ONDES</span></div>
+          <div class="score-detail"><strong>3 Hz</strong> généralisées<br>Amplitude : <strong>240 µV</strong></div>
+        </div>
+        <div class="score-card">
+          <div class="score-header"><span class="score-name">Étiologie</span><span class="score-value green">IDIOPATHIQUE</span></div>
+          <div class="score-detail">Aucune cause structurelle identifiée.<br>IRM cérébrale : <strong>normale</strong>.</div>
+        </div>
+      </div>
+
+      <!-- RECO -->
+      <div class="tab-content" data-content="reco">
+        <div class="reco-item crit">
+          <div class="reco-title">⚠ 1ère ligne — Benzos</div>
+          <div class="reco-text">
+            <span class="drug">Lorazépam</span> IV 0.1 mg/kg (max 4 mg)<br>
+            <em>OU Midazolam buccal 0.5 mg/kg</em>
+          </div>
+        </div>
+        <div class="reco-item warn">
+          <div class="reco-title">◈ 2ème ligne — Établi</div>
+          <div class="reco-text"><span class="drug">Lévétiracétam</span> 60 mg/kg IV (max 4500 mg)<br><em>OU Phénytoïne 20 mg/kg IV</em></div>
+        </div>
+        <div class="reco-item warn">
+          <div class="reco-title">◈ 3ème ligne — Réfractaire</div>
+          <div class="reco-text">Soins intensifs<br><span class="drug">Phénobarbital</span> ou anesthésie générale</div>
+        </div>
+        <div class="reco-item crit">
+          <div class="reco-title">⚠ Contre-indications</div>
+          <div class="reco-text">Ne <strong>rien</strong> introduire dans la bouche<br>Ne pas <strong>immobiliser</strong> le patient</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- BOTTOM BAR -->
+  <div class="bottombar">
+    <div class="bb-section">
+      <span class="bb-label">Phase</span>
+      <div class="stage-selector">
+        <button class="stage-btn" data-stage="1">Prodrome</button>
+        <button class="stage-btn" data-stage="2">Début</button>
+        <button class="stage-btn" data-stage="3">Ictus</button>
+        <button class="stage-btn active" data-stage="4">Post-critique</button>
+      </div>
+    </div>
+    <div class="bb-section grow">
+      <span class="bb-label">Progression crise</span>
+      <div class="timeline">
+        <div class="timeline-labels">
+          <span>Aura</span><span>Convulsions</span><span>Pic</span><span>Résolution</span>
+        </div>
+        <div class="timeline-track">
+          <div class="timeline-fill" id="timelineFill"></div>
+          <div class="timeline-marker" id="timelineMarker"></div>
+        </div>
+      </div>
+    </div>
+    <div class="bb-section">
+      <span class="bb-label">Actions</span>
+      <div class="action-btns">
+        <button class="btn" id="btnPause">⏸</button>
+        <button class="btn" id="btnReset">↺</button>
+        <button class="btn" id="btnSnapshot">📸</button>
+        <button class="btn purple" id="btnRCP2">🎥</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="statusbar">
+    <div class="status-left">
+      <span><span class="status-dot" style="color:var(--green);background:var(--green)"></span>ONLINE</span>
+      <span>PACS : <span style="color:var(--green)">OK</span></span>
+      <span>EEG : <span style="color:var(--green)">OK</span></span>
+      <span>HL7 : <span style="color:var(--green)">OK</span></span>
+      <span>WebRTC : <span style="color:var(--green)" id="rtcStatus">STANDBY</span></span>
+      <span>IA : <span style="color:var(--green)" id="aiStatus">ONLINE</span></span>
+    </div>
+    <div class="status-right">
+      <span id="statusLatency">LATENCE : 38 ms</span>
+      <span id="statusFps">FPS : 60</span>
+      <span id="statusTime">--:--:--</span>
+    </div>
+  </div>
+
+</div>
+
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <span id="modalTitle">◈ Info</span>
+      <button class="modal-close" id="modalClose">×</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-footer">
+      <button class="btn" id="modalCancel">Fermer</button>
+      <button class="btn success" id="modalConfirm">Confirmer</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+<div class="scanlines"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+/* ============================================================
+   LOGIN
+   ============================================================ */
+let currentUser = { role: 'neurologue', name: 'Dr. M. LEFEBVRE', rpps: '10003456789' };
+const roleConfig = {
+  neurologue: { name: 'Dr. M. LEFEBVRE', icon: '🧠' },
+  urgentiste: { name: 'Dr. S. CHEN', icon: '🚑' },
+  interne: { name: 'Dr. A. PETIT', icon: '📚' },
+  admin: { name: 'Admin Système', icon: '⚙️' }
+};
+
+document.querySelectorAll('.role-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.role-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    const role = tab.dataset.role;
+    document.getElementById('loginUser').value = role === 'admin' ? 'admin@aphp.fr' : `dr.${role}@aphp.fr`;
+  });
+});
+
+document.querySelectorAll('.otp-box').forEach((box, i, all) => {
+  box.addEventListener('input', () => { if (box.value.length === 1 && i < all.length - 1) all[i + 1].focus(); });
+  box.addEventListener('keydown', e => { if (e.key === 'Backspace' && box.value.length === 0 && i > 0) all[i - 1].focus(); });
+});
+
+document.getElementById('btnLogin').addEventListener('click', () => {
+  const btn = document.getElementById('btnLogin');
+  const selectedRole = document.querySelector('.role-tab.active').dataset.role;
+  const twoFA = document.getElementById('twoFA');
+  if (!twoFA.classList.contains('active')) {
+    twoFA.classList.add('active');
+    btn.textContent = '🔐 Vérifier 2FA';
+    document.querySelector('.otp-box').focus();
+    return;
+  }
+  btn.textContent = '⏳ Authentification...';
+  btn.disabled = true;
+  setTimeout(() => {
+    const cfg = roleConfig[selectedRole];
+    currentUser.role = selectedRole;
+    currentUser.name = cfg.name;
+    document.getElementById('loginScreen').classList.add('hidden');
+    setTimeout(() => {
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('mainApp').classList.add('visible');
+      document.getElementById('userNameTop').textContent = cfg.name;
+      document.getElementById('localLabel').textContent = `Moi (${cfg.name})`;
+      const badge = document.getElementById('roleBadge');
+      badge.textContent = selectedRole.charAt(0).toUpperCase() + selectedRole.slice(1);
+      badge.className = 'role-badge ' + selectedRole;
+      addToast(`✓ Connecté — ${cfg.name}`, 'ok');
+      addToast(`👤 Rôle : ${selectedRole}`, 'purple');
+      initCharts();
+      initCalendar();
+      initAI();
+      initCTAG();
+    }, 600);
+  }, 1200);
+});
+
+document.getElementById('btnLogout').addEventListener('click', () => {
+  openModal('◈ Déconnexion', `
+    <h4>▸ Session en cours</h4>
+    <p>Fermer votre session sécurisée et déconnecter tous les services ?</p>
+    <h4>▸ RCP active</h4>
+    <p>${rcpActive ? '<strong>⚠ Une RCP est en cours — elle sera terminée</strong>' : 'Aucune RCP active'}</p>
+  `, () => {
+    if (rcpActive) toggleRCP();
+    document.getElementById('mainApp').classList.remove('visible');
+    setTimeout(() => {
+      document.getElementById('loginScreen').style.display = 'flex';
+      document.getElementById('loginScreen').classList.remove('hidden');
+      document.getElementById('twoFA').classList.remove('active');
+      document.getElementById('btnLogin').textContent = '▶ Se Connecter';
+      document.getElementById('btnLogin').disabled = false;
+      document.getElementById('mainApp').classList.remove('visible');
+      addToast('⏻ Session fermée', 'warn');
+    }, 400);
+  });
+});
+
+/* ============================================================
+   THREE.JS — Cerveau / EEG Hologramme
+   ============================================================ */
+const canvas = document.getElementById('scene');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+const scene = new THREE.Scene();
+scene.fog = new THREE.FogExp2(0x000308, 0.045);
+const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+camera.position.set(0, 0.5, 9.5);
+
+function resizeRenderer() {
+  const w = canvas.clientWidth;
+  const h = canvas.clientHeight;
+  if (w === 0 || h === 0) return;
+  renderer.setSize(w, h, false);
+  camera.aspect = w / h;
+  camera.updateProjectionMatrix();
+}
+
+scene.add(new THREE.AmbientLight(0x00e5ff, 0.5));
+const keyLight = new THREE.PointLight(0x00e5ff, 2.5, 25);
+keyLight.position.set(4, 5, 5);
+scene.add(keyLight);
+const rimLight = new THREE.PointLight(0xff3b6b, 1.8, 20);
+rimLight.position.set(-5, -2, -3);
+scene.add(rimLight);
+const seizureLight = new THREE.PointLight(0xff3b6b, 3, 8);
+seizureLight.position.set(1.5, 1.5, 1);
+scene.add(seizureLight);
+
+const hologram = new THREE.Group();
+scene.add(hologram);
+
+const holoCyan = new THREE.MeshBasicMaterial({ color: 0x00e5ff, wireframe: true, transparent: true, opacity: 0.35 });
+const holoCyanSolid = new THREE.MeshPhongMaterial({
+  color: 0x00e5ff, emissive: 0x00a8cc, emissiveIntensity: 0.6,
+  transparent: true, opacity: 0.12, shininess: 80, side: THREE.DoubleSide
+});
+const dischargeRed = new THREE.MeshPhongMaterial({
+  color: 0xff3b6b, emissive: 0xff1a4a, emissiveIntensity: 1.2,
+  transparent: true, opacity: 0.65, shininess: 100
+});
+const dischargeWire = new THREE.MeshBasicMaterial({ color: 0xff5577, wireframe: true, transparent: true, opacity: 0.6 });
+const spikeYellow = new THREE.MeshPhongMaterial({
+  color: 0xffd93b, emissive: 0xffaa00, emissiveIntensity: 1.4, transparent: true, opacity: 0.9
+});
+
+// Cerveau simplifié (sphère déformée)
+function createBrain() {
+  const group = new THREE.Group();
+  const geo = new THREE.IcosahedronGeometry(1.6, 3);
+  const pos = geo.attributes.position;
+  for (let i = 0; i < pos.count; i++) {
+    let x = pos.getX(i), y = pos.getY(i), z = pos.getZ(i);
+    const noise = (Math.sin(x * 4) + Math.cos(y * 5) + Math.sin(z * 4)) * 0.12;
+    const len = Math.sqrt(x*x + y*y + z*z);
+    if (len > 0) {
+      const s = 1 + noise;
+      pos.setXYZ(i, x * s * 1.1, y * s * 0.9, z * s * 1.0);
+    }
+  }
+  geo.computeVertexNormals();
+  const solid = new THREE.Mesh(geo, holoCyanSolid.clone());
+  const wire = new THREE.Mesh(geo, holoCyan.clone());
+  group.add(solid, wire);
+  group.userData.solid = solid;
+  group.userData.wire = wire;
+  return group;
+}
+
+const brain = createBrain();
+hologram.add(brain);
+
+// Foyer critique (décharges)
+function createSeizureFocus() {
+  const group = new THREE.Group();
+  const geo = new THREE.IcosahedronGeometry(0.45, 2);
+  const pos = geo.attributes.position;
+  for (let i = 0; i < pos.count; i++) {
+    const x = pos.getX(i), y = pos.getY(i), z = pos.getZ(i);
+    const noise = (Math.sin(x * 10) + Math.cos(y * 9) + Math.sin(z * 11)) * 0.1;
+    const len = Math.sqrt(x*x + y*y + z*z);
+    if (len > 0) { const s = 1 + noise; pos.setXYZ(i, x * s, y * s, z * s); }
+  }
+  geo.computeVertexNormals();
+  group.add(new THREE.Mesh(geo, dischargeRed));
+  group.add(new THREE.Mesh(geo, dischargeWire));
+  
+  // Pointes-ondes
+  for (let i = 0; i < 16; i++) {
+    const spike = new THREE.Mesh(new THREE.ConeGeometry(0.03, 0.3 + Math.random() * 0.2, 6),
+      new THREE.MeshBasicMaterial({ color: 0xffd93b, transparent: true, opacity: 0.8 }));
+    const theta = Math.random() * Math.PI * 2;
+    const phi = Math.random() * Math.PI;
+    spike.position.set(0.45 * Math.sin(phi) * Math.cos(theta), 0.45 * Math.cos(phi), 0.45 * Math.sin(phi) * Math.sin(theta));
+    spike.lookAt(0, 0, 0);
+    spike.rotateX(Math.PI / 2);
+    group.add(spike);
+  }
+  return group;
+}
+
+const seizureFocus = createSeizureFocus();
+seizureFocus.position.set(1.2, 1.0, 0.3);
+hologram.add(seizureFocus);
+
+// Ondes EEG (anneaux)
+const eegRings = [];
+for (let i = 0; i < 4; i++) {
+  const ring = new THREE.Mesh(new THREE.TorusGeometry(2.0 + i * 0.5, 0.008, 8, 64),
+    new THREE.MeshBasicMaterial({ color: i < 2 ? 0xff3b6b : 0x00e5ff, transparent: true, opacity: 0.5 - i * 0.1 }));
+  ring.rotation.x = Math.PI / 2;
+  ring.rotation.z = i * 0.3;
+  ring.position.y = -1.5 + i * 1.0;
+  hologram.add(ring);
+  eegRings.push(ring);
+}
+
+// Particules (décharges électriques)
+const particleCount = 600;
+const particleGeo = new THREE.BufferGeometry();
+const particlePos = new Float32Array(particleCount * 3);
+const particleVel = [];
+for (let i = 0; i < particleCount; i++) {
+  particlePos[i * 3] = (Math.random() - 0.5) * 10;
+  particlePos[i * 3 + 1] = (Math.random() - 0.5) * 8;
+  particlePos[i * 3 + 2] = (Math.random() - 0.5) * 10;
+  particleVel.push({ y: 0.008 + Math.random() * 0.02 });
+}
+particleGeo.setAttribute('position', new THREE.BufferAttribute(particlePos, 3));
+const particles = new THREE.Points(particleGeo, new THREE.PointsMaterial({
+  color: 0x00e5ff, size: 0.035, transparent: true, opacity: 0.7,
+  blending: THREE.AdditiveBlending, depthWrite: false
+}));
+scene.add(particles);
+
+let time = 0;
+let isPaused = false;
+let autoRotate = true;
+const clock = new THREE.Clock();
+let frameCount = 0, lastFpsTime = performance.now();
+
+function animate() {
+  requestAnimationFrame(animate);
+  const delta = Math.min(clock.getDelta(), 0.1);
+  if (!isPaused) time += delta;
+  if (autoRotate) hologram.rotation.y = Math.sin(time * 0.3) * 0.5 + time * 0.12;
+  hologram.position.y = Math.sin(time * 0.8) * 0.1;
+  
+  // Foyer critique pulsatile
+  seizureFocus.scale.setScalar(1 + Math.sin(time * 4) * 0.15);
+  seizureLight.intensity = 2.5 + Math.sin(time * 4) * 1.5;
+  
+  // Anneaux EEG
+  eegRings.forEach((ring, i) => {
+    ring.rotation.z += delta * (0.3 + i * 0.2);
+    ring.material.opacity = 0.2 + Math.sin(time * 3 + i) * 0.2;
+  });
+  
+  // Particules
+  const pos = particleGeo.attributes.position.array;
+  for (let i = 0; i < particleCount; i++) {
+    pos[i * 3 + 1] += particleVel[i].y;
+    if (pos[i * 3 + 1] > 4) {
+      pos[i * 3 + 1] = -4;
+      pos[i * 3] = (Math.random() - 0.5) * 10;
+      pos[i * 3 + 2] = (Math.random() - 0.5) * 10;
+    }
+  }
+  particleGeo.attributes.position.needsUpdate = true;
+  
+  brain.rotation.z = Math.sin(time * 0.4) * 0.02;
+  
+  renderer.render(scene, camera);
+  frameCount++;
+  const now = performance.now();
+  if (now - lastFpsTime > 1000) {
+    document.getElementById('statusFps').textContent = `FPS : ${frameCount}`;
+    document.getElementById('statusLatency').textContent = `LATENCE : ${Math.floor(30 + Math.random() * 25)} ms`;
+    frameCount = 0;
+    lastFpsTime = now;
+  }
+}
+
+window.addEventListener('resize', resizeRenderer);
+setTimeout(() => { resizeRenderer(); animate(); }, 200);
+
+/* ============================================================
+   CHARTS
+   ============================================================ */
+let charts = {};
+function initCharts() {
+  if (charts.seizures) return;
+  Chart.defaults.color = '#6a8fa3';
+  Chart.defaults.font.family = 'SF Mono, Courier New, monospace';
+  Chart.defaults.font.size = 9;
+  Chart.defaults.borderColor = 'rgba(0, 229, 255, 0.1)';
+  const grid = { color: 'rgba(0, 229, 255, 0.08)', drawBorder: false };
+  const ticks = { color: '#6a8fa3', font: { size: 8.5 } };
+
+  charts.seizures = new Chart(document.getElementById('chartSeizures'), {
+    type: 'line',
+    data: {
+      labels: ['S-12', 'S-9', 'S-6', 'S-3', 'S-1', 'Auj.'],
+      datasets: [{
+        data: [1, 2, 3, 5, 8, 12],
+        borderColor: '#ff3b6b',
+        backgroundColor: (ctx) => {
+          const g = ctx.chart.ctx.createLinearGradient(0, 0, 0, 180);
+          g.addColorStop(0, 'rgba(255, 59, 107, 0.4)');
+          g.addColorStop(1, 'rgba(255, 59, 107, 0)');
+          return g;
+        },
+        borderWidth: 2, tension: 0.35, fill: true,
+        pointBackgroundColor: '#ff3b6b', pointRadius: 3
+      }]
+    },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } },
+      scales: { x: { grid, ticks }, y: { grid, ticks, beginAtZero: true } } }
+  });
+
+  charts.eeg = new Chart(document.getElementById('chartEEG'), {
+    type: 'line',
+    data: {
+      labels: ['0s', '1s', '2s', '3s', '4s', '5s'],
+      datasets: [
+        { label: 'Fp1-F7', data: [40, 180, 220, 240, 200, 160], borderColor: '#ff3b6b', borderWidth: 1.5, tension: 0.2, pointRadius: 1 },
+        { label: 'Fp2-F8', data: [35, 170, 210, 230, 190, 150], borderColor: '#ffd93b', borderWidth: 1.5, tension: 0.2, pointRadius: 1 }
+      ]
+    },
+    options: { responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: true, position: 'top', align: 'end', labels: { boxWidth: 8, boxHeight: 8, padding: 4, font: { size: 8 } } } },
+      scales: { x: { grid, ticks }, y: { grid, ticks, beginAtZero: true } } }
+  });
+
+  charts.asm = new Chart(document.getElementById('chartASM'), {
+    type: 'bar',
+    data: {
+      labels: ['Lévétiracétam', 'Valproate', 'Lamotrigine', 'Carbamazépine'],
+      datasets: [{
+        data: [42, 38, 55, 28],
+        backgroundColor: ['#00ff9d', '#ffd93b', '#ff8b3b', '#ff3b6b'],
+        borderRadius: 3, borderWidth: 0
+      }]
+    },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } },
+      scales: { x: { grid, ticks }, y: { grid, ticks, beginAtZero: true, max: 100 } } }
+  });
+
+  charts.types = new Chart(document.getElementById('chartTypes'), {
+    type: 'doughnut',
+    data: {
+      labels: ['GTC', 'Focales', 'Absences', 'Myocloniques', 'Autres'],
+      datasets: [{
+        data: [45, 30, 12, 8, 5],
+        backgroundColor: ['#ff3b6b', '#ffd93b', '#a855f7', '#ff8b3b', '#00e5ff'],
+        borderColor: 'rgba(0,0,0,0.5)', borderWidth: 2
+      }]
+    },
+    options: { responsive: true, maintainAspectRatio: false, cutout: '55%',
+      plugins: { legend: { position: 'right', labels: { boxWidth: 8, boxHeight: 8, padding: 4, font: { size: 8 } } } } }
+  });
+}
+
+/* ============================================================
+   CTAG SEQUENCER
+   ============================================================ */
+const ctagSteps = [
+  { time: '0-1 min', title: 'Reconnaissance & Sécurisation', desc: 'Protéger, ne pas immobiliser, noter l\'heure', status: 'urgent', action: 'done' },
+  { time: '1-5 min', title: 'Position Latérale de Sécurité', desc: 'Dès que possible, libérer les voies aériennes', status: 'pending', action: 'done' },
+  { time: '5 min', title: '⚠ APPEL SAMU / 15', desc: 'Crise > 5 min = état de mal imminent', status: 'urgent', action: 'pending' },
+  { time: '5-10 min', title: 'Benzodiazépine 1ère dose', desc: 'Lorazépam IV ou Midazolam buccal', status: 'pending', action: 'pending' },
+  { time: '10-15 min', title: '2ème dose Benzos si échec', desc: 'Réévaluer après 5-10 min', status: 'pending', action: 'pending' },
+  { time: '15-30 min', title: '2ème ligne — Antiépileptique', desc: 'Lévétiracétam 60 mg/kg IV OU Phénytoïne 20 mg/kg', status: 'pending', action: 'pending' },
+  { time: '> 30 min', title: '⚠ État de mal réfractaire', desc: 'Réanimation — Phénobarbital ou anesthésie générale', status: 'urgent', action: 'pending' },
+  { time: 'Post-critique', title: 'Surveillance & Réévaluation', desc: 'Glasgow, SpO₂, confusion post-critique', status: 'pending', action: 'pending' }
+];
+
+function initCTAG() {
+  renderCTAG();
+}
+
+function renderCTAG() {
+  const timeline = document.getElementById('ctagTimeline');
+  if (!timeline) return;
+  timeline.innerHTML = ctagSteps.map((step, i) => {
+    let cls = 'ctag-step';
+    if (step.action === 'done') cls += ' done';
+    if (step.status === 'urgent') cls += ' crit';
+    if (i === 0 && step.action !== 'done') cls += ' active';
+    const statusLabel = step.status === 'urgent' ? 'URGENT' : (step.action === 'done' ? 'FAIT' : 'EN ATTENTE');
+    const statusCls = step.status === 'urgent' ? 'urgent' : (step.action === 'done' ? 'ok' : 'pending');
+    return `
+      <div class="${cls}" data-index="${i}">
+        <div class="ctag-time">${step.time}</div>
+        <div class="ctag-content">
+          <div class="ctag-title">${step.title}</div>
+          <div class="ctag-desc">${step.desc}</div>
+          <div class="ctag-actions">
+            <button class="ctag-btn ${step.action === 'done' ? 'done' : ''}" data-action="done" data-idx="${i}">
+              ${step.action === 'done' ? '✓ Fait' : '○ Marquer fait'}
+            </button>
+            <button class="ctag-btn skip" data-action="skip" data-idx="${i}">Ignorer</button>
+            <span class="ctag-status ${statusCls}">${statusLabel}</span>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  timeline.querySelectorAll('.ctag-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const idx = parseInt(btn.dataset.idx);
+      const action = btn.dataset.action;
+      if (action === 'done') {
+        ctagSteps[idx].action = 'done';
+        ctagSteps[idx].status = 'ok';
+        addToast(`✓ ${ctagSteps[idx].title} — complété`, 'ok');
+        addLog(`CTAG : ${ctagSteps[idx].title} validé`, 'ok');
+      } else if (action === 'skip') {
+        ctagSteps[idx].action = 'skipped';
+        ctagSteps[idx].status = 'pending';
+        addToast(`↷ ${ctagSteps[idx].title} — ignoré`, 'warn');
+      }
+      renderCTAG();
+    });
+  });
+}
+
+document.getElementById('btnRegenerateCTAG').addEventListener('click', () => {
+  addToast('⚡ Régénération CTAG...', 'warn');
+  const delay = parseInt(document.getElementById('sDelay').value);
+  ctagSteps.forEach((s, i) => {
+    if (s.action === 'done') return;
+    if (i <= 2 && delay > 5) { s.action = 'done'; s.status = 'ok'; }
+    else if (i > 2 && delay > 10) { s.status = 'urgent'; }
+    else { s.status = 'pending'; }
+  });
+  setTimeout(() => {
+    renderCTAG();
+    addToast('✓ Séquence CTAG régénérée', 'ok');
+  }, 600);
+});
+
+document.getElementById('sDelay').addEventListener('input', e => {
+  document.getElementById('vDelay').textContent = e.target.value + ' min';
+});
+document.getElementById('sBenzos').addEventListener('input', e => {
+  document.getElementById('vBenzos').textContent = e.target.value + ' mg';
+});
+document.getElementById('sSpo2').addEventListener('input', e => {
+  document.getElementById('vSpo2').textContent = e.target.value + '%';
+});
+
+/* ============================================================
+   CALENDRIER RCP
+   ============================================================ */
+let currentMonth = new Date(2024, 10, 1);
+const rcpEvents = {
+  '2024-11-14': { title: 'RCP URGENTE — EPI-023', type: 'crit' },
+  '2024-11-21': { title: 'RCP Épileptologie hebdo', type: 'normal' },
+  '2024-11-22': { title: 'RCP Chirurgie épilepsie', type: 'normal' },
+  '2024-11-28': { title: 'RCP Épileptologie hebdo', type: 'normal' }
+};
+const monthNames = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+
+function initCalendar() { renderCalendar(); }
+
+function renderCalendar() {
+  const grid = document.getElementById('calGrid');
+  grid.innerHTML = `
+    <div class="cal-day-name">L</div><div class="cal-day-name">M</div><div class="cal-day-name">M</div>
+    <div class="cal-day-name">J</div><div class="cal-day-name">V</div><div class="cal-day-name">S</div><div class="cal-day-name">D</div>
+  `;
+
+  const year = currentMonth.getFullYear();
+  const month = currentMonth.getMonth();
+  const firstDay = new Date(year, month, 1);
+  const lastDay = new Date(year, month + 1, 0);
+  const startOffset = (firstDay.getDay() + 6) % 7;
+  const today = new Date();
+
+  for (let i = 0; i < startOffset; i++) {
+    grid.innerHTML += `<div></div>`;
+  }
+
+  for (let d = 1; d <= lastDay.getDate(); d++) {
+    const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+    const isToday = year === today.getFullYear() && month === today.getMonth() && d === today.getDate();
+    const event = rcpEvents[dateStr];
+    let cls = 'cal-day';
+    if (isToday) cls += ' today';
+    if (event) cls += ' event ' + (event.type === 'crit' ? 'crit' : '');
+    grid.innerHTML += `<div class="${cls}" data-date="${dateStr}" title="${event ? event.title : ''}">${d}</div>`;
+  }
+
+  document.getElementById('calMonth').textContent = `${monthNames[month]} ${year}`;
+
+  grid.querySelectorAll('.cal-day.event').forEach(el => {
+    el.addEventListener('click', () => {
+      const date = el.dataset.date;
+      const ev = rcpEvents[date];
+      if (ev) {
+        addToast(`📅 ${ev.title}`, ev.type === 'crit' ? 'crit' : 'purple');
+        openModal('◈ Détails RCP', `
+          <h4>▸ ${ev.title}</h4>
+          <p><strong>Date :</strong> ${date}</p>
+          <p><strong>Type :</strong> ${ev.type === 'crit' ? 'URGENTE' : 'Programmée'}</p>
+          <p><strong>Participants :</strong> 5 médecins</p>
+          <h4>▸ Actions</h4>
+          <p>• Rejoindre la visio (WebRTC)<br>• Consulter ordre du jour<br>• Ajouter documents</p>
+        `, () => { toggleRCP(); });
+      }
+    });
+  });
+}
+
+document.getElementById('calPrev').addEventListener('click', () => {
+  currentMonth.setMonth(currentMonth.getMonth() - 1);
+  renderCalendar();
+});
+
+document.getElementById('calNext').addEventListener('click', () => {
+  currentMonth.setMonth(currentMonth.getMonth() + 1);
+  renderCalendar();
+});
+
+document.getElementById('btnNewRCP').addEventListener('click', () => {
+  openModal('◈ Planifier une RCP', `
+    <h4>▸ Nouvelle réunion</h4>
+    <p><strong>Patient :</strong> EPI-023 (État de mal)</p>
+    <p><strong>Motif :</strong> Discussion stratégie thérapeutique</p>
+    <h4>▸ Invités</h4>
+    <p>• Dr. CHEN (Urgentiste)<br>• Dr. MARTIN (Neurologue)<br>• Dr. DUBOIS (Réanimateur)<br>• Dr. BERNARD (Neurochirurgien)</p>
+    <h4>▸ Créneaux disponibles</h4>
+    <p>• Aujourd'hui 14h30<br>• Demain 09h00<br>• Jeudi 10h00</p>
+  `, () => {
+    addToast('✓ RCP planifiée — invitations envoyées', 'ok');
+    rcpEvents['2024-11-14'] = { title: 'RCP URGENTE — EPI-023', type: 'crit' };
+    renderCalendar();
+  });
+});
+
+/* ============================================================
+   IA AUTO-APPRENANTE
+   ============================================================ */
+let aiState = {
+  version: 'v5.1.392',
+  accuracy: 96.2,
+  cases: 1247583,
+  epochProgress: 72,
+  feedbackBuffer: 912
+};
+
+function initAI() {
+  updateAIDisplay();
+  setInterval(() => {
+    aiState.epochProgress += Math.random() * 2;
+    if (aiState.epochProgress > 100) aiState.epochProgress = 0;
+    aiState.feedbackBuffer = Math.min(1000, aiState.feedbackBuffer + Math.floor(Math.random() * 3));
+    updateAIDisplay();
+  }, 3000);
+}
+
+function updateAIDisplay() {
+  document.getElementById('aiVersion').textContent = aiState.version;
+  document.getElementById('aiAccuracy').textContent = aiState.accuracy.toFixed(1) + '%';
+  document.getElementById('aiCases').textContent = aiState.cases.toLocaleString('fr-FR');
+  document.getElementById('epochPct').textContent = Math.floor(aiState.epochProgress) + '%';
+  document.getElementById('epochBar').style.width = aiState.epochProgress + '%';
+  document.getElementById('modelVer').textContent = aiState.version;
+  document.getElementById('confIA').textContent = aiState.accuracy.toFixed(1) + '%';
+}
+
+const feedbackLog = [];
+
+document.querySelectorAll('.feedback-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const fb = btn.dataset.fb;
+    const label = { correct: '✓ Exact', partial: '◐ Partiel', incorrect: '✗ Erreur', unknown: '? Incertain' }[fb];
+    const delta = { correct: 0.3, partial: 0.1, incorrect: -0.4, unknown: 0 }[fb];
+
+    aiState.accuracy = Math.min(99.9, Math.max(80, aiState.accuracy + delta));
+    aiState.cases += 1;
+    aiState.feedbackBuffer = Math.min(1000, aiState.feedbackBuffer + 1);
+
+    if (fb === 'incorrect') {
+      aiState.version = `v5.${1 + Math.floor(Math.random() * 9)}.${300 + Math.floor(Math.random() * 200)}`;
+      document.getElementById('aiLastUpdate').textContent = 'à l\'instant';
+    }
+
+    feedbackLog.unshift({
+      type: fb,
+      label,
+      time: new Date().toTimeString().split(' ')[0]
+    });
+
+    const logEl = document.getElementById('feedbackLog');
+    logEl.innerHTML = feedbackLog.slice(0, 5).map(f => {
+      const color = { correct: 'var(--green)', partial: 'var(--yellow)', incorrect: 'var(--red)', unknown: 'var(--purple)' }[f.type];
+      return `<div style="display:flex;gap:6px;padding:2px 0;border-bottom:1px dashed rgba(0,229,255,0.1);">
+        <span style="color:var(--cyan-dim);">${f.time}</span>
+        <span style="color:${color};">${f.label}</span>
+      </div>`;
+    }).join('');
+
+    updateAIDisplay();
+    addToast(`🧠 Feedback enregistré — Précision ${aiState.accuracy.toFixed(1)}%`, delta > 0 ? 'ok' : 'warn');
+    addLog(`Feedback IA : ${label} (Δ ${delta > 0 ? '+' : ''}${delta}%)`, delta > 0 ? 'ok' : 'warn');
+  });
+});
+
+document.getElementById('btnTrainNow').addEventListener('click', () => {
+  if (aiState.feedbackBuffer < 100) {
+    addToast('⚠ Buffer insuffisant (min 100 cas)', 'warn');
+    return;
+  }
+  addToast('⚡ Ré-entraînement déclenché...', 'warn');
+  aiState.epochProgress = 0;
+  updateAIDisplay();
+
+  let ep = 0;
+  const trainInterval = setInterval(() => {
+    ep += 5;
+    aiState.epochProgress = ep;
+    updateAIDisplay();
+    if (ep >= 100) {
+      clearInterval(trainInterval);
+      aiState.version = `v5.${1 + Math.floor(Math.random() * 9)}.${300 + Math.floor(Math.random() * 200)}`;
+      aiState.accuracy = Math.min(99.9, aiState.accuracy + 0.5);
+      aiState.feedbackBuffer = 0;
+      updateAIDisplay();
+      addToast(`✓ Nouveau modèle ${aiState.version} déployé`, 'ok');
+      addToast(`📈 Précision : ${aiState.accuracy.toFixed(1)}%`, 'ok');
+      addLog(`Ré-entraînement terminé — ${aiState.version}`, 'ok');
+    }
+  }, 200);
+});
+
+/* ============================================================
+   WEBRTC RÉEL
+   ============================================================ */
+let rcpActive = false;
+let rcpRecording = false;
+let rcpSeconds = 0;
+let rcpInterval = null;
+let localStream = null;
+let peerConnections = {};
+let screenStream = null;
+
+async function startLocalVideo() {
+  try {
+    localStream = await navigator.mediaDevices.getUserMedia({
+      video: { width: 320, height: 240, facingMode: 'user' },
+      audio: true
+    });
+    document.getElementById('localVideo').srcObject = localStream;
+    document.getElementById('webrtcStatus').innerHTML = `
+      <div><span class="k">WEBRTC :</span> <span class="v" style="color:var(--green)">ACTIF</span></div>
+      <div><span class="k">PEERS :</span> <span class="v" id="peerCount">3</span></div>
+      <div><span class="k">LATENCE :</span> <span class="v" id="rtcLatency">28 ms</span></div>
+    `;
+    document.getElementById('rtcStatus').textContent = 'STREAMING';
+    addToast('📷 Caméra et micro activés', 'ok');
+    addLog('Stream local démarré (getUserMedia)', 'ok');
+    return true;
+  } catch (err) {
+    addToast('⚠ Caméra indisponible — mode simulation', 'warn');
+    addLog('Fallback simulation (pas de caméra)', 'warn');
+    document.getElementById('localVideo').style.background = 'linear-gradient(135deg, #061426, #0a2440)';
+    document.getElementById('localVideo').innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:24px;">🧠</div>';
+    document.getElementById('rtcStatus').textContent = 'SIMULATED';
+    return false;
+  }
+}
+
+function stopLocalVideo() {
+  if (localStream) {
+    localStream.getTracks().forEach(t => t.stop());
+    localStream = null;
+  }
+  if (screenStream) {
+    screenStream.getTracks().forEach(t => t.stop());
+    screenStream = null;
+  }
+  Object.values(peerConnections).forEach(pc => pc.close());
+  peerConnections = {};
+}
+
+function createSimulatedPeer(videoEl, name) {
+  const canvas = document.createElement('canvas');
+  canvas.width = 320;
+  canvas.height = 240;
+  const ctx = canvas.getContext('2d');
+  let t = 0;
+
+  const stream = canvas.captureStream(20);
+
+  function draw() {
+    if (!rcpActive) return;
+    t += 0.02;
+
+    const grad = ctx.createLinearGradient(0, 0, 320, 240);
+    grad.addColorStop(0, '#061426');
+    grad.addColorStop(1, '#0a2440');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, 320, 240);
+
+    ctx.font = '80px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText(name.icon, 160, 130 + Math.sin(t * 2) * 8);
+
+    ctx.fillStyle = 'rgba(0, 229, 255, 0.15)';
+    ctx.fillRect(0, 220, 320, 20);
+    ctx.fillStyle = '#00e5ff';
+    ctx.font = '12px monospace';
+    ctx.fillText(name.name, 160, 235);
+
+    for (let i = 0; i < 240; i += 4) {
+      ctx.fillStyle = `rgba(0, 229, 255, ${0.03 + Math.random() * 0.02})`;
+      ctx.fillRect(0, i, 320, 1);
+    }
+
+    if (Math.random() < 0.02) {
+      ctx.fillStyle = '#00ff9d';
+      ctx.beginPath();
+      ctx.arc(300, 20, 6, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    requestAnimationFrame(draw);
+  }
+
+  videoEl.srcObject = stream;
+  videoEl.play();
+  draw();
+}
+
+function toggleRCP() {
+  rcpActive = !rcpActive;
+  const bar = document.getElementById('rcpBar');
+  const grid = document.getElementById('videoGrid');
+
+  if (rcpActive) {
+    bar.classList.add('active');
+    grid.classList.add('active');
+    addToast('🎥 Session RCP LIVE démarrée', 'purple');
+    addLog('RCP WebRTC initiée', 'ok');
+
+    startLocalVideo().then(hasCamera => {
+      if (hasCamera) {
+        addToast('✓ Flux local établi (WebRTC)', 'ok');
+      }
+    });
+
+    setTimeout(() => {
+      createSimulatedPeer(document.getElementById('remoteVideo2'), { name: 'Dr. CHEN', icon: '🚑' });
+      createSimulatedPeer(document.getElementById('remoteVideo3'), { name: 'Dr. MARTIN', icon: '🧠' });
+      createSimulatedPeer(document.getElementById('remoteVideo4'), { name: 'Dr. DUBOIS', icon: '🫁' });
+
+      [2, 3, 4].forEach((n, i) => {
+        setTimeout(() => {
+          document.getElementById('tile' + n).classList.add('active');
+          document.getElementById('tile' + n).style.opacity = '1';
+          addToast(`👥 Dr. ${['CHEN', 'MARTIN', 'DUBOIS'][i]} a rejoint`, 'ok');
+        }, i * 400);
+      });
+    }, 300);
+
+    rcpInterval = setInterval(() => {
+      document.querySelectorAll('.video-tile').forEach(t => t.classList.remove('speaking'));
+      const tiles = document.querySelectorAll('.video-tile');
+      tiles[Math.floor(Math.random() * tiles.length)].classList.add('speaking');
+    }, 3500);
+
+  } else {
+    bar.classList.remove('active');
+    grid.classList.remove('active');
+    if (rcpInterval) clearInterval(rcpInterval);
+    stopRCPRecording();
+    stopLocalVideo();
+
+    [2, 3, 4].forEach(n => {
+      const tile = document.getElementById('tile' + n);
+      tile.classList.remove('active', 'speaking');
+      tile.style.opacity = '0';
+    });
+    document.querySelectorAll('.video-tile').forEach(t => t.classList.remove('speaking'));
+
+    document.getElementById('rtcStatus').textContent = 'STANDBY';
+    document.getElementById('webrtcStatus').innerHTML = `
+      <div><span class="k">WEBRTC :</span> <span class="v" style="color:var(--green)">PRÊT</span></div>
+      <div><span class="k">PEERS :</span> <span class="v" id="peerCount">0</span></div>
+      <div><span class="k">LATENCE :</span> <span class="v" id="rtcLatency">-- ms</span></div>
+    `;
+
+    addToast('⏹ Session RCP terminée', 'warn');
+    addLog('RCP WebRTC clôturée', '');
+  }
+}
+
+function startRCPRecording() {
+  if (rcpRecording) return;
+  rcpRecording = true;
+  rcpSeconds = 0;
+  document.getElementById('rcpRecord').classList.add('recording');
+  document.getElementById('rcpRecord').textContent = '⏹ Stop';
+  window._rcpRecTimer = setInterval(() => {
+    rcpSeconds++;
+    const m = String(Math.floor(rcpSeconds / 60)).padStart(2, '0');
+    const s = String(rcpSeconds % 60).padStart(2, '0');
+    document.getElementById('rcpTimer').textContent = `${m}:${s}`;
+  }, 1000);
+  addToast('⏺ Enregistrement RCP démarré', 'crit');
+  addLog('Recording RCP — MediaRecorder started', 'warn');
+}
+
+function stopRCPRecording() {
+  if (!rcpRecording) return;
+  rcpRecording = false;
+  document.getElementById('rcpRecord').classList.remove('recording');
+  document.getElementById('rcpRecord').textContent = '⏺ Enregistrer';
+  if (window._rcpRecTimer) clearInterval(window._rcpRecTimer);
+  if (rcpSeconds > 0) addToast(`✓ Enregistrement sauvegardé (${rcpSeconds}s)`, 'ok');
+  rcpSeconds = 0;
+  document.getElementById('rcpTimer').textContent = '00:00';
+}
+
+document.getElementById('btnRCP').addEventListener('click', toggleRCP);
+document.getElementById('btnRCP2').addEventListener('click', toggleRCP);
+
+document.getElementById('rcpMic').addEventListener('click', e => {
+  e.currentTarget.classList.toggle('recording');
+  const muted = e.currentTarget.classList.contains('recording');
+  if (localStream) localStream.getAudioTracks().forEach(t => t.enabled = !muted);
+  document.querySelector('.video-tile[data-p="1"]').classList.toggle('muted', muted);
+  addToast(muted ? '🎙 Micro coupé' : '🎙 Micro actif', muted ? 'warn' : 'ok');
+});
+
+document.getElementById('rcpCam').addEventListener('click', e => {
+  e.currentTarget.classList.toggle('recording');
+  const off = e.currentTarget.classList.contains('recording');
+  if (localStream) localStream.getVideoTracks().forEach(t => t.enabled = !off);
+  document.querySelector('.video-tile[data-p="1"]').classList.toggle('muted', off);
+  addToast(off ? '📷 Caméra coupée' : '📷 Caméra active', off ? 'warn' : 'ok');
+});
+
+document.getElementById('rcpScreen').addEventListener('click', async e => {
+  e.currentTarget.classList.toggle('recording');
+  const sharing = e.currentTarget.classList.contains('recording');
+  if (sharing) {
+    try {
+      screenStream = await navigator.mediaDevices.getDisplayMedia({ video: true });
+      addToast('📺 Partage d\'écran actif', 'ok');
+      addLog('getDisplayMedia activé', 'ok');
+      screenStream.getVideoTracks()[0].addEventListener('ended', () => {
+        e.currentTarget.classList.remove('recording');
+        screenStream = null;
+        addToast('📺 Partage terminé', 'warn');
+      });
+    } catch {
+      addToast('📺 Partage d\'écran simulé', 'warn');
+    }
+  } else {
+    if (screenStream) {
+      screenStream.getTracks().forEach(t => t.stop());
+      screenStream = null;
+    }
+    addToast('📺 Partage arrêté', 'warn');
+  }
+});
+
+document.getElementById('rcpRecord').addEventListener('click', () => {
+  if (rcpRecording) stopRCPRecording();
+  else startRCPRecording();
+});
+
+document.getElementById('rcpEnd').addEventListener('click', toggleRCP);
+
+/* ============================================================
+   UI LOGIC
+   ============================================================ */
+const sessionStart = Date.now();
+setInterval(() => {
+  const elapsed = Math.floor((Date.now() - sessionStart) / 1000);
+  const h = String(Math.floor(elapsed / 3600)).padStart(2, '0');
+  const m = String(Math.floor((elapsed % 3600) / 60)).padStart(2, '0');
+  const s = String(elapsed % 60).padStart(2, '0');
+  document.getElementById('sessionTimer').textContent = `⏱ ${h}:${m}:${s}`;
+  document.getElementById('statusTime').textContent = new Date().toTimeString().split(' ')[0];
+}, 1000);
+
+const patientData = {
+  'EPI-023': { name: 'EPI-023', type: 'GTC ≥5 min', stage: 4, pathology: 'Crise généralisée tonico-clonique (GTC)', location: 'État de mal épileptique' },
+  'EPI-041': { name: 'EPI-041', type: 'Focale', stage: 3, pathology: 'Crise focale avec altération de conscience', location: 'Épilepsie focale' },
+  'EPI-058': { name: 'EPI-058', type: 'Absence', stage: 2, pathology: 'Absence (petit mal)', location: 'Épilepsie généralisée' },
+  'EPI-072': { name: 'EPI-072', type: 'Première', stage: 1, pathology: 'Première crise — à évaluer', location: 'Bilan étiologique' }
+};
+
+document.querySelectorAll('.patient-card').forEach(card => {
+  card.addEventListener('click', () => {
+    document.querySelectorAll('.patient-card').forEach(c => c.classList.remove('active'));
+    card.classList.add('active');
+    const data = patientData[card.dataset.id];
+    document.getElementById('activePatientTop').textContent = '#' + data.name;
+    document.getElementById('vpPatient').textContent = data.name;
+    document.getElementById('fSeizureType').value = data.pathology;
+    document.querySelectorAll('.stage-btn').forEach(b => b.classList.toggle('active', parseInt(b.dataset.stage) === data.stage));
+    updateStage(data.stage);
+    addToast(`📁 Dossier ${data.name} chargé`, 'ok');
+  });
+});
+
+document.getElementById('patientSearch').addEventListener('input', e => {
+  const q = e.target.value.toLowerCase();
+  document.querySelectorAll('.patient-card').forEach(card => {
+    card.style.display = card.textContent.toLowerCase().includes(q) ? '' : 'none';
+  });
+});
+
+document.querySelectorAll('.tag').forEach(tag => {
+  tag.addEventListener('click', () => { tag.classList.toggle('active'); });
+});
+
+document.querySelectorAll('.stage-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.stage-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    updateStage(parseInt(btn.dataset.stage));
+  });
+});
+
+function updateStage(stage) {
+  const widths = [25, 50, 75, 100];
+  document.getElementById('timelineFill').style.width = widths[stage-1] + '%';
+  document.getElementById('timelineMarker').style.left = widths[stage-1] + '%';
+  const scales = [0.4, 0.7, 1.0, 1.3];
+  seizureFocus.scale.setScalar(scales[stage-1]);
+}
+
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    tab.classList.add('active');
+    document.querySelector(`[data-content="${tab.dataset.tab}"]`).classList.add('active');
+    if (tab.dataset.tab === 'charts') setTimeout(initCharts, 50);
+    if (tab.dataset.tab === 'cal') renderCalendar();
+  });
+});
+
+document.querySelectorAll('.vp-tool[data-view]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.vp-tool[data-view]').forEach(b => {
+      b.style.background = 'transparent';
+      b.style.color = 'var(--text-dim)';
+    });
+    btn.style.background = 'rgba(0, 229, 255, 0.2)';
+    btn.style.color = 'var(--cyan)';
+    const view = btn.dataset.view;
+    if (view === '3d') { autoRotate = true; camera.position.set(0, 0.5, 9.5); }
+    else if (view === 'axial') { autoRotate = false; camera.position.set(0, 8, 0.1); }
+    else if (view === 'coronal') { autoRotate = false; camera.position.set(0, 0.3, 9.5); }
+    else if (view === 'sagittal') { autoRotate = false; camera.position.set(9.5, 0.3, 0.1); }
+    camera.lookAt(0, 0, 0);
+    addToast(`Vue ${view.toUpperCase()}`, 'ok');
+  });
+});
+
+document.getElementById('btnPause').addEventListener('click', e => {
+  isPaused = !isPaused;
+  e.currentTarget.textContent = isPaused ? '▶' : '⏸';
+});
+
+document.getElementById('btnReset').addEventListener('click', () => {
+  time = 0; hologram.rotation.y = 0; autoRotate = true;
+  updateStage(4);
+  document.querySelectorAll('.stage-btn').forEach(b => b.classList.toggle('active', b.dataset.stage === '4'));
+  document.getElementById('sDelay').value = 12; document.getElementById('vDelay').textContent = '12 min';
+  document.getElementById('sBenzos').value = 8; document.getElementById('vBenzos').textContent = '8 mg';
+  document.getElementById('sSpo2').value = 92; document.getElementById('vSpo2').textContent = '92%';
+  addToast('↺ Réinitialisé', 'ok');
+});
+
+document.getElementById('btnSnapshot').addEventListener('click', () => addToast('📸 Snapshot capturé', 'ok'));
+
+function openModal(title, content, onConfirm) {
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('modalBody').innerHTML = content;
+  document.getElementById('modalOverlay').classList.add('active');
+  const c = document.getElementById('modalConfirm');
+  const n = c.cloneNode(true);
+  c.parentNode.replaceChild(n, c);
+  n.addEventListener('click', () => { if (onConfirm) onConfirm(); closeModal(); });
+}
+function closeModal() { document.getElementById('modalOverlay').classList.remove('active'); }
+document.getElementById('modalClose').addEventListener('click', closeModal);
+document.getElementById('modalCancel').addEventListener('click', closeModal);
+document.getElementById('modalOverlay').addEventListener('click', e => {
+  if (e.target.id === 'modalOverlay') closeModal();
+});
+
+function addToast(msg, type = '') {
+  const c = document.getElementById('toastContainer');
+  const t = document.createElement('div');
+  t.className = 'toast ' + type;
+  t.textContent = msg;
+  c.appendChild(t);
+  setTimeout(() => {
+    t.style.opacity = '0';
+    t.style.transform = 'translateX(40px)';
+    t.style.transition = 'all 0.4s';
+    setTimeout(() => t.remove(), 400);
+  }, 3500);
+}
+function addLog(msg, type = '') { console.log(`[${new Date().toTimeString().split(' ')[0]}] ${msg}`); }
+
+setInterval(() => {
+  const logs = [
+    { m: 'Sync EEG terminée', t: 'ok' },
+    { m: 'Détection IA : décharge critique', t: 'warn' },
+    { m: 'Segmentation foyer MAJ', t: 'ok' },
+    { m: 'Heartbeat WebRTC OK', t: '' }
+  ];
+  const l = logs[Math.floor(Math.random() * logs.length)];
+  addLog(l.m, l.t);
+}, 12000);
+
+</script>
+
+</body>
+</html>
