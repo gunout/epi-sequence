@@ -1,3 +1,5 @@
+<div align="center">
+
 # EPI-SEQUENCE PRO
 
 > Plateforme d'aide a la decision clinique pour la gestion des crises epileptiques
@@ -9,6 +11,7 @@
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white)
 ![Three.js](https://img.shields.io/badge/Three.js-r128-black)
 ![Chart.js](https://img.shields.io/badge/Chart.js-4.4.0-FF6384)
+</div>
 
 ---
 
