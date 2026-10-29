@@ -2,8 +2,8 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EPI-SEQUENCE PRO v9.4 — Brain 360° + Pan Vertical</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>EPI-SEQUENCE PRO v9.5 — Brain Atlas Responsive</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -15,13 +15,13 @@
     --border: rgba(0, 229, 255, 0.22); --border-strong: rgba(0, 229, 255, 0.5);
     --text: #c9e8f5; --text-dim: #6a8fa3; --grid-line: rgba(0, 229, 255, 0.06);
   }
-  html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(--text); font-family: 'SF Mono', 'Courier New', monospace; font-size: 12px; user-select: none; }
+  html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(--text); font-family: 'SF Mono', 'Courier New', monospace; font-size: 12px; user-select: none; -webkit-tap-highlight-color: transparent; }
   body::before { content: ''; position: fixed; inset: 0; background-image: linear-gradient(var(--grid-line) 1px, transparent 1px), linear-gradient(90deg, var(--grid-line) 1px, transparent 1px); background-size: 40px 40px; pointer-events: none; z-index: 0; }
   #loginScreen { position: fixed; inset: 0; z-index: 5000; display: flex; align-items: center; justify-content: center; background: radial-gradient(ellipse at center, #061426 0%, #020610 60%, #000 100%); transition: opacity 0.6s; }
   #loginScreen.hidden { opacity: 0; pointer-events: none; }
   .login-bg-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(0, 229, 255, 0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 229, 255, 0.08) 1px, transparent 1px); background-size: 50px 50px; animation: gridScroll 8s linear infinite; opacity: 0.5; }
   @keyframes gridScroll { 0% { background-position: 0 0; } 100% { background-position: 0 50px; } }
-  .login-container { position: relative; z-index: 2; background: rgba(6, 18, 34, 0.9); border: 1px solid var(--border-strong); border-radius: 6px; backdrop-filter: blur(20px); box-shadow: 0 0 80px rgba(0, 229, 255, 0.25), inset 0 0 40px rgba(0, 229, 255, 0.04); width: 460px; padding: 40px 36px; animation: loginFadeIn 0.8s ease-out; }
+  .login-container { position: relative; z-index: 2; background: rgba(6, 18, 34, 0.9); border: 1px solid var(--border-strong); border-radius: 6px; backdrop-filter: blur(20px); box-shadow: 0 0 80px rgba(0, 229, 255, 0.25), inset 0 0 40px rgba(0, 229, 255, 0.04); width: 460px; max-width: 90vw; padding: 40px 36px; animation: loginFadeIn 0.8s ease-out; }
   @keyframes loginFadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
   .login-logo { width: 72px; height: 72px; margin: 0 auto 20px; border: 2px solid var(--cyan); border-radius: 50%; position: relative; box-shadow: 0 0 30px var(--cyan), inset 0 0 20px rgba(0, 229, 255, 0.3); animation: spin 12s linear infinite; }
   .login-logo::after { content: ''; position: absolute; inset: 12px; border-radius: 50%; background: radial-gradient(circle, var(--red), var(--red) 40%, transparent 70%); box-shadow: 0 0 20px var(--red); animation: pulse 2s ease-in-out infinite; }
@@ -73,6 +73,7 @@
   .session-timer { color: var(--green); font-size: 10.5px; letter-spacing: 1px; }
   .btn-logout { padding: 4px 10px; background: transparent; border: 1px solid rgba(255, 59, 107, 0.4); color: var(--red); font-family: inherit; font-size: 9.5px; letter-spacing: 1px; cursor: pointer; border-radius: 2px; transition: all 0.2s; }
   .btn-logout:hover { background: rgba(255, 59, 107, 0.2); box-shadow: 0 0 12px rgba(255, 59, 107, 0.4); }
+  .btn-menu { display: none; background: transparent; border: 1px solid var(--border); color: var(--cyan); padding: 4px 10px; border-radius: 3px; font-family: inherit; cursor: pointer; font-size: 14px; margin-right: 8px; }
   .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 4px; backdrop-filter: blur(12px); display: flex; flex-direction: column; overflow: hidden; position: relative; }
   .panel-header { padding: 8px 12px; border-bottom: 1px solid var(--border); font-size: 10px; letter-spacing: 2px; text-transform: uppercase; display: flex; justify-content: space-between; align-items: center; background: rgba(0, 229, 255, 0.04); flex-shrink: 0; }
   .panel-header .title { color: var(--cyan); display: flex; align-items: center; gap: 6px; }
@@ -128,7 +129,7 @@
   .vp-info-box .v { color: var(--text); }
   #structureInfo { border-color: var(--cyan); box-shadow: 0 0 15px rgba(0, 229, 255, 0.3); min-width: 240px; }
   #structureInfo .v { color: var(--green); font-weight: bold; }
-  .vp-toolbar { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); display: flex; gap: 4px; background: rgba(0,0,0,0.65); border: 1px solid var(--border); border-radius: 4px; padding: 4px; backdrop-filter: blur(8px); pointer-events: auto; z-index: 10; }
+  .vp-toolbar { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); display: flex; gap: 4px; background: rgba(0,0,0,0.65); border: 1px solid var(--border); border-radius: 4px; padding: 4px; backdrop-filter: blur(8px); pointer-events: auto; z-index: 10; flex-wrap: wrap; justify-content: center; max-width: calc(100% - 24px); }
   .vp-tool { padding: 5px 9px; background: transparent; border: none; color: var(--text-dim); font-family: inherit; font-size: 10px; cursor: pointer; border-radius: 2px; transition: all 0.2s; }
   .vp-tool:hover { background: rgba(0,229,255,0.15); color: var(--cyan); }
   .vp-tool.active { background: rgba(0, 229, 255, 0.25); color: var(--cyan); }
@@ -237,10 +238,10 @@
   .timeline-fill { height: 100%; background: linear-gradient(90deg, var(--green), var(--yellow), var(--red)); border-radius: 2px; width: 50%; transition: width 0.5s; box-shadow: 0 0 12px var(--red); }
   .timeline-marker { position: absolute; top: -4px; width: 2px; height: 11px; background: var(--cyan); box-shadow: 0 0 8px var(--cyan); left: 50%; transform: translateX(-50%); }
   .action-btns { display: flex; gap: 6px; }
-  .statusbar { grid-column: 1 / -1; background: var(--panel-2); border: 1px solid var(--border); border-radius: 3px; display: flex; align-items: center; justify-content: space-between; padding: 0 12px; font-size: 9.5px; letter-spacing: 0.8px; color: var(--text-dim); }
-  .status-left, .status-right { display: flex; gap: 14px; }
+  .statusbar { grid-column: 1 / -1; background: var(--panel-2); border: 1px solid var(--border); border-radius: 3px; display: flex; align-items: center; justify-content: space-between; padding: 0 12px; font-size: 9.5px; letter-spacing: 0.8px; color: var(--text-dim); overflow: hidden; }
+  .status-left, .status-right { display: flex; gap: 14px; flex-wrap: wrap; }
   .status-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin-right: 5px; box-shadow: 0 0 6px currentColor; animation: pulse 1.8s infinite; }
-  .toast-container { position: fixed; bottom: 40px; right: 20px; display: flex; flex-direction: column; gap: 8px; z-index: 1001; }
+  .toast-container { position: fixed; bottom: 40px; right: 20px; display: flex; flex-direction: column; gap: 8px; z-index: 1001; max-width: 90vw; }
   .toast { padding: 10px 14px; background: var(--panel-2); border: 1px solid var(--cyan); border-left: 3px solid var(--cyan); border-radius: 3px; font-size: 11px; color: var(--text); box-shadow: 0 0 20px rgba(0, 229, 255, 0.25); min-width: 240px; animation: slideInRight 0.3s ease-out; }
   .toast.warn { border-color: var(--yellow); border-left-color: var(--yellow); }
   .toast.crit { border-color: var(--red); border-left-color: var(--red); }
@@ -248,6 +249,97 @@
   .toast.purple { border-color: var(--purple); border-left-color: var(--purple); }
   @keyframes slideInRight { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: translateX(0); } }
   .scanlines { position: fixed; inset: 0; background: repeating-linear-gradient(to bottom, transparent 0px, transparent 2px, rgba(0, 229, 255, 0.022) 3px, rgba(0, 229, 255, 0.022) 4px); pointer-events: none; z-index: 999; }
+
+  /* ═══════════════════════════════════════════ */
+  /* RESPONSIVE — Tablette 768-1200px            */
+  /* ═══════════════════════════════════════════ */
+  @media (max-width: 1200px) {
+    .app { grid-template-columns: 200px 1fr 300px; grid-template-rows: 44px 1fr 80px 24px; gap: 4px; padding: 4px; }
+    .app > .panel:nth-child(2) { display: none; }
+    .topbar-stats { gap: 10px; font-size: 10px; }
+    .topbar-stats .stat-item:nth-child(5) { display: none; }
+  }
+
+  /* ═══════════════════════════════════════════ */
+  /* RESPONSIVE — Mobile paysage 600-768px       */
+  /* ═══════════════════════════════════════════ */
+  @media (max-width: 768px) {
+    .app { grid-template-columns: 1fr; grid-template-rows: 40px 1fr 56px 22px; gap: 3px; padding: 3px; }
+    .app > .panel:nth-child(1),
+    .app > .panel:nth-child(2),
+    .app > .panel:nth-child(4) { display: none; }
+    .viewport { grid-column: 1 / -1; }
+
+    /* Panneaux visibles en mode menu */
+    .app.mobile-panels > .panel:nth-child(1),
+    .app.mobile-panels > .panel:nth-child(2),
+    .app.mobile-panels > .panel:nth-child(4) {
+      display: flex;
+      position: fixed;
+      top: 50px;
+      left: 6px;
+      right: 6px;
+      max-height: 70vh;
+      z-index: 100;
+      background: var(--panel-2);
+      box-shadow: 0 0 30px rgba(0,0,0,0.9);
+      border-color: var(--cyan);
+    }
+
+    .btn-menu { display: block; }
+    .topbar-stats { display: none; }
+    .topbar { padding: 0 8px; }
+    .brand { font-size: 11px; letter-spacing: 1.5px; }
+    .brand-logo { width: 20px; height: 20px; }
+    .topbar-user { gap: 6px; }
+    .session-timer { font-size: 9px; }
+    .role-badge { font-size: 8px; padding: 2px 6px; }
+    .btn-logout { padding: 3px 6px; font-size: 8px; }
+
+    .vp-toolbar { top: 6px; padding: 2px; gap: 2px; }
+    .vp-tool { padding: 4px 6px; font-size: 9px; }
+    .vp-info-box { font-size: 8px; padding: 4px 6px; max-width: 180px; }
+
+    .bottombar { padding: 4px 8px; gap: 6px; }
+    .stage-btn { padding: 4px 6px; font-size: 8px; }
+    .statusbar { font-size: 8px; padding: 0 6px; }
+    .status-left, .status-right { gap: 6px; }
+    .login-container { width: 90vw; max-width: 400px; padding: 24px 20px; }
+    .login-role-tabs { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* ═══════════════════════════════════════════ */
+  /* RESPONSIVE — Mobile portrait <600px         */
+  /* ═══════════════════════════════════════════ */
+  @media (max-width: 600px) {
+    .app { grid-template-rows: 38px 1fr 48px 20px; }
+    .login-container { width: 95vw; padding: 20px 16px; }
+    .login-title { font-size: 16px; letter-spacing: 2px; }
+    .login-subtitle { font-size: 8px; }
+    .btn-login { font-size: 10px; padding: 12px; }
+    #structureInfo { min-width: auto; max-width: 140px; }
+    .vp-toolbar { max-width: calc(100% - 12px); }
+    .action-btns .btn { padding: 4px 6px; font-size: 9px; }
+  }
+
+  /* ═══════════════════════════════════════════ */
+  /* RESPONSIVE — Ultra-wide >1920px             */
+  /* ═══════════════════════════════════════════ */
+  @media (min-width: 1920px) {
+    .app { grid-template-columns: 280px 400px 1fr 420px; grid-template-rows: 56px 1fr 110px 30px; }
+  }
+
+  /* ═══════════════════════════════════════════ */
+  /* RESPONSIVE — Paysage court <500px           */
+  /* ═══════════════════════════════════════════ */
+  @media (max-height: 500px) and (orientation: landscape) {
+    .app { grid-template-rows: 34px 1fr 38px 18px; gap: 2px; padding: 2px; }
+    .topbar { padding: 0 6px; }
+    .brand { font-size: 10px; }
+    .bottombar { padding: 2px 6px; }
+    .stage-btn { padding: 3px 5px; font-size: 7px; }
+    .statusbar { font-size: 7px; }
+  }
 </style>
 </head>
 <body>
@@ -257,7 +349,7 @@
   <div class="login-container">
     <div class="login-logo"></div>
     <div class="login-title">EPI-SEQUENCE</div>
-    <div class="login-subtitle">Brain Atlas · v9.4</div>
+    <div class="login-subtitle">Brain Atlas · v9.5</div>
     <div class="login-role-tabs">
       <button class="role-tab active" data-role="neurologue"><span class="role-icon">🧠</span>Neurologue</button>
       <button class="role-tab" data-role="urgentiste"><span class="role-icon">🚑</span>Urgentiste</button>
@@ -287,7 +379,11 @@
 
 <div class="app" id="mainApp">
   <div class="topbar">
-    <div class="brand"><div class="brand-logo"></div>EPI-SEQUENCE <span style="opacity:0.4">PRO</span></div>
+    <div class="brand">
+      <button class="btn-menu" id="btnMenu">☰</button>
+      <div class="brand-logo"></div>
+      EPI-SEQUENCE <span style="opacity:0.4">PRO</span>
+    </div>
     <div class="topbar-stats">
       <div class="stat-item"><span class="stat-label">SESSION</span><span class="stat-value cyan">SES-9182-B7</span></div>
       <div class="stat-item"><span class="stat-label">PATIENT</span><span class="stat-value yellow" id="activePatientTop">#EPI-023</span></div>
@@ -387,7 +483,7 @@
       <div class="vp-row">
         <div class="vp-info-box">
           <div><span class="k">PATIENT :</span> <span class="v" id="vpPatient">EPI-023</span></div>
-          <div><span class="k">MODALITÉ :</span> <span class="v">Brain Atlas (Itay Inbar)</span></div>
+          <div><span class="k">MODALITÉ :</span> <span class="v">Brain Atlas</span></div>
         </div>
         <div class="vp-info-box" id="structureInfo" style="display:none;">
           <div><span class="k">STRUCTURE :</span> <span class="v" id="structureLabel">—</span></div>
@@ -404,7 +500,7 @@
         <div class="vp-info-box" style="text-align:right">
           <div style="color:var(--cyan); margin-bottom:5px;">◈ CRÉDIT</div>
           <div style="font-size:9px; line-height:1.5;">
-            Brain model © Itay Inbar<br>CC BY-SA 4.0
+            Brain © Itay Inbar<br>CC BY-SA 4.0
           </div>
         </div>
       </div>
@@ -414,7 +510,7 @@
       <button class="vp-tool" data-view="axial">⬛ Axial</button>
       <button class="vp-tool" data-view="coronal">▭ Coronal</button>
       <button class="vp-tool" data-view="sagittal">▯ Sagittal</button>
-      <button class="vp-tool" id="btnXRay">🔍 Rayons X</button>
+      <button class="vp-tool" id="btnXRay">🔍 X-Ray</button>
       <button class="vp-tool" data-view="reset">↺ Reset</button>
     </div>
   </div>
@@ -607,6 +703,19 @@ document.getElementById('btnLogout').addEventListener('click', () => {
   }, 400);
 });
 
+/* ============ MENU MOBILE ============ */
+const btnMenu = document.getElementById('btnMenu');
+if (btnMenu) {
+  btnMenu.addEventListener('click', () => {
+    document.getElementById('mainApp').classList.toggle('mobile-panels');
+  });
+}
+function updateMenuVisibility() {
+  if (btnMenu) btnMenu.style.display = window.innerWidth <= 768 ? 'block' : 'none';
+}
+window.addEventListener('resize', updateMenuVisibility);
+updateMenuVisibility();
+
 /* ============ THREE.JS ============ */
 const canvas = document.getElementById('scene');
 const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
@@ -622,35 +731,29 @@ const camera = new THREE.PerspectiveCamera(45, 1, 0.01, 200);
 camera.position.set(0, 0.5, 6.5);
 camera.lookAt(0, 0, 0);
 
-// ═══════════════════════════════════════════
-// ORBIT CONTROLS — 360° + PAN VERTICAL
-// ═══════════════════════════════════════════
 const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
 controls.dampingFactor = 0.08;
 controls.rotateSpeed = 0.8;
 controls.zoomSpeed = 1.0;
-controls.panSpeed = 1.2;                       // ★ pan plus sensible
-controls.minPolarAngle = 0;                    // ★ pôle nord autorisé
-controls.maxPolarAngle = Math.PI;              // ★ pôle sud autorisé
+controls.panSpeed = 1.2;
+controls.minPolarAngle = 0;
+controls.maxPolarAngle = Math.PI;
 controls.minAzimuthAngle = -Infinity;
 controls.maxAzimuthAngle = Infinity;
 controls.minDistance = 4.5;
 controls.maxDistance = 15;
 controls.target.set(0, 0, 0);
 controls.enablePan = true;
-controls.screenSpacePanning = true;            // ★ pan vertical naturel
+controls.screenSpacePanning = true;
 controls.keyPanSpeed = 15;
-controls.maxTargetRadius = 3;                  // ★ limite pour ne pas perdre le cerveau
-
-// ★ Mapping souris : gauche = rotation, droit = pan
+controls.maxTargetRadius = 3;
 controls.mouseButtons = {
   LEFT: THREE.MOUSE.ROTATE,
   MIDDLE: THREE.MOUSE.DOLLY,
   RIGHT: THREE.MOUSE.PAN
 };
 
-// ★ Touches clavier pour monter/descendre
 const keysPressed = {};
 window.addEventListener('keydown', (e) => { keysPressed[e.key] = true; });
 window.addEventListener('keyup', (e) => { keysPressed[e.key] = false; });
@@ -660,16 +763,13 @@ function updateKeyboardPan(delta) {
   const speed = 2.5 * delta;
   const target = controls.target;
   let moved = false;
-
   if (keysPressed['ArrowUp'] || keysPressed['z'] || keysPressed['Z']) { target.y += speed; moved = true; }
   if (keysPressed['ArrowDown'] || keysPressed['s'] || keysPressed['S']) { target.y -= speed; moved = true; }
   if (keysPressed['ArrowLeft'] || keysPressed['q'] || keysPressed['Q']) { target.x -= speed; moved = true; }
   if (keysPressed['ArrowRight'] || keysPressed['d'] || keysPressed['D']) { target.x += speed; moved = true; }
-
   if (moved) {
-    const maxOffset = 3;
-    target.y = Math.max(-maxOffset, Math.min(maxOffset, target.y));
-    target.x = Math.max(-maxOffset, Math.min(maxOffset, target.x));
+    target.y = Math.max(-3, Math.min(3, target.y));
+    target.x = Math.max(-3, Math.min(3, target.x));
   }
 }
 
@@ -681,7 +781,9 @@ function resizeRenderer() {
   camera.updateProjectionMatrix();
 }
 
-// Éclairage rééquilibré
+window.addEventListener('orientationchange', () => setTimeout(resizeRenderer, 300));
+
+// Éclairage
 scene.add(new THREE.AmbientLight(0xffffff, 0.35));
 scene.add(new THREE.HemisphereLight(0x8899bb, 0x220011, 0.3));
 const keyLight = new THREE.DirectionalLight(0xffffff, 0.9); keyLight.position.set(5, 8, 6); scene.add(keyLight);
@@ -692,7 +794,6 @@ const redLight = new THREE.PointLight(0xff1a3b, 0, 20); redLight.position.set(0,
 const hologram = new THREE.Group();
 scene.add(hologram);
 
-// État global
 let structureMap = new Map();
 let clickableMeshes = [];
 let hoveredMesh = null;
@@ -714,9 +815,6 @@ function getCrisisSeverity() {
   return Math.min(1, durationFactor * 0.35 + benzoFactor * 0.25 + spo2Factor * 0.15 + crisisState.recruit * 0.25);
 }
 
-// ═══════════════════════════════════════════
-// NORMALISATION
-// ═══════════════════════════════════════════
 function normalizeKey(s) {
   if (!s) return '';
   return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
@@ -731,10 +829,6 @@ function normalizeGLBName(s) {
     .replace(/[()\[\]{}*'",;:?!]/g, '').replace(/[-–—]/g, ' ')
     .replace(/_/g, ' ').replace(/\.(l|r)$/i, '').replace(/\s+/g, ' ').trim();
 }
-
-// ═══════════════════════════════════════════
-// COULEURS ANATOMIQUES
-// ═══════════════════════════════════════════
 function getAnatomicalColor(category, label) {
   const c = (category || '').toLowerCase();
   const l = (label || '').toLowerCase();
@@ -749,16 +843,12 @@ function getAnatomicalColor(category, label) {
   return null;
 }
 
-// ═══════════════════════════════════════════
-// MANIFEST
-// ═══════════════════════════════════════════
 fetch('manifest.json')
   .then(r => r.json())
   .then(data => {
     const nodes = data.nodes || [];
     const categories = data.categories || {};
     console.log(`[MANIFEST] ${nodes.length} nœuds, ${Object.keys(categories).length} catégories`);
-
     nodes.forEach(item => {
       const cleanName = (item.name || '').trim();
       const meta = {
@@ -780,7 +870,6 @@ fetch('manifest.json')
       structureMap.set((cleanName.replace(/\s+/g, '_') + (item.side === 'right' ? 'r' : item.side === 'left' ? 'l' : '')).toLowerCase(), meta);
       structureMap.set(cleanName.replace(/\s+/g, '_').toLowerCase(), meta);
     });
-
     console.log(`[MANIFEST] ${structureMap.size} entrées indexées`);
     document.getElementById('manifestStatus').textContent = nodes.length + ' structures';
     document.getElementById('structureCount').textContent = nodes.length;
@@ -790,9 +879,6 @@ fetch('manifest.json')
     document.getElementById('manifestStatus').textContent = 'erreur';
   });
 
-// ═══════════════════════════════════════════
-// GLB
-// ═══════════════════════════════════════════
 const dracoLoader = new DRACOLoader();
 dracoLoader.setDecoderPath('draco/');
 dracoLoader.preload();
@@ -895,7 +981,7 @@ gltfLoader.load(
     hologram.add(brainModel);
     brainLoaded = true;
     document.getElementById('brainStatus').textContent = `${matchedCount}/${meshCount}`;
-    addToast(`🧠 Cerveau : ${meshCount} meshes (${matchedCount} nommés)`, 'ok');
+    addToast(`🧠 Cerveau : ${meshCount} meshes`, 'ok');
     addToast(`⚡ ${epilepticMeshes.length} zones épileptiques`, 'crit');
     resizeRenderer();
   },
@@ -918,27 +1004,19 @@ gltfLoader.load(
   }
 );
 
-// ═══════════════════════════════════════════
-// TRANSPARENCE ADAPTATIVE
-// ═══════════════════════════════════════════
 const originalOpacity = new Map();
 let lastOpacityUpdate = 0;
 function updateOpacityByZoom() {
   if (!brainLoaded || xrayMode) return;
-
   const now = performance.now();
   if (now - lastOpacityUpdate < 50) return;
   lastOpacityUpdate = now;
-
   const dist = camera.position.distanceTo(controls.target);
   const t = Math.max(0, Math.min(1, (dist - 4.5) / 3.5));
   const targetOpacity = 0.3 + t * 0.7;
-
   clickableMeshes.forEach((mesh) => {
     if (!mesh.material) return;
-    if (!originalOpacity.has(mesh)) {
-      originalOpacity.set(mesh, mesh.material.opacity ?? 1);
-    }
+    if (!originalOpacity.has(mesh)) originalOpacity.set(mesh, mesh.material.opacity ?? 1);
     const base = originalOpacity.get(mesh);
     mesh.material.transparent = true;
     mesh.material.opacity = targetOpacity * base;
@@ -946,9 +1024,6 @@ function updateOpacityByZoom() {
   });
 }
 
-// ═══════════════════════════════════════════
-// ARCS ÉLECTRIQUES
-// ═══════════════════════════════════════════
 function createElectricArc(from, to, color = 0xff1a3b, lifetime = 0.4, jitter = 0.08) {
   const segments = 12;
   const points = [];
@@ -971,7 +1046,6 @@ function createElectricArc(from, to, color = 0xff1a3b, lifetime = 0.4, jitter = 
   const line = new THREE.Line(geo, mat);
   arcGroup.add(line);
   activeArcs.push({ line, geo, mat, start: performance.now(), lifetime });
-
   const halo = new THREE.Mesh(
     new THREE.SphereGeometry(0.03, 6, 6),
     new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.8, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false })
@@ -991,37 +1065,30 @@ function spawnArc() {
   let b = epilepticMeshes[Math.floor(Math.random() * epilepticMeshes.length)];
   let tries = 0;
   while (b === a && tries++ < 10) b = epilepticMeshes[Math.floor(Math.random() * epilepticMeshes.length)];
-
   const posA = new THREE.Vector3();
   const posB = new THREE.Vector3();
-
   a.updateWorldMatrix(true, false);
   b.updateWorldMatrix(true, false);
-
   if (a.userData.localCenter) posA.copy(a.userData.localCenter).applyMatrix4(a.matrixWorld);
   else a.getWorldPosition(posA);
   if (b.userData.localCenter) posB.copy(b.userData.localCenter).applyMatrix4(b.matrixWorld);
   else b.getWorldPosition(posB);
-
   posA.x += (Math.random() - 0.5) * 0.05;
   posA.y += (Math.random() - 0.5) * 0.05;
   posA.z += (Math.random() - 0.5) * 0.05;
   posB.x += (Math.random() - 0.5) * 0.05;
   posB.y += (Math.random() - 0.5) * 0.05;
   posB.z += (Math.random() - 0.5) * 0.05;
-
   if (posA.distanceTo(posB) < 0.15) {
     posB.x += (Math.random() - 0.5) * 0.4;
     posB.y += (Math.random() - 0.5) * 0.4;
     posB.z += (Math.random() - 0.5) * 0.4;
   }
-
   const colorChoice = Math.random();
   let color;
   if (colorChoice < 0.6) color = 0xff1a3b;
   else if (colorChoice < 0.85) color = 0xff3b6b;
   else color = 0xffd93b;
-
   createElectricArc(posA, posB, color, 0.2 + Math.random() * 0.3, 0.1);
 }
 
@@ -1043,9 +1110,6 @@ function updateArcs() {
   if (el) el.textContent = activeArcs.length;
 }
 
-// ═══════════════════════════════════════════
-// RAYCASTER
-// ═══════════════════════════════════════════
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 
@@ -1056,7 +1120,6 @@ renderer.domElement.addEventListener('pointermove', (event) => {
   mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
   raycaster.setFromCamera(mouse, camera);
   const intersects = raycaster.intersectObjects(clickableMeshes, false);
-
   if (hoveredMesh && hoveredMesh.material && hoveredMesh.material.emissive) {
     hoveredMesh.material.emissive.copy(originalEmissive);
     hoveredMesh.material.emissiveIntensity = originalEmissiveIntensity;
@@ -1092,9 +1155,6 @@ function updateHUDStructure(meta) {
   }
 }
 
-// ═══════════════════════════════════════════
-// VUES
-// ═══════════════════════════════════════════
 function setView(view) {
   const positions = {
     '3d':       { pos: [3, 2.5, 5.5],   target: [0, 0, 0] },
@@ -1117,17 +1177,14 @@ document.querySelectorAll('.vp-tool[data-view]').forEach(btn => {
   });
 });
 
-// Mode Rayons X
 document.getElementById('btnXRay').addEventListener('click', (e) => {
   xrayMode = !xrayMode;
   e.currentTarget.classList.toggle('active', xrayMode);
-
   clickableMeshes.forEach((mesh) => {
     if (!mesh.material) return;
     const cat = (mesh.userData.structure?.category || '').toLowerCase();
     const lbl = (mesh.userData.structure?.label || '').toLowerCase();
     const isOuter = cat.includes('cortex') || lbl.includes('gyrus') || lbl.includes('sulcus');
-
     if (xrayMode) {
       mesh.material.transparent = true;
       if (isOuter) {
@@ -1145,12 +1202,9 @@ document.getElementById('btnXRay').addEventListener('click', (e) => {
     }
     mesh.material.needsUpdate = true;
   });
-  addToast(xrayMode ? '🔍 Mode Rayons X activé' : '👁️ Mode normal', xrayMode ? 'purple' : 'ok');
+  addToast(xrayMode ? '🔍 Rayons X ON' : '👁️ Normal', xrayMode ? 'purple' : 'ok');
 });
 
-// ═══════════════════════════════════════════
-// ANIMATION
-// ═══════════════════════════════════════════
 let time = 0;
 let isPaused = false;
 let lastArcSpawn = 0;
@@ -1161,10 +1215,8 @@ function animate() {
   requestAnimationFrame(animate);
   const delta = Math.min(clock.getDelta(), 0.1);
   if (!isPaused) time += delta;
-
   if (brainLoaded) {
     updateOpacityByZoom();
-
     const severity = getCrisisSeverity();
     const arcInterval = 0.4 - severity * 0.35;
     if (time - lastArcSpawn > arcInterval && activeArcs.length < 40 + severity * 60) {
@@ -1173,9 +1225,8 @@ function animate() {
     }
     redLight.intensity = severity * 8 + Math.sin(time * 8) * severity * 3;
   }
-
   updateArcs();
-  updateKeyboardPan(delta);   // ★ clavier pour monter/descendre
+  updateKeyboardPan(delta);
   controls.update();
   renderer.render(scene, camera);
   frameCount++;
@@ -1190,7 +1241,6 @@ function animate() {
 window.addEventListener('resize', resizeRenderer);
 setTimeout(() => { resizeRenderer(); animate(); }, 300);
 
-/* ============ SLIDERS ============ */
 document.getElementById('sElapsed').addEventListener('input', e => {
   crisisState.elapsed = parseInt(e.target.value);
   document.getElementById('vElapsed').textContent = crisisState.elapsed + ' min';
@@ -1226,7 +1276,6 @@ function updateRealtimeAlert() {
   el.innerHTML = html;
 }
 
-/* ============ CTAG ============ */
 const ctagSteps = [
   { time: '0-1 min', title: 'Reconnaissance', desc: 'Protéger, noter l\'heure', minTime: 0, status: 'done', action: 'done' },
   { time: '1-5 min', title: 'PLS', desc: 'Libérer voies aériennes', minTime: 1, status: 'done', action: 'done' },
@@ -1272,7 +1321,6 @@ document.getElementById('btnRegenerateCTAG').addEventListener('click', () => {
   addToast('✓ CTAG recalculée', 'ok');
 });
 
-/* ============ CHARTS ============ */
 let charts = {};
 function initCharts() {
   if (charts.seizures) return;
@@ -1281,7 +1329,6 @@ function initCharts() {
   Chart.defaults.font.size = 9;
   const grid = { color: 'rgba(0, 229, 255, 0.08)', drawBorder: false };
   const ticks = { color: '#6a8fa3', font: { size: 8.5 } };
-
   charts.seizures = new Chart(document.getElementById('chartSeizures'), {
     type: 'line',
     data: { labels: ['S-12','S-9','S-6','S-3','S-1','Auj.'], datasets: [{ data: [1,2,3,5,8,12], borderColor: '#ff3b6b', backgroundColor: 'rgba(255,59,107,0.15)', borderWidth: 2, tension: 0.35, fill: true, pointBackgroundColor: '#ff3b6b', pointRadius: 3 }] },
@@ -1297,7 +1344,6 @@ function initCharts() {
   });
 }
 
-/* ============ PREDICTION ============ */
 let predictionState = { risk: 68 };
 function updatePredictionDisplay() {
   const valEl = document.getElementById('predValue');
@@ -1314,7 +1360,6 @@ document.getElementById('btnRecalcPred').addEventListener('click', () => {
   }, 800);
 });
 
-/* ============ CALENDAR ============ */
 let currentMonth = new Date(2024, 10, 1);
 const monthNames = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
 function initCalendar() { renderCalendar(); }
@@ -1340,7 +1385,6 @@ function renderCalendar() {
 document.getElementById('calPrev').addEventListener('click', () => { currentMonth.setMonth(currentMonth.getMonth() - 1); renderCalendar(); });
 document.getElementById('calNext').addEventListener('click', () => { currentMonth.setMonth(currentMonth.getMonth() + 1); renderCalendar(); });
 
-/* ============ AI ============ */
 let aiState = { version: 'v6.2.847', accuracy: 96.2 };
 function initAI() { updateAIDisplay(); }
 function updateAIDisplay() {
@@ -1356,7 +1400,6 @@ document.querySelectorAll('.feedback-btn').forEach(btn => {
   });
 });
 
-/* ============ MONITORING ============ */
 function startRealtimeMonitor() {
   setInterval(() => {
     if (crisisState.elapsed >= 30) {
@@ -1366,7 +1409,6 @@ function startRealtimeMonitor() {
   }, 5000);
 }
 
-/* ============ UI ============ */
 const sessionStart = Date.now();
 setInterval(() => {
   const elapsed = Math.floor((Date.now() - sessionStart) / 1000);
@@ -1460,7 +1502,7 @@ document.getElementById('btnSnapshot').addEventListener('click', () => {
   link.download = `epi-neural-${Date.now()}.png`;
   link.href = canvas.toDataURL('image/png');
   link.click();
-  addToast('📸 Snapshot téléchargé', 'ok');
+  addToast('📸 Snapshot', 'ok');
 });
 
 function addToast(msg, type = '') {
