@@ -1,384 +1,199 @@
 <div align="center">
 
-# EPI-SEQUENCE PRO
+# 🧠 EPI-SEQUENCE PRO
 
-> Plateforme d'aide a la decision clinique pour la gestion des crises epileptiques
-> Hologramme neuronal 3D - Prediction IA - Sequenceur CTAG - Protocole Etat de Mal
+**Interface médicale 3D interactive pour la simulation de crises épileptiques**
 
-![Version](https://img.shields.io/badge/version-8.0.0-00e5ff)
-![License](https://img.shields.io/badge/license-MIT-green)
-![Status](https://img.shields.io/badge/status-active-00ff9d)
-![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white)
-![Three.js](https://img.shields.io/badge/Three.js-r128-black)
-![Chart.js](https://img.shields.io/badge/Chart.js-4.4.0-FF6384)
+[![Version](https://img.shields.io/badge/version-9.4.0-00e5ff?style=flat-square)](https://github.com/gunout/epi-sequence)
+[![Three.js](https://img.shields.io/badge/Three.js-0.160.0-a855f7?style=flat-square&logo=three.js&logoColor=white)](https://threejs.org/)
+[![License](https://img.shields.io/badge/license-MIT-00ff9d?style=flat-square)](https://github.com/gunout/epi-sequence/blob/main/LICENSE)
+[![Status](https://img.shields.io/badge/status-active-00ff9d?style=flat-square)](https://github.com/gunout/epi-sequence)
+[![Stars](https://img.shields.io/github/stars/gunout/epi-sequence?style=flat-square&color=00e5ff)](https://github.com/gunout/epi-sequence/stargazers)
+[![Forks](https://img.shields.io/github/forks/gunout/epi-sequence?style=flat-square&color=a855f7)](https://github.com/gunout/epi-sequence/network)
+[![Issues](https://img.shields.io/github/issues/gunout/epi-sequence?style=flat-square&color=ff3b6b)](https://github.com/gunout/epi-sequence/issues)
+[![Last Commit](https://img.shields.io/github/last-commit/gunout/epi-sequence?style=flat-square&color=ffd93b)](https://github.com/gunout/epi-sequence/commits)
+[![Code Size](https://img.shields.io/github/languages/code-size/gunout/epi-sequence?style=flat-square&color=ff8b3b)](https://github.com/gunout/epi-sequence)
+[![Made with Love](https://img.shields.io/badge/made%20with-%E2%9D%A4%EF%B8%8F%20%26%20%F0%9F%A7%A0-ff3b6b?style=flat-square)](https://github.com/gunout/epi-sequence)
+
 </div>
 
 ---
 
-## Sommaire
+## 📋 Aperçu
 
-- [Presentation](#presentation)
-- [Fonctionnalites cles](#fonctionnalites-cles)
-- [Architecture 3D neuronale](#architecture-3d-neuronale)
-- [Sequenceur CTAG](#sequenceur-ctag)
-- [Prediction IA](#prediction-ia)
-- [Protocole Etat de Mal](#protocole-etat-de-mal)
-- [Installation](#installation)
-- [Utilisation](#utilisation)
-- [Stack technique](#stack-technique)
-- [Structure du projet](#structure-du-projet)
-- [Roadmap](#roadmap)
-- [Contribution](#contribution)
-- [Avertissement medical](#avertissement-medical)
-- [Licence](#licence)
+**EPI-SEQUENCE PRO** est une interface web médicale immersive qui combine :
+
+- 🧠 **Atlas cérébral 3D** — 437 structures, 563 meshes (source : Brain Project d'Itay Inbar)
+- ⚡ **Arcs électriques rouges** ancrés sur les structures corticales
+- 📊 **Séquenceur CTAG** — protocole d'état de mal épileptique (0-60 min)
+- 🎯 **Prédiction IA** — risque de crise à 24h
+- 🩺 **HUD clinique complet** — scores Glasgow, STESS, EEG, RCP Live
+
+> ⚠️ **Démonstration technologique** — Ne constitue pas un dispositif médical certifié.
 
 ---
 
-## Presentation
+## 🚀 Lancement rapide
 
-**EPI-SEQUENCE PRO** est une demonstration d'interface clinique avancee dediee a la **prise en charge des crises epileptiques** et de **l'etat de mal epileptique (Status Epilepticus)**. Concue comme un outil d'aide a la decision pour neurologues, urgentistes et internes, elle combine :
-
-- Un **hologramme neuronal 3D realiste** visualisant la propagation de la decharge epileptique
-- Un **moteur de prediction IA** estimant le risque de crise imminente (0-24h)
-- Un **sequenceur CTAG** (Clinical Timeline & Algorithm Guide) qui adapte le protocole SE en temps reel
-- Un **tableau de bord multimodal** (EEG, wearables, scores cliniques, feedback IA)
-
-> **Attention** : Ce projet est une demonstration technologique. Il ne constitue en aucun cas un dispositif medical certifie et ne doit pas etre utilise pour un usage clinique reel sans validation reglementaire appropriee.
-
----
-
-## Fonctionnalites cles
-
-### Hologramme neuronal futuriste
-- **280 neurones** avec somas, dendrites et connexions synaptiques courbes
-- **120 potentiels d'action** animes le long des axones
-- **Recrutement neuronal dynamique** : propagation de la decharge critique en temps reel (0-100%)
-- **Eclairs electriques proceduraux** entre neurones lors des decharges
-- **Foyer critique** avec halos, ondes de choc et pulsations
-- **800 particules ambiantes** + grille holographique
-- Controle de la camera (3D / Axial / Coronal / Sagittal)
-
-### Sequenceur CTAG (Clinical Timeline & Algorithm Guide)
-
-9 etapes dynamiques qui s'adaptent a la duree ecoulee et aux doses administrees :
-
-| Temps | Etape | Statut |
-|-------|-------|--------|
-| 0-1 min | Reconnaissance & Securisation | Auto |
-| 1-5 min | Position Laterale de Securite | Auto |
-| **5 min** | **Appel SAMU / 15** | Alerte |
-| 5-10 min | Benzodiazepine 1ere dose | Manuel |
-| 10-15 min | 2eme dose si echec | Manuel |
-| 15-20 min | Examens urgents | Manuel |
-| **20-30 min** | **2eme ligne antiepileptique** | Alerte |
-| **> 30 min** | **Etat de mal refractaire** | Alerte |
-| Post-critique | Surveillance & Reevaluation | Manuel |
-
-### Prediction IA
-- Jauge de risque 0-24h avec code couleur (vert/jaune/orange/rouge)
-- **Facteurs contributifs ponderes** : sommeil, observance, stress, EEG pre-ictal, alcool
-- Historique des predictions avec validation (crise confirmee / pas de crise)
-- Recalcul temps reel
-
-### Tableau de bord clinique
-- **Charts** : frequence des crises, amplitude EEG, taux plasmatiques des antiepileptiques, distribution des types
-- **Scores** : Glasgow, STESS (pronostique), EEG ictal, etiologie en cours
-- **Therapie** : recommandations 1ere/2eme/3eme ligne, contre-indications, cas grossesse
-- **Calendrier RCP** interactif avec evenements
-- **Modules educatifs** personnalises avec correlations statistiques (r = 0.72 sommeil, r = -0.35 activite physique)
-
-### Integration wearables
-- EEG portable, montre connectee, smartphone, capteur de sommeil
-- Statuts temps reel (online / warn / offline)
-- Alertes de detection et limites documentees
-
-### Teleconsultation RCP (WebRTC)
-- Flux video local via `getUserMedia`
-- 3 pairs distants simules
-- Controles micro / camera / partage d'ecran / enregistrement
-- Latence et statut peers affiches
-
----
-
-## Architecture 3D neuronale
-
-```
-                    +-----------------------------+
-                    |   Reseau neuronal (280)     |
-                    |  +-----------------------+  |
-                    |  |  Somas (spheres)      |  |
-                    |  |  Dendrites (lignes)   |  |
-                    |  |  Axones (Bezier)      |  |
-                    |  +-----------------------+  |
-                    |            |                |
-                    |  +---------v---------+      |
-                    |  | Potentiels action |      |
-                    |  |  (120 particules) |      |
-                    |  +---------+---------+      |
-                    |            |                |
-                    |  +---------v---------+      |
-                    |  |  Foyer critique   |      |
-                    |  |  + ondes de choc  |      |
-                    |  +-------------------+      |
-                    +-----------------------------+
-```
-
-**Comportements dynamiques :**
-- Les neurones proches du foyer (inferieur au seuil calcule) passent en mode **critique** (rouge, x1.4, pulsation intense)
-- A chaque `fire`, un **arc electrique** est genere vers un neurone voisin
-- Le slider **"Recrutement neuronal"** (0-100%) controle directement la propagation
-- Le compteur topbar affiche `(neurones sains) / (total)`
-
----
-
-## Prediction IA
-
-Le moteur de prediction utilise un **modele de scoring pondere** (simule) :
-
-| Facteur | Poids |
-|---------|-------|
-| Sommeil inferieur a 6h (3 derniers jours) | **+22%** |
-| Observance therapeutique inferieure a 80% | **+18%** |
-| Stress rapporte (8/10) | **+12%** |
-| Activite EEG pre-ictale detectee | **+9%** |
-| Alcool (2 verres hier) | **+7%** |
-| Respect des horaires de prise | **-8%** |
-| Activite physique reguliere | **-5%** |
-
-**Sensibilite revendiquee** : 87.8% (fenetre 0-24h, fausses alarmes ~0.8/jour - valeurs simulees).
-
----
-
-## Protocole Etat de Mal
-
-Le protocole suit les recommandations internationales :
-
-### 1ere ligne (5-30 min)
-- **Lorazepam** IV 0.1 mg/kg (max 4 mg)
-- OU **Midazolam** buccal 0.5 mg/kg
-- OU **Diazepam** rectal 0.5 mg/kg
-
-### 2eme ligne (superieur a 20 min)
-- **Levetiracetam** 60 mg/kg IV (max 4500 mg)
-- OU **Phenytoine** 20 mg/kg IV
-- OU **Valproate** 40 mg/kg IV
-
-### 3eme ligne (superieur a 30-60 min)
-- **Propofol** ou **Thiopental** en reanimation
-- EEG continu obligatoire
-
-### Contre-indications absolues
-- Ne **rien** introduire dans la bouche
-- Ne pas **immobiliser** le patient
-- Ne pas **retarder** les benzodiazepines
-
-### Grossesse
-- **Eviter le valproate** (teratogene)
-- Preferer **Levetiracetam** ou **Lamotrigine**
-
----
-
-## Installation
-
-Aucune dependance a installer. Clonez simplement le depot et ouvrez `index.html`.
+Ouvre un terminal et exécute :
 
 ```bash
 git clone https://github.com/gunout/epi-sequence.git
 cd epi-sequence
+python3 -m http.server 8080
 ```
 
-### Option 1 - Ouverture directe
-```bash
-# Ouvrir index.html dans votre navigateur
-open index.html      # macOS
-start index.html     # Windows
-xdg-open index.html  # Linux
-```
+Ouvre ensuite **http://localhost:8080/** dans ton navigateur.
 
-### Option 2 - Serveur local (recommande pour WebRTC)
-```bash
-# Python 3
-python -m http.server 8080
-
-# Node.js
-npx serve .
-
-# PHP
-php -S localhost:8080
-```
-
-Puis ouvrir http://localhost:8080
-
-> **Note** : WebRTC (`getUserMedia`, `getDisplayMedia`) necessite **HTTPS** ou **localhost**. En cas d'absence de camera, l'application bascule automatiquement en mode simulation.
+**Identifiants** : `dr.lefebvre@aphp.fr` / mot de passe libre / 2FA : 6 chiffres.
 
 ---
 
-## Utilisation
+## ✨ Fonctionnalités
 
-### Connexion
-1. Choisissez un role : **Neurologue**, **Urgentiste**, **Interne** ou **Admin**
-2. Entrez vos identifiants (valeurs par defaut disponibles)
-3. Validez le code 2FA (6 chiffres, n'importe quelle valeur)
-
-### Navigation
-
-| Panneau | Contenu |
-|---------|---------|
-| **Gauche** | Liste des dossiers patients (EPI-023, 041, 058, 072) |
-| **Centre-gauche** | Sequenceur CTAG + parametres temps reel |
-| **Centre** | Hologramme neuronal 3D + overlays |
-| **Droite** | 8 onglets (Prediction, Wearables, Education, Charts, Scores, Therapie, Calendrier, IA) |
-| **Bas** | Selecteur de phase SE + timeline + actions |
-
-### Interactions cles
-- **Slider "Recrutement neuronal"** : anime la propagation de la crise dans le cerveau 3D
-- **Slider "Duree ecoulee"** : declenche les alertes CTAG (5, 10, 20, 30 min)
-- **Bouton Snapshot** : telecharge une capture PNG du canvas
-- **Bouton RCP LIVE** : lance la teleconsultation WebRTC simulee
-- **Bouton Recalculer** (onglet Prediction) : met a jour le risque
-- **Bouton Re-entrainement** (onglet IA) : simule un cycle d'apprentissage
+| 3D | Médical | UI |
+|---|---|---|
+| Rotation 360° | Séquenceur CTAG | Login 4 rôles |
+| Zoom limité (4.5→15) | 4 phases SE | 4 dossiers patients |
+| Pan vertical | Prédiction 24h | 8 onglets |
+| 4 vues (3D/Axial/Coronal/Sagittal) | Scores Glasgow/STESS | Charts Chart.js |
+| Mode Rayons X | Recommandations thérapeutiques | RCP Live WebRTC |
+| Couleurs anatomiques | Calendrier RCP | Feedback IA |
+| Survol interactif | Modules éducatifs | Snapshots PNG |
 
 ---
 
-## Stack technique
+## 🎮 Contrôles
 
-| Composant | Technologie |
-|-----------|-------------|
-| **Rendu 3D** | Three.js r128 (CDN) |
-| **Graphiques** | Chart.js 4.4.0 (CDN) |
-| **WebRTC** | API native `getUserMedia` / `getDisplayMedia` |
-| **Styling** | CSS pur (variables, animations, backdrop-filter) |
-| **Logique** | JavaScript vanilla (ES6+) |
-| **Polices** | SF Mono / Courier New (fallback) |
-
-**Aucune etape de build.** Fichier HTML autonome.
+| Action | Souris | Clavier |
+|--------|--------|---------|
+| Rotation | Clic gauche + glisser | — |
+| Zoom | Molette | — |
+| Pan | Clic droit + glisser | Flèches ↑↓←→ |
+| Alternative | — | Z/Q/S/D |
 
 ---
 
-## Structure du projet
+## 📁 Structure
 
 ```
 epi-sequence/
-+-- index.html      # Application complete (HTML + CSS + JS)
-+-- LICENSE         # Licence MIT
-+-- README.md       # Ce fichier
-```
-
-> Le projet est volontairement **monolithique** pour faciliter la demonstration et le deploiement en un seul fichier.
-
----
-
-## Roadmap
-
-### v8.0 (actuelle)
-- [x] Hologramme neuronal 3D realiste
-- [x] Sequenceur CTAG dynamique
-- [x] Prediction IA avec facteurs ponderes
-- [x] Integration wearables (simulee)
-- [x] Modules educatifs personnalises
-- [x] Teleconsultation RCP WebRTC
-
-### v9.0 (a venir)
-- [ ] Backend Node.js/Python pour donnees reelles
-- [ ] Integration HL7 / FHIR
-- [ ] Authentification OAuth2 + SSO hopital
-- [ ] Persistance des sessions (IndexedDB)
-- [ ] Mode multilingue (EN, DE, ES)
-- [ ] Tests automatises (Jest + Playwright)
-
-### v10.0 (exploratoire)
-- [ ] Modele ML reel (TensorFlow.js) entraine sur donnees EEG open-source
-- [ ] Import DICOM / EDF
-- [ ] Export PDF des RCP
-- [ ] Application mobile compagnon (React Native)
-
----
-
-## Contribution
-
-Les contributions sont les bienvenues ! Pour contribuer :
-
-1. **Fork** le projet
-2. Creez une branche (`git checkout -b feature/nouvelle-fonctionnalite`)
-3. Commitez (`git commit -m 'feat: ajout de X'`)
-4. Pushez (`git push origin feature/nouvelle-fonctionnalite`)
-5. Ouvrez une **Pull Request**
-
-### Convention de commits
-Nous suivons [Conventional Commits](https://www.conventionalcommits.org/) :
-- `feat:` nouvelle fonctionnalite
-- `fix:` correction de bug
-- `docs:` documentation
-- `style:` formatage
-- `refactor:` refactorisation
-- `test:` tests
-
----
-
-## Avertissement medical
-
-> **EPI-SEQUENCE PRO est une demonstration technologique a visee educative et de recherche.**
->
-> - **Ne constitue pas un dispositif medical** au sens du Reglement (UE) 2017/745 (MDR)
-> - **Ne doit pas etre utilise** pour un diagnostic, un traitement ou une decision clinique reelle
-> - **Les donnees affichees sont simulees** (patients fictifs, scores, predictions)
-> - **Les protocoles affiches** s'inspirent des recommandations publiees mais ne remplacent pas le jugement clinique
->
-> Pour tout usage clinique, une **certification MDR IIa** (ou superieure) et une **validation clinique** sont indispensables.
-
----
-
-## Licence
-
-Distribue sous licence **MIT**. Voir [LICENSE](https://github.com/gunout/epi-sequence/blob/main/LICENSE) pour plus d'informations.
-
-```
-MIT License
-
-Copyright (c) 2026 gunout
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+├── index.html          # Application complète (~2500 lignes)
+├── brain.glb           # Cerveau 3D Draco-compressé (~10 Mo)
+├── manifest.json       # 437 structures anatomiques
+├── draco/              # Décodeur Draco
+│   ├── draco_decoder.js
+│   ├── draco_decoder.wasm
+│   └── draco_wasm_wrapper.js
+├── LICENSE             # MIT
+└── README.md
 ```
 
 ---
 
-## Remerciements
+## 🏗️ Stack
 
-- [Three.js](https://threejs.org/) - moteur 3D
-- [Chart.js](https://www.chartjs.org/) - graphiques
-- [Shields.io](https://shields.io/) - badges
-- Communaute epileptologie francophone pour les references cliniques
+| Composant | Technologie |
+|-----------|-------------|
+| Rendu 3D | Three.js 0.160.0 |
+| GLB + Draco | GLTFLoader + DRACOLoader |
+| Caméra | OrbitControls |
+| Graphiques | Chart.js 4.4.0 |
+| Style | CSS Vanilla (cyberpunk médical) |
+| Logique | JavaScript ES2022 |
+| WebRTC | API native |
+
+**Aucune étape de build** — fichier HTML autonome.
+
+---
+
+## 📊 Métriques
+
+| Métrique | Valeur |
+|----------|--------|
+| Structures anatomiques | 437 |
+| Meshes 3D | 563 |
+| Taux de match manifest | 99.3% |
+| Meshes épileptiques | 309 |
+| Arcs simultanés max | 100 |
+| FPS moyen | ~60 (normal) / ~30 (Rayons X) |
+
+---
+
+## 🔐 Licences et crédits
+
+**Modèle 3D** — [Brain Project](https://github.com/itayinbarr/brainproject) d'Itay Inbar
+- Modèle : [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)
+- Code source : Apache 2.0
+- Site : [neuro.wiki/3d](https://neuro.wiki/3d)
+
+> Crédit obligatoire : `Brain model © Itay Inbar — CC BY-SA 4.0` (affiché dans l'interface)
+
+**Bibliothèques** : Three.js (MIT), Chart.js (MIT), GLTFLoader (MIT), DRACOLoader (Apache 2.0).
+
+**Projet** : MIT — voir [LICENSE](https://github.com/gunout/epi-sequence/blob/main/LICENSE).
+
+---
+
+## ⚠️ Avertissement médical
+
+**EPI-SEQUENCE PRO est un outil de simulation et de visualisation.**
+
+Il **ne remplace pas** un diagnostic médical, un protocole clinique officiel, ou l'avis d'un neurologue. Les données affichées sont **simulées** à des fins pédagogiques.
+
+**En cas de crise réelle, appelez le 15 (SAMU) ou le 112.**
+
+---
+
+## 🐛 Problèmes fréquents
+
+| Erreur | Solution |
+|--------|----------|
+| `brain.glb introuvable` | Vérifier `ls brain.glb` |
+| `No DRACOLoader instance` | Vérifier `draco/` et `setDecoderPath('draco/')` |
+| `[MANIFEST] 0 nœuds` | Vérifier `{ nodes: [...] }` dans le JSON |
+| Page blanche | Ne pas ouvrir en `file://`, utiliser un serveur HTTP |
+| Cerveau invisible | Vérifier `toneMappingExposure: 0.85` |
+
+---
+
+## 🗺️ Roadmap
+
+- [x] v9.4 — Pan vertical + clavier
+- [ ] v9.5 — Export GLB modifié
+- [ ] v9.6 — Mode VR (WebXR)
+- [ ] v9.7 — Multi-utilisateurs WebRTC réel
+- [ ] v10.0 — Backend (FastAPI + PostgreSQL)
+
+---
+
+## 🤝 Contribution
+
+```bash
+git checkout -b feature/ma-fonctionnalite
+git commit -m "feat: ajout de X"
+git push origin feature/ma-fonctionnalite
+```
+
+Puis ouvrir une **Pull Request** sur GitHub.
+
+**Convention** : `feat:` / `fix:` / `docs:` / `style:` / `refactor:` / `test:`
+
+---
+
+## 📞 Contact
+
+- **Auteur** : [@gunout](https://github.com/gunout)
+- **Projet** : [github.com/gunout/epi-sequence](https://github.com/gunout/epi-sequence)
 
 ---
 
 <div align="center">
 
-**Si ce projet vous interesse, n'hesitez pas a lui donner une etoile !**
+**[⬆ Retour en haut](#-epi-sequence-pro)**
 
-[Signaler un bug](https://github.com/gunout/epi-sequence/issues) - [Proposer une fonctionnalite](https://github.com/gunout/epi-sequence/issues) - [Documentation](https://github.com/gunout/epi-sequence)
+[![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/gunout/epi-sequence)
 
-*Fait avec passion par [@gunout](https://github.com/gunout)*
-
-</div>
-
----
-
-<div align="center">
-
-### 🇫🇷 Gunout · 2026
-
-![Made in France](https://img.shields.io/badge/Made_in-France-002395?style=flat-square&labelColor=FFFFFF&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA5MDAgNjAwIj48cmVjdCB3aWR0aD0iOTAwIiBoZWlnaHQ9IjYwMCIgZmlsbD0iIzAwMjM5NSIvPjxyZWN0IHdpZHRoPSI5MDAiIGhlaWdodD0iNDAwIiB5PSIxMDAiIGZpbGw9IiNmZmYiLz48cmVjdCB3aWR0aD0iOTAwIiBoZWlnaHQ9IjIwMCIgeT0iNDAwIiBmaWxsPSIjZWQyOTM5Ii8+PC9zdmc+)
-![GitHub](https://img.shields.io/badge/GitHub-gunout-181717?style=flat-square&logo=github&logoColor=white)
-![Year](https://img.shields.io/badge/2026-ED2939?style=flat-square&labelColor=FFFFFF)
-
-<sub>© 2026 <strong>Gunout</strong> — Tous droits réservés.</sub>
+Fait avec ❤️ et 🧠 en France — Octobre 2026
 
 </div>
