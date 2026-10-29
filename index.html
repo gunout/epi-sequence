@@ -3,72 +3,34 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EPI-SEQUENCE PRO v8.0 — Neural Hologram Edition</title>
+<title>EPI-SEQUENCE PRO v9.4 — Brain 360° + Pan Vertical</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   :root {
     --cyan: #00e5ff; --cyan-dim: #0095aa;
     --red: #ff3b6b; --yellow: #ffd93b; --green: #00ff9d;
-    --purple: #a855f7; --orange: #ff8b3b; --pink: #ff5cc8;
+    --purple: #a855f7; --orange: #ff8b3b;
     --bg: #030812; --panel: rgba(6, 18, 34, 0.82); --panel-2: rgba(10, 24, 44, 0.9);
     --border: rgba(0, 229, 255, 0.22); --border-strong: rgba(0, 229, 255, 0.5);
     --text: #c9e8f5; --text-dim: #6a8fa3; --grid-line: rgba(0, 229, 255, 0.06);
   }
-  html, body {
-    height: 100%; overflow: hidden; background: var(--bg); color: var(--text);
-    font-family: 'SF Mono', 'Courier New', monospace; font-size: 12px; user-select: none;
-  }
-  body::before {
-    content: ''; position: fixed; inset: 0;
-    background-image: linear-gradient(var(--grid-line) 1px, transparent 1px),
-                      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
-    background-size: 40px 40px; pointer-events: none; z-index: 0;
-  }
-
-  /* ========== LOGIN ========== */
-  #loginScreen {
-    position: fixed; inset: 0; z-index: 5000;
-    display: flex; align-items: center; justify-content: center;
-    background: radial-gradient(ellipse at center, #061426 0%, #020610 60%, #000 100%);
-    transition: opacity 0.6s;
-  }
+  html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(--text); font-family: 'SF Mono', 'Courier New', monospace; font-size: 12px; user-select: none; }
+  body::before { content: ''; position: fixed; inset: 0; background-image: linear-gradient(var(--grid-line) 1px, transparent 1px), linear-gradient(90deg, var(--grid-line) 1px, transparent 1px); background-size: 40px 40px; pointer-events: none; z-index: 0; }
+  #loginScreen { position: fixed; inset: 0; z-index: 5000; display: flex; align-items: center; justify-content: center; background: radial-gradient(ellipse at center, #061426 0%, #020610 60%, #000 100%); transition: opacity 0.6s; }
   #loginScreen.hidden { opacity: 0; pointer-events: none; }
-  .login-bg-grid {
-    position: absolute; inset: 0;
-    background-image: linear-gradient(rgba(0, 229, 255, 0.08) 1px, transparent 1px),
-                      linear-gradient(90deg, rgba(0, 229, 255, 0.08) 1px, transparent 1px);
-    background-size: 50px 50px; animation: gridScroll 8s linear infinite; opacity: 0.5;
-  }
+  .login-bg-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(0, 229, 255, 0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 229, 255, 0.08) 1px, transparent 1px); background-size: 50px 50px; animation: gridScroll 8s linear infinite; opacity: 0.5; }
   @keyframes gridScroll { 0% { background-position: 0 0; } 100% { background-position: 0 50px; } }
-  .login-container {
-    position: relative; z-index: 2;
-    background: rgba(6, 18, 34, 0.9); border: 1px solid var(--border-strong);
-    border-radius: 6px; backdrop-filter: blur(20px);
-    box-shadow: 0 0 80px rgba(0, 229, 255, 0.25), inset 0 0 40px rgba(0, 229, 255, 0.04);
-    width: 460px; padding: 40px 36px; animation: loginFadeIn 0.8s ease-out;
-  }
+  .login-container { position: relative; z-index: 2; background: rgba(6, 18, 34, 0.9); border: 1px solid var(--border-strong); border-radius: 6px; backdrop-filter: blur(20px); box-shadow: 0 0 80px rgba(0, 229, 255, 0.25), inset 0 0 40px rgba(0, 229, 255, 0.04); width: 460px; padding: 40px 36px; animation: loginFadeIn 0.8s ease-out; }
   @keyframes loginFadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-  .login-logo {
-    width: 72px; height: 72px; margin: 0 auto 20px; border: 2px solid var(--cyan);
-    border-radius: 50%; position: relative; box-shadow: 0 0 30px var(--cyan), inset 0 0 20px rgba(0, 229, 255, 0.3);
-    animation: spin 12s linear infinite;
-  }
-  .login-logo::after {
-    content: ''; position: absolute; inset: 12px; border-radius: 50%;
-    background: radial-gradient(circle, var(--red), var(--red) 40%, transparent 70%);
-    box-shadow: 0 0 20px var(--red); animation: pulse 2s ease-in-out infinite;
-  }
+  .login-logo { width: 72px; height: 72px; margin: 0 auto 20px; border: 2px solid var(--cyan); border-radius: 50%; position: relative; box-shadow: 0 0 30px var(--cyan), inset 0 0 20px rgba(0, 229, 255, 0.3); animation: spin 12s linear infinite; }
+  .login-logo::after { content: ''; position: absolute; inset: 12px; border-radius: 50%; background: radial-gradient(circle, var(--red), var(--red) 40%, transparent 70%); box-shadow: 0 0 20px var(--red); animation: pulse 2s ease-in-out infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
   @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.9); } }
   .login-title { text-align: center; font-size: 20px; letter-spacing: 4px; font-weight: bold; color: var(--cyan); margin-bottom: 4px; text-shadow: 0 0 20px var(--cyan); }
   .login-subtitle { text-align: center; font-size: 10px; letter-spacing: 3px; color: var(--text-dim); text-transform: uppercase; margin-bottom: 30px; }
   .login-role-tabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 20px; }
-  .role-tab {
-    padding: 10px 6px; background: rgba(0, 229, 255, 0.04); border: 1px solid var(--border);
-    border-radius: 4px; color: var(--text-dim); font-family: inherit; font-size: 9px;
-    letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: all 0.25s; text-align: center;
-  }
+  .role-tab { padding: 10px 6px; background: rgba(0, 229, 255, 0.04); border: 1px solid var(--border); border-radius: 4px; color: var(--text-dim); font-family: inherit; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: all 0.25s; text-align: center; }
   .role-tab .role-icon { display: block; font-size: 18px; margin-bottom: 4px; filter: grayscale(1); transition: filter 0.25s; }
   .role-tab:hover { background: rgba(0, 229, 255, 0.1); color: var(--cyan); }
   .role-tab:hover .role-icon { filter: grayscale(0); }
@@ -76,73 +38,32 @@
   .role-tab.active .role-icon { filter: grayscale(0); }
   .login-field { margin-bottom: 14px; }
   .login-field label { display: block; font-size: 9.5px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-dim); margin-bottom: 5px; }
-  .login-field input {
-    width: 100%; background: rgba(0, 229, 255, 0.05); border: 1px solid var(--border);
-    color: var(--text); padding: 10px 12px; font-family: inherit; font-size: 12px;
-    border-radius: 3px; outline: none; transition: all 0.25s;
-  }
+  .login-field input { width: 100%; background: rgba(0, 229, 255, 0.05); border: 1px solid var(--border); color: var(--text); padding: 10px 12px; font-family: inherit; font-size: 12px; border-radius: 3px; outline: none; transition: all 0.25s; }
   .login-field input:focus { border-color: var(--cyan); box-shadow: 0 0 15px rgba(0, 229, 255, 0.3); background: rgba(0, 229, 255, 0.08); }
   .login-2fa { display: none; margin-bottom: 14px; }
   .login-2fa.active { display: block; }
   .otp-boxes { display: flex; gap: 8px; justify-content: center; margin-top: 6px; }
-  .otp-box {
-    width: 46px; height: 52px; background: rgba(0, 229, 255, 0.05); border: 1px solid var(--border);
-    color: var(--cyan); font-family: inherit; font-size: 22px; text-align: center; border-radius: 3px;
-    outline: none; transition: all 0.2s;
-  }
+  .otp-box { width: 46px; height: 52px; background: rgba(0, 229, 255, 0.05); border: 1px solid var(--border); color: var(--cyan); font-family: inherit; font-size: 22px; text-align: center; border-radius: 3px; outline: none; transition: all 0.2s; }
   .otp-box:focus { border-color: var(--cyan); box-shadow: 0 0 15px rgba(0, 229, 255, 0.5); background: rgba(0, 229, 255, 0.12); }
-  .btn-login {
-    width: 100%; padding: 14px;
-    background: linear-gradient(135deg, rgba(0, 229, 255, 0.2), rgba(168, 85, 247, 0.15));
-    border: 1px solid var(--cyan); color: var(--cyan); font-family: inherit;
-    font-size: 12px; font-weight: bold; letter-spacing: 3px; text-transform: uppercase;
-    border-radius: 3px; cursor: pointer; transition: all 0.3s; position: relative; overflow: hidden;
-  }
+  .btn-login { width: 100%; padding: 14px; background: linear-gradient(135deg, rgba(0, 229, 255, 0.2), rgba(168, 85, 247, 0.15)); border: 1px solid var(--cyan); color: var(--cyan); font-family: inherit; font-size: 12px; font-weight: bold; letter-spacing: 3px; text-transform: uppercase; border-radius: 3px; cursor: pointer; transition: all 0.3s; }
   .btn-login:hover { background: linear-gradient(135deg, rgba(0, 229, 255, 0.35), rgba(168, 85, 247, 0.3)); color: #fff; box-shadow: 0 0 30px rgba(0, 229, 255, 0.5); }
-  .login-footer {
-    margin-top: 24px; padding-top: 18px; border-top: 1px solid rgba(0, 229, 255, 0.15);
-    text-align: center; font-size: 9px; letter-spacing: 1.5px; color: var(--text-dim); line-height: 1.8;
-  }
+  .login-footer { margin-top: 24px; padding-top: 18px; border-top: 1px solid rgba(0, 229, 255, 0.15); text-align: center; font-size: 9px; letter-spacing: 1.5px; color: var(--text-dim); line-height: 1.8; }
   .login-footer .badges { display: flex; justify-content: center; gap: 8px; margin-top: 10px; }
   .login-badge { padding: 3px 8px; border: 1px solid rgba(0, 255, 157, 0.4); color: var(--green); border-radius: 2px; font-size: 8.5px; letter-spacing: 1px; }
-
-  /* ========== APP ========== */
-  .app {
-    position: relative; z-index: 1; height: 100vh;
-    display: grid; grid-template-columns: 240px 340px 1fr 360px;
-    grid-template-rows: 48px 1fr 100px 26px; gap: 6px; padding: 6px;
-    opacity: 0; transition: opacity 0.6s;
-  }
+  .app { position: relative; z-index: 1; height: 100vh; display: grid; grid-template-columns: 240px 340px 1fr 360px; grid-template-rows: 48px 1fr 100px 26px; gap: 6px; padding: 6px; opacity: 0; transition: opacity 0.6s; }
   .app.visible { opacity: 1; }
-
-  .topbar {
-    grid-column: 1 / -1; background: var(--panel); border: 1px solid var(--border);
-    border-radius: 4px; display: flex; align-items: center; justify-content: space-between;
-    padding: 0 16px; backdrop-filter: blur(12px);
-    box-shadow: 0 0 30px rgba(0, 229, 255, 0.08); position: relative; overflow: hidden;
-  }
-  .topbar::before {
-    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
-    background: linear-gradient(90deg, transparent, var(--cyan), var(--red), transparent);
-    animation: scanH 5s linear infinite;
-  }
+  .topbar { grid-column: 1 / -1; background: var(--panel); border: 1px solid var(--border); border-radius: 4px; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; backdrop-filter: blur(12px); box-shadow: 0 0 30px rgba(0, 229, 255, 0.08); position: relative; overflow: hidden; }
+  .topbar::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--cyan), var(--red), transparent); animation: scanH 5s linear infinite; }
   @keyframes scanH { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
   .brand { display: flex; align-items: center; gap: 10px; font-weight: bold; letter-spacing: 2.5px; font-size: 14px; }
-  .brand-logo {
-    width: 24px; height: 24px; border: 2px solid var(--cyan); border-radius: 50%;
-    position: relative; box-shadow: 0 0 12px var(--cyan); animation: spin 10s linear infinite;
-  }
-  .brand-logo::after {
-    content: ''; position: absolute; inset: 5px; border-radius: 50%;
-    background: var(--red); box-shadow: 0 0 10px var(--red); animation: pulse 2s ease-in-out infinite;
-  }
+  .brand-logo { width: 24px; height: 24px; border: 2px solid var(--cyan); border-radius: 50%; position: relative; box-shadow: 0 0 12px var(--cyan); animation: spin 10s linear infinite; }
+  .brand-logo::after { content: ''; position: absolute; inset: 5px; border-radius: 50%; background: var(--red); box-shadow: 0 0 10px var(--red); animation: pulse 2s ease-in-out infinite; }
   .topbar-stats { display: flex; gap: 18px; font-size: 11px; }
   .stat-item { display: flex; flex-direction: column; gap: 1px; }
   .stat-label { opacity: 0.5; font-size: 9px; letter-spacing: 1px; }
   .stat-value { font-weight: bold; }
   .stat-value.red { color: var(--red); } .stat-value.yellow { color: var(--yellow); }
-  .stat-value.green { color: var(--green); } .stat-value.cyan { color: var(--cyan); }
-  .stat-value.purple { color: var(--purple); }
+  .stat-value.green { color: var(--green); } .stat-value.cyan { color: var(--cyan); } .stat-value.purple { color: var(--purple); }
   .topbar-user { display: flex; align-items: center; gap: 14px; font-size: 11px; }
   .role-badge { padding: 3px 10px; border-radius: 2px; letter-spacing: 1px; font-size: 9.5px; text-transform: uppercase; font-weight: bold; }
   .role-badge.neurologue { background: rgba(168, 85, 247, 0.15); border: 1px solid var(--purple); color: var(--purple); }
@@ -150,47 +71,24 @@
   .role-badge.interne { background: rgba(255, 217, 59, 0.15); border: 1px solid var(--yellow); color: var(--yellow); }
   .role-badge.admin { background: rgba(255, 59, 107, 0.15); border: 1px solid var(--red); color: var(--red); }
   .session-timer { color: var(--green); font-size: 10.5px; letter-spacing: 1px; }
-  .btn-logout {
-    padding: 4px 10px; background: transparent; border: 1px solid rgba(255, 59, 107, 0.4);
-    color: var(--red); font-family: inherit; font-size: 9.5px; letter-spacing: 1px;
-    cursor: pointer; border-radius: 2px; transition: all 0.2s;
-  }
+  .btn-logout { padding: 4px 10px; background: transparent; border: 1px solid rgba(255, 59, 107, 0.4); color: var(--red); font-family: inherit; font-size: 9.5px; letter-spacing: 1px; cursor: pointer; border-radius: 2px; transition: all 0.2s; }
   .btn-logout:hover { background: rgba(255, 59, 107, 0.2); box-shadow: 0 0 12px rgba(255, 59, 107, 0.4); }
-
-  .panel {
-    background: var(--panel); border: 1px solid var(--border); border-radius: 4px;
-    backdrop-filter: blur(12px); display: flex; flex-direction: column;
-    overflow: hidden; position: relative;
-  }
-  .panel-header {
-    padding: 8px 12px; border-bottom: 1px solid var(--border); font-size: 10px;
-    letter-spacing: 2px; text-transform: uppercase; display: flex;
-    justify-content: space-between; align-items: center;
-    background: rgba(0, 229, 255, 0.04); flex-shrink: 0;
-  }
+  .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 4px; backdrop-filter: blur(12px); display: flex; flex-direction: column; overflow: hidden; position: relative; }
+  .panel-header { padding: 8px 12px; border-bottom: 1px solid var(--border); font-size: 10px; letter-spacing: 2px; text-transform: uppercase; display: flex; justify-content: space-between; align-items: center; background: rgba(0, 229, 255, 0.04); flex-shrink: 0; }
   .panel-header .title { color: var(--cyan); display: flex; align-items: center; gap: 6px; }
   .panel-header .title::before { content: '▸'; color: var(--red); animation: blink 1.2s infinite; }
   @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
   .panel-body { padding: 10px 12px; overflow-y: auto; flex: 1; }
   .panel-body::-webkit-scrollbar { width: 3px; }
   .panel-body::-webkit-scrollbar-thumb { background: var(--cyan-dim); border-radius: 2px; }
-
   .patient-search { padding: 8px 10px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
-  .patient-search input {
-    width: 100%; background: rgba(0, 229, 255, 0.05); border: 1px solid var(--border);
-    color: var(--cyan); padding: 6px 10px; font-family: inherit; font-size: 11px;
-    border-radius: 3px; outline: none;
-  }
+  .patient-search input { width: 100%; background: rgba(0, 229, 255, 0.05); border: 1px solid var(--border); color: var(--cyan); padding: 6px 10px; font-family: inherit; font-size: 11px; border-radius: 3px; outline: none; }
   .patient-list { flex: 1; overflow-y: auto; }
   .patient-list::-webkit-scrollbar { width: 3px; }
   .patient-list::-webkit-scrollbar-thumb { background: var(--cyan-dim); }
-  .patient-card {
-    padding: 9px 12px; border-bottom: 1px solid rgba(0, 229, 255, 0.08);
-    cursor: pointer; transition: all 0.2s; position: relative;
-  }
+  .patient-card { padding: 9px 12px; border-bottom: 1px solid rgba(0, 229, 255, 0.08); cursor: pointer; transition: all 0.2s; position: relative; }
   .patient-card:hover { background: rgba(0, 229, 255, 0.06); }
   .patient-card.active { background: rgba(0, 229, 255, 0.12); border-left: 3px solid var(--cyan); padding-left: 9px; }
-  .patient-card.active::after { content: ''; position: absolute; right: 0; top: 0; bottom: 0; width: 2px; background: var(--cyan); box-shadow: 0 0 10px var(--cyan); }
   .pc-name { font-size: 12px; font-weight: bold; margin-bottom: 3px; display: flex; justify-content: space-between; }
   .pc-id { font-size: 9px; color: var(--cyan-dim); letter-spacing: 0.5px; }
   .pc-meta { display: flex; gap: 8px; font-size: 9px; color: var(--text-dim); margin-top: 3px; }
@@ -199,168 +97,63 @@
   .pc-tag.warn { background: rgba(255,217,59,0.2); color: var(--yellow); }
   .pc-tag.ok { background: rgba(0,255,157,0.15); color: var(--green); }
   .pc-tag.new { background: rgba(168,85,247,0.2); color: var(--purple); }
-
   .section { border-bottom: 1px solid rgba(0, 229, 255, 0.1); padding: 10px 0; }
   .section:last-child { border-bottom: none; }
   .section-title { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--cyan); opacity: 0.8; margin-bottom: 8px; display: flex; justify-content: space-between; }
   .field { margin-bottom: 10px; }
   .field label { display: block; font-size: 9px; letter-spacing: 1.2px; text-transform: uppercase; opacity: 0.65; margin-bottom: 4px; }
-  .field input, .field select, .field textarea {
-    width: 100%; background: rgba(0, 229, 255, 0.05); border: 1px solid var(--border);
-    color: var(--text); padding: 6px 9px; font-family: inherit; font-size: 11px;
-    border-radius: 3px; outline: none; transition: all 0.2s;
-  }
-  .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--cyan); box-shadow: 0 0 10px rgba(0, 229, 255, 0.3); }
-  .field textarea { resize: vertical; min-height: 55px; font-size: 10.5px; line-height: 1.5; }
+  .field input, .field select { width: 100%; background: rgba(0, 229, 255, 0.05); border: 1px solid var(--border); color: var(--text); padding: 6px 9px; font-family: inherit; font-size: 11px; border-radius: 3px; outline: none; transition: all 0.2s; }
+  .field input:focus, .field select:focus { border-color: var(--cyan); box-shadow: 0 0 10px rgba(0, 229, 255, 0.3); }
   .tag-group { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 4px; }
   .tag { padding: 3px 8px; border: 1px solid var(--border); border-radius: 2px; font-size: 9.5px; cursor: pointer; transition: all 0.2s; background: rgba(0, 229, 255, 0.04); letter-spacing: 0.5px; }
   .tag:hover { background: rgba(0, 229, 255, 0.14); }
-  .tag.active { background: rgba(0, 229, 255, 0.18); border-color: var(--cyan); box-shadow: 0 0 10px rgba(0, 229, 255, 0.3); color: #fff; }
+  .tag.active { background: rgba(0, 229, 255, 0.18); border-color: var(--cyan); color: #fff; }
   .tag.red.active { background: rgba(255,59,107,0.22); border-color: var(--red); color: var(--red); }
   .tag.yellow.active { background: rgba(255,217,59,0.2); border-color: var(--yellow); color: var(--yellow); }
   .slider-row { display: flex; align-items: center; gap: 8px; margin-top: 3px; }
   .slider-row input[type="range"] { flex: 1; -webkit-appearance: none; height: 3px; background: rgba(0, 229, 255, 0.15); border-radius: 2px; padding: 0; }
   .slider-row input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 12px; height: 12px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 10px var(--cyan); cursor: pointer; }
   .slider-value { font-size: 10px; color: var(--green); min-width: 42px; text-align: right; font-weight: bold; }
-
-  .btn {
-    padding: 8px 12px; background: rgba(0, 229, 255, 0.08); border: 1px solid var(--border);
-    color: var(--cyan); font-family: inherit; font-size: 10px; letter-spacing: 1.5px;
-    cursor: pointer; border-radius: 3px; transition: all 0.2s; text-transform: uppercase; font-weight: bold;
-  }
+  .btn { padding: 8px 12px; background: rgba(0, 229, 255, 0.08); border: 1px solid var(--border); color: var(--cyan); font-family: inherit; font-size: 10px; letter-spacing: 1.5px; cursor: pointer; border-radius: 3px; transition: all 0.2s; text-transform: uppercase; font-weight: bold; }
   .btn:hover { background: rgba(0, 229, 255, 0.2); box-shadow: 0 0 15px rgba(0, 229, 255, 0.35); color: #fff; }
   .btn.primary { background: linear-gradient(135deg, rgba(255, 59, 107, 0.2), rgba(0, 229, 255, 0.15)); border-color: var(--red); color: var(--red); width: 100%; }
   .btn.primary:hover { background: linear-gradient(135deg, rgba(255, 59, 107, 0.35), rgba(0, 229, 255, 0.3)); color: #fff; }
-  .btn.danger { border-color: var(--red); color: var(--red); }
   .btn.success { border-color: var(--green); color: var(--green); }
-  .btn.purple { border-color: var(--purple); color: var(--purple); }
-  .btn-group { display: flex; gap: 6px; margin-top: 8px; }
-  .btn-group .btn { flex: 1; }
-
-  .viewport { position: relative; background: radial-gradient(ellipse at center, #04101e 0%, #010409 100%); overflow: hidden; }
+  .viewport { position: relative; background: radial-gradient(ellipse at center, #0a1220 0%, #02040a 100%); overflow: hidden; }
   #scene { width: 100%; height: 100%; display: block; }
   .vp-overlay { position: absolute; inset: 0; pointer-events: none; padding: 12px; display: flex; flex-direction: column; justify-content: space-between; }
-  .vp-row { display: flex; justify-content: space-between; align-items: flex-start; }
-  .vp-info-box {
-    background: rgba(0, 0, 0, 0.55); border: 1px solid var(--border); border-radius: 3px;
-    padding: 8px 10px; backdrop-filter: blur(6px); font-size: 10px;
-    letter-spacing: 0.8px; line-height: 1.5;
-  }
+  .vp-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+  .vp-info-box { background: rgba(0, 0, 0, 0.65); border: 1px solid var(--border); border-radius: 3px; padding: 8px 10px; backdrop-filter: blur(6px); font-size: 10px; letter-spacing: 0.8px; line-height: 1.5; max-width: 280px; pointer-events: auto; }
   .vp-info-box .k { color: var(--cyan); opacity: 0.75; }
   .vp-info-box .v { color: var(--text); }
-  .crosshair { position: absolute; top: 50%; left: 50%; width: 60px; height: 60px; transform: translate(-50%, -50%); pointer-events: none; opacity: 0.35; }
-  .crosshair::before, .crosshair::after { content: ''; position: absolute; background: var(--cyan); box-shadow: 0 0 6px var(--cyan); }
-  .crosshair::before { top: 50%; left: 0; right: 0; height: 1px; }
-  .crosshair::after { left: 50%; top: 0; bottom: 0; width: 1px; }
-  .corner { position: absolute; width: 18px; height: 18px; border: 2px solid var(--cyan); opacity: 0.55; }
+  #structureInfo { border-color: var(--cyan); box-shadow: 0 0 15px rgba(0, 229, 255, 0.3); min-width: 240px; }
+  #structureInfo .v { color: var(--green); font-weight: bold; }
+  .vp-toolbar { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); display: flex; gap: 4px; background: rgba(0,0,0,0.65); border: 1px solid var(--border); border-radius: 4px; padding: 4px; backdrop-filter: blur(8px); pointer-events: auto; z-index: 10; }
+  .vp-tool { padding: 5px 9px; background: transparent; border: none; color: var(--text-dim); font-family: inherit; font-size: 10px; cursor: pointer; border-radius: 2px; transition: all 0.2s; }
+  .vp-tool:hover { background: rgba(0,229,255,0.15); color: var(--cyan); }
+  .vp-tool.active { background: rgba(0, 229, 255, 0.25); color: var(--cyan); }
+  .corner { position: absolute; width: 18px; height: 18px; border: 2px solid var(--cyan); opacity: 0.4; }
   .corner.tl { top: 8px; left: 8px; border-right: none; border-bottom: none; }
   .corner.tr { top: 8px; right: 8px; border-left: none; border-bottom: none; }
   .corner.bl { bottom: 8px; left: 8px; border-right: none; border-top: none; }
   .corner.br { bottom: 8px; right: 8px; border-left: none; border-top: none; }
-
-  .alert-banner {
-    position: absolute; top: 55px; left: 50%; transform: translateX(-50%);
-    padding: 8px 16px; border-radius: 4px; font-size: 11px; font-weight: bold;
-    letter-spacing: 1px; z-index: 12; pointer-events: none;
-    opacity: 0; transition: all 0.4s;
-    display: flex; align-items: center; gap: 8px;
-  }
-  .alert-banner.active { opacity: 1; }
-  .alert-banner.crit { background: rgba(255, 59, 107, 0.25); border: 1px solid var(--red); color: var(--red); box-shadow: 0 0 25px rgba(255, 59, 107, 0.5); animation: pulse 1s infinite; }
-  .alert-banner.warn { background: rgba(255, 217, 59, 0.2); border: 1px solid var(--yellow); color: var(--yellow); box-shadow: 0 0 20px rgba(255, 217, 59, 0.4); }
-  .alert-banner.ok { background: rgba(0, 255, 157, 0.15); border: 1px solid var(--green); color: var(--green); }
-
-  .video-grid {
-    position: absolute; top: 60px; right: 12px;
-    display: grid; grid-template-columns: 110px 110px;
-    gap: 6px; pointer-events: auto;
-    opacity: 0; transition: opacity 0.4s;
-    z-index: 15;
-  }
-  .video-grid.active { opacity: 1; }
-  .video-tile {
-    background: linear-gradient(135deg, rgba(6, 18, 34, 0.95), rgba(10, 24, 44, 0.95));
-    border: 1px solid var(--border); border-radius: 4px; overflow: hidden;
-    font-size: 8px; position: relative;
-  }
-  .video-tile video { width: 100%; height: 65px; object-fit: cover; background: #000; display: block; }
-  .video-tile .tile-label {
-    padding: 2px 5px; background: rgba(0, 0, 0, 0.85); color: var(--cyan);
-    font-size: 8px; letter-spacing: 0.5px; text-overflow: ellipsis;
-    overflow: hidden; white-space: nowrap;
-  }
-  .video-tile .tile-status {
-    position: absolute; top: 3px; right: 3px; width: 6px; height: 6px;
-    border-radius: 50%; background: var(--green); box-shadow: 0 0 6px var(--green);
-    animation: pulse 1.5s infinite;
-  }
-  .video-tile.speaking { border-color: var(--green); box-shadow: 0 0 15px rgba(0, 255, 157, 0.4); }
-  .video-tile.speaking .tile-status { background: var(--red); box-shadow: 0 0 8px var(--red); }
-  .video-tile.muted { opacity: 0.4; }
-
-  .rcp-bar {
-    position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%);
-    display: none; gap: 6px; background: rgba(6, 18, 34, 0.95);
-    border: 1px solid var(--purple); border-radius: 4px; padding: 8px 12px;
-    backdrop-filter: blur(10px); box-shadow: 0 0 25px rgba(168, 85, 247, 0.4);
-    pointer-events: auto; z-index: 20;
-  }
-  .rcp-bar.active { display: flex; }
-  .rcp-btn {
-    padding: 6px 12px; background: rgba(168, 85, 247, 0.1); border: 1px solid var(--purple);
-    color: var(--purple); font-family: inherit; font-size: 10px; letter-spacing: 1px;
-    cursor: pointer; border-radius: 2px; transition: all 0.2s; text-transform: uppercase;
-  }
-  .rcp-btn:hover { background: rgba(168, 85, 247, 0.25); color: #fff; box-shadow: 0 0 15px rgba(168, 85, 247, 0.5); }
-  .rcp-btn.recording { background: rgba(255, 59, 107, 0.3); border-color: var(--red); color: var(--red); animation: pulse 1s infinite; }
-
   .tabs { display: flex; border-bottom: 1px solid var(--border); background: rgba(0, 229, 255, 0.02); flex-shrink: 0; overflow-x: auto; }
   .tabs::-webkit-scrollbar { height: 2px; }
   .tabs::-webkit-scrollbar-thumb { background: var(--cyan-dim); }
-  .tab {
-    flex: 1; min-width: 48px; padding: 8px 3px; text-align: center;
-    font-size: 8.5px; letter-spacing: 0.8px; text-transform: uppercase;
-    color: var(--text-dim); cursor: pointer; border-bottom: 2px solid transparent;
-    transition: all 0.2s; background: transparent; border-top: none;
-    border-left: none; border-right: none; font-family: inherit;
-  }
+  .tab { flex: 1; min-width: 48px; padding: 8px 3px; text-align: center; font-size: 8.5px; letter-spacing: 0.8px; text-transform: uppercase; color: var(--text-dim); cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; background: transparent; border-top: none; border-left: none; border-right: none; font-family: inherit; }
   .tab:hover { color: var(--cyan); }
   .tab.active { color: var(--cyan); border-bottom-color: var(--cyan); background: rgba(0, 229, 255, 0.06); }
   .tab-content { display: none; }
   .tab-content.active { display: block; }
-
-  .chart-wrap {
-    background: rgba(0, 229, 255, 0.03); border: 1px solid var(--border);
-    border-radius: 3px; padding: 10px; margin-bottom: 10px; position: relative;
-  }
+  .chart-wrap { background: rgba(0, 229, 255, 0.03); border: 1px solid var(--border); border-radius: 3px; padding: 10px; margin-bottom: 10px; }
   .chart-title { font-size: 9.5px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--cyan); margin-bottom: 6px; display: flex; justify-content: space-between; }
   .chart-title span:last-child { color: var(--red); font-size: 9px; }
-
   .score-card { background: rgba(0, 229, 255, 0.04); border: 1px solid var(--border); border-radius: 3px; padding: 10px; margin-bottom: 10px; }
   .score-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
   .score-name { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--cyan); font-weight: bold; }
   .score-value { font-size: 15px; font-weight: bold; font-family: 'Courier New', monospace; }
-  .score-value.red { color: var(--red); text-shadow: 0 0 10px var(--red); }
-  .score-value.yellow { color: var(--yellow); text-shadow: 0 0 10px var(--yellow); }
-  .score-value.green { color: var(--green); text-shadow: 0 0 10px var(--green); }
-  .score-value.purple { color: var(--purple); text-shadow: 0 0 10px var(--purple); }
-  .score-detail { font-size: 9.5px; color: var(--text-dim); line-height: 1.6; letter-spacing: 0.3px; }
-  .score-detail strong { color: var(--text); }
-
-  .metric { margin-bottom: 11px; }
-  .metric-label { display: flex; justify-content: space-between; font-size: 9.5px; letter-spacing: 1px; text-transform: uppercase; opacity: 0.75; margin-bottom: 4px; }
-  .metric-bar { height: 4px; background: rgba(0, 229, 255, 0.08); border-radius: 2px; overflow: hidden; }
-  .metric-fill { height: 100%; border-radius: 2px; transition: width 0.6s; }
-  .metric-fill.red { background: linear-gradient(90deg, #ff3b6b, #ff8899); box-shadow: 0 0 8px #ff3b6b; }
-  .metric-fill.yellow { background: linear-gradient(90deg, #ffd93b, #ffee88); box-shadow: 0 0 8px #ffd93b; }
-  .metric-fill.green { background: linear-gradient(90deg, #00ff9d, #88ffcc); box-shadow: 0 0 8px #00ff9d; }
-  .metric-fill.purple { background: linear-gradient(90deg, #a855f7, #d8b4fe); box-shadow: 0 0 8px #a855f7; }
-  .metric-value { font-size: 10px; font-weight: bold; }
-  .metric-value.red { color: var(--red); }
-  .metric-value.yellow { color: var(--yellow); }
-  .metric-value.green { color: var(--green); }
-  .metric-value.purple { color: var(--purple); }
-
+  .score-value.red { color: var(--red); } .score-value.yellow { color: var(--yellow); } .score-value.purple { color: var(--purple); }
+  .score-detail { font-size: 9.5px; color: var(--text-dim); line-height: 1.6; }
   .reco-item { background: rgba(0, 255, 157, 0.04); border-left: 3px solid var(--green); padding: 8px 10px; margin-bottom: 7px; border-radius: 2px; font-size: 10.5px; line-height: 1.5; }
   .reco-item.warn { background: rgba(255, 217, 59, 0.04); border-left-color: var(--yellow); }
   .reco-item.crit { background: rgba(255, 59, 107, 0.04); border-left-color: var(--red); }
@@ -368,9 +161,7 @@
   .reco-item .reco-title { color: var(--green); }
   .reco-item.warn .reco-title { color: var(--yellow); }
   .reco-item.crit .reco-title { color: var(--red); }
-  .reco-text strong { color: var(--cyan); }
   .reco-text .drug { display: inline-block; background: rgba(0, 229, 255, 0.1); padding: 0 5px; border-radius: 2px; color: var(--cyan); font-weight: bold; margin: 0 2px; }
-
   .calendar { background: rgba(0, 229, 255, 0.03); border: 1px solid var(--border); border-radius: 3px; padding: 10px; margin-bottom: 10px; }
   .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
   .cal-month { font-size: 11px; letter-spacing: 1.5px; color: var(--cyan); font-weight: bold; }
@@ -379,58 +170,20 @@
   .cal-nav button:hover { background: rgba(0, 229, 255, 0.15); }
   .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; }
   .cal-day-name { text-align: center; font-size: 8px; color: var(--text-dim); padding: 3px 0; }
-  .cal-day {
-    aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
-    background: rgba(0, 229, 255, 0.03); border: 1px solid transparent;
-    border-radius: 2px; font-size: 10px; cursor: pointer; transition: all 0.15s;
-    position: relative;
-  }
+  .cal-day { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; background: rgba(0, 229, 255, 0.03); border: 1px solid transparent; border-radius: 2px; font-size: 10px; cursor: pointer; transition: all 0.15s; position: relative; }
   .cal-day:hover { background: rgba(0, 229, 255, 0.12); }
   .cal-day.today { border-color: var(--cyan); color: var(--cyan); font-weight: bold; }
   .cal-day.event { background: rgba(168, 85, 247, 0.15); border-color: var(--purple); color: var(--purple); }
   .cal-day.event.crit { background: rgba(255, 59, 107, 0.15); border-color: var(--red); color: var(--red); }
-  .cal-day.event::after { content: ''; position: absolute; bottom: 2px; left: 50%; transform: translateX(-50%); width: 4px; height: 4px; border-radius: 50%; background: currentColor; box-shadow: 0 0 6px currentColor; }
-
-  .rcp-event {
-    background: rgba(168, 85, 247, 0.06); border-left: 3px solid var(--purple);
-    padding: 8px 10px; margin-bottom: 6px; border-radius: 2px; font-size: 10px;
-  }
-  .rcp-event.crit { background: rgba(255, 59, 107, 0.06); border-left-color: var(--red); }
-  .rcp-event .ev-title { font-size: 10px; font-weight: bold; color: var(--purple); margin-bottom: 3px; }
-  .rcp-event.crit .ev-title { color: var(--red); }
-  .rcp-event .ev-meta { font-size: 9px; color: var(--text-dim); }
-
-  .learn-stat {
-    background: rgba(0, 229, 255, 0.04); border: 1px solid var(--border);
-    border-radius: 3px; padding: 10px; margin-bottom: 8px;
-  }
+  .learn-stat { background: rgba(0, 229, 255, 0.04); border: 1px solid var(--border); border-radius: 3px; padding: 10px; margin-bottom: 8px; }
   .learn-stat .ls-label { font-size: 9px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--text-dim); margin-bottom: 4px; }
   .learn-stat .ls-value { font-size: 18px; font-weight: bold; color: var(--cyan); text-shadow: 0 0 12px var(--cyan); }
-  .learn-stat .ls-detail { font-size: 9px; color: var(--text-dim); margin-top: 4px; }
-
   .feedback-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin: 8px 0; }
-  .feedback-btn {
-    padding: 8px; background: rgba(0, 229, 255, 0.05); border: 1px solid var(--border);
-    color: var(--text); font-family: inherit; font-size: 9.5px; cursor: pointer;
-    border-radius: 3px; transition: all 0.2s; letter-spacing: 0.5px;
-  }
+  .feedback-btn { padding: 8px; background: rgba(0, 229, 255, 0.05); border: 1px solid var(--border); color: var(--text); font-family: inherit; font-size: 9.5px; cursor: pointer; border-radius: 3px; transition: all 0.2s; letter-spacing: 0.5px; }
   .feedback-btn:hover { background: rgba(0, 229, 255, 0.15); color: var(--cyan); }
-  .feedback-btn.correct:hover { background: rgba(0, 255, 157, 0.15); border-color: var(--green); color: var(--green); }
-  .feedback-btn.incorrect:hover { background: rgba(255, 59, 107, 0.15); border-color: var(--red); color: var(--red); }
-  .feedback-btn.partial:hover { background: rgba(255, 217, 59, 0.15); border-color: var(--yellow); color: var(--yellow); }
-  .feedback-btn.unknown:hover { background: rgba(168, 85, 247, 0.15); border-color: var(--purple); color: var(--purple); }
-
-  .ctag-panel {
-    background: rgba(0, 229, 255, 0.03); border: 1px solid var(--border);
-    border-radius: 3px; padding: 10px; margin-bottom: 10px;
-  }
+  .ctag-panel { background: rgba(0, 229, 255, 0.03); border: 1px solid var(--border); border-radius: 3px; padding: 10px; margin-bottom: 10px; }
   .ctag-timeline { display: flex; flex-direction: column; gap: 6px; }
-  .ctag-step {
-    display: flex; align-items: flex-start; gap: 8px; padding: 7px 9px;
-    border-radius: 3px; border-left: 3px solid var(--text-dim);
-    background: rgba(0, 0, 0, 0.2); transition: all 0.3s;
-  }
-  .ctag-step.active { border-left-color: var(--cyan); background: rgba(0, 229, 255, 0.08); box-shadow: 0 0 12px rgba(0, 229, 255, 0.2); }
+  .ctag-step { display: flex; align-items: flex-start; gap: 8px; padding: 7px 9px; border-radius: 3px; border-left: 3px solid var(--text-dim); background: rgba(0, 0, 0, 0.2); transition: all 0.3s; }
   .ctag-step.done { border-left-color: var(--green); opacity: 0.7; }
   .ctag-step.crit { border-left-color: var(--red); animation: pulse 2s infinite; }
   .ctag-time { font-size: 8.5px; font-weight: bold; color: var(--cyan); min-width: 48px; letter-spacing: 0.5px; padding-top: 2px; }
@@ -438,170 +191,86 @@
   .ctag-title { font-size: 10px; font-weight: bold; margin-bottom: 2px; color: var(--text); }
   .ctag-desc { font-size: 8.5px; color: var(--text-dim); line-height: 1.4; }
   .ctag-actions { display: flex; gap: 4px; margin-top: 4px; flex-wrap: wrap; }
-  .ctag-btn {
-    padding: 3px 8px; font-size: 8px; letter-spacing: 0.5px; text-transform: uppercase;
-    background: rgba(0, 229, 255, 0.1); border: 1px solid var(--border);
-    color: var(--cyan); border-radius: 2px; cursor: pointer; font-family: inherit;
-    transition: all 0.2s;
-  }
+  .ctag-btn { padding: 3px 8px; font-size: 8px; letter-spacing: 0.5px; text-transform: uppercase; background: rgba(0, 229, 255, 0.1); border: 1px solid var(--border); color: var(--cyan); border-radius: 2px; cursor: pointer; font-family: inherit; transition: all 0.2s; }
   .ctag-btn:hover { background: rgba(0, 229, 255, 0.25); }
   .ctag-btn.done { background: rgba(0, 255, 157, 0.15); border-color: var(--green); color: var(--green); }
-  .ctag-btn.skip { border-color: var(--yellow); color: var(--yellow); }
   .ctag-status { font-size: 8px; padding: 2px 6px; border-radius: 2px; letter-spacing: 0.5px; }
   .ctag-status.pending { background: rgba(255, 217, 59, 0.15); color: var(--yellow); }
   .ctag-status.ok { background: rgba(0, 255, 157, 0.15); color: var(--green); }
   .ctag-status.urgent { background: rgba(255, 59, 107, 0.2); color: var(--red); }
-
-  .wearable-card {
-    background: rgba(0, 229, 255, 0.04); border: 1px solid var(--border);
-    border-radius: 3px; padding: 9px; margin-bottom: 8px;
-    display: flex; justify-content: space-between; align-items: center;
-  }
+  .wearable-card { background: rgba(0, 229, 255, 0.04); border: 1px solid var(--border); border-radius: 3px; padding: 9px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
   .wearable-info { flex: 1; }
   .wearable-name { font-size: 10px; font-weight: bold; color: var(--cyan); margin-bottom: 2px; }
   .wearable-status { font-size: 8.5px; color: var(--text-dim); }
   .wearable-dot { width: 8px; height: 8px; border-radius: 50%; box-shadow: 0 0 8px currentColor; }
   .wearable-dot.online { background: var(--green); color: var(--green); animation: pulse 1.5s infinite; }
-  .wearable-dot.offline { background: var(--red); color: var(--red); }
   .wearable-dot.warn { background: var(--yellow); color: var(--yellow); animation: pulse 1s infinite; }
-
-  .prediction-gauge {
-    background: rgba(0, 229, 255, 0.04); border: 1px solid var(--border);
-    border-radius: 4px; padding: 12px; margin-bottom: 10px; text-align: center;
-  }
+  .prediction-gauge { background: rgba(0, 229, 255, 0.04); border: 1px solid var(--border); border-radius: 4px; padding: 12px; margin-bottom: 10px; text-align: center; }
   .prediction-label { font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-dim); margin-bottom: 6px; }
   .prediction-value { font-size: 32px; font-weight: bold; font-family: 'Courier New', monospace; text-shadow: 0 0 20px currentColor; margin-bottom: 4px; }
   .prediction-window { font-size: 9px; color: var(--text-dim); }
   .prediction-factors { margin-top: 8px; text-align: left; }
-  .factor-item {
-    display: flex; justify-content: space-between; align-items: center;
-    font-size: 8.5px; padding: 3px 0; border-bottom: 1px dashed rgba(0, 229, 255, 0.1);
-  }
+  .factor-item { display: flex; justify-content: space-between; align-items: center; font-size: 8.5px; padding: 3px 0; border-bottom: 1px dashed rgba(0, 229, 255, 0.1); }
   .factor-item:last-child { border-bottom: none; }
   .factor-name { color: var(--text-dim); }
   .factor-weight { font-weight: bold; }
   .factor-weight.pos { color: var(--red); }
   .factor-weight.neg { color: var(--green); }
-  .factor-weight.neu { color: var(--yellow); }
-
-  .edu-module {
-    background: rgba(168, 85, 247, 0.06); border: 1px solid rgba(168, 85, 247, 0.3);
-    border-radius: 3px; padding: 9px; margin-bottom: 7px; cursor: pointer;
-    transition: all 0.2s;
-  }
+  .edu-module { background: rgba(168, 85, 247, 0.06); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 3px; padding: 9px; margin-bottom: 7px; cursor: pointer; transition: all 0.2s; }
   .edu-module:hover { background: rgba(168, 85, 247, 0.15); border-color: var(--purple); }
   .edu-module.completed { opacity: 0.6; border-color: var(--green); }
   .edu-title { font-size: 10px; font-weight: bold; color: var(--purple); margin-bottom: 3px; }
   .edu-meta { font-size: 8.5px; color: var(--text-dim); display: flex; justify-content: space-between; }
   .edu-progress { height: 2px; background: rgba(168, 85, 247, 0.2); border-radius: 1px; margin-top: 5px; overflow: hidden; }
   .edu-progress-fill { height: 100%; background: var(--purple); box-shadow: 0 0 6px var(--purple); transition: width 0.4s; }
-
-  .bottombar {
-    grid-column: 1 / -1; background: var(--panel); border: 1px solid var(--border);
-    border-radius: 4px; display: flex; align-items: stretch; padding: 10px 16px;
-    gap: 16px; backdrop-filter: blur(12px); box-shadow: 0 0 24px rgba(0, 229, 255, 0.06);
-  }
+  .bottombar { grid-column: 1 / -1; background: var(--panel); border: 1px solid var(--border); border-radius: 4px; display: flex; align-items: stretch; padding: 10px 16px; gap: 16px; backdrop-filter: blur(12px); }
   .bb-section { display: flex; flex-direction: column; gap: 6px; justify-content: center; }
   .bb-section.grow { flex: 1; }
   .bb-label { font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; opacity: 0.55; }
   .stage-selector { display: flex; gap: 4px; }
-  .stage-btn {
-    padding: 7px 10px; background: rgba(0, 229, 255, 0.05); border: 1px solid var(--border);
-    color: var(--cyan); font-family: inherit; font-size: 9.5px; letter-spacing: 0.8px;
-    cursor: pointer; border-radius: 3px; transition: all 0.2s;
-  }
+  .stage-btn { padding: 7px 10px; background: rgba(0, 229, 255, 0.05); border: 1px solid var(--border); color: var(--cyan); font-family: inherit; font-size: 9.5px; letter-spacing: 0.8px; cursor: pointer; border-radius: 3px; transition: all 0.2s; }
   .stage-btn:hover { background: rgba(0, 229, 255, 0.15); }
   .stage-btn.active { background: var(--red); border-color: var(--red); color: #fff; box-shadow: 0 0 18px rgba(255, 59, 107, 0.6); }
   .timeline { flex: 1; position: relative; padding-top: 20px; }
   .timeline-labels { position: absolute; top: 0; left: 0; right: 0; display: flex; justify-content: space-between; font-size: 8.5px; letter-spacing: 0.8px; opacity: 0.55; text-transform: uppercase; }
   .timeline-track { height: 3px; background: rgba(0, 229, 255, 0.15); border-radius: 2px; position: relative; }
-  .timeline-fill { height: 100%; background: linear-gradient(90deg, var(--green), var(--yellow), var(--red)); border-radius: 2px; width: 100%; transition: width 0.5s; box-shadow: 0 0 12px var(--red); }
-  .timeline-marker { position: absolute; top: -4px; width: 2px; height: 11px; background: var(--cyan); box-shadow: 0 0 8px var(--cyan); left: 100%; transform: translateX(-50%); }
+  .timeline-fill { height: 100%; background: linear-gradient(90deg, var(--green), var(--yellow), var(--red)); border-radius: 2px; width: 50%; transition: width 0.5s; box-shadow: 0 0 12px var(--red); }
+  .timeline-marker { position: absolute; top: -4px; width: 2px; height: 11px; background: var(--cyan); box-shadow: 0 0 8px var(--cyan); left: 50%; transform: translateX(-50%); }
   .action-btns { display: flex; gap: 6px; }
-
-  .statusbar {
-    grid-column: 1 / -1; background: var(--panel-2); border: 1px solid var(--border);
-    border-radius: 3px; display: flex; align-items: center; justify-content: space-between;
-    padding: 0 12px; font-size: 9.5px; letter-spacing: 0.8px; color: var(--text-dim);
-  }
+  .statusbar { grid-column: 1 / -1; background: var(--panel-2); border: 1px solid var(--border); border-radius: 3px; display: flex; align-items: center; justify-content: space-between; padding: 0 12px; font-size: 9.5px; letter-spacing: 0.8px; color: var(--text-dim); }
   .status-left, .status-right { display: flex; gap: 14px; }
   .status-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin-right: 5px; box-shadow: 0 0 6px currentColor; animation: pulse 1.8s infinite; }
-
-  .modal-overlay {
-    position: fixed; inset: 0; background: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(6px); display: none; align-items: center;
-    justify-content: center; z-index: 1000;
-  }
-  .modal-overlay.active { display: flex; }
-  .modal {
-    background: var(--panel-2); border: 1px solid var(--cyan); border-radius: 6px;
-    box-shadow: 0 0 60px rgba(0, 229, 255, 0.3); max-width: 660px;
-    width: 90%; max-height: 82vh; overflow: hidden;
-    display: flex; flex-direction: column;
-  }
-  .modal-header { padding: 12px 16px; border-bottom: 1px solid var(--border); font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--cyan); display: flex; justify-content: space-between; align-items: center; }
-  .modal-close { background: transparent; border: 1px solid var(--border); color: var(--cyan); width: 26px; height: 26px; cursor: pointer; border-radius: 3px; font-family: inherit; font-size: 14px; }
-  .modal-close:hover { background: rgba(255, 59, 107, 0.2); border-color: var(--red); color: var(--red); }
-  .modal-body { padding: 16px; overflow-y: auto; font-size: 11.5px; line-height: 1.7; color: var(--text); }
-  .modal-body h4 { color: var(--cyan); font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin: 14px 0 8px; padding-bottom: 4px; border-bottom: 1px solid rgba(0, 229, 255, 0.15); }
-  .modal-body h4:first-child { margin-top: 0; }
-  .modal-body p { margin-bottom: 8px; color: var(--text); opacity: 0.9; }
-  .modal-body strong { color: var(--red); }
-  .modal-body ul { margin-left: 16px; margin-bottom: 8px; }
-  .modal-body li { margin-bottom: 3px; font-size: 10.5px; }
-  .modal-footer { padding: 12px 16px; border-top: 1px solid var(--border); display: flex; gap: 8px; justify-content: flex-end; }
-
-  .scanlines {
-    position: fixed; inset: 0;
-    background: repeating-linear-gradient(to bottom, transparent 0px, transparent 2px, rgba(0, 229, 255, 0.022) 3px, rgba(0, 229, 255, 0.022) 4px);
-    pointer-events: none; z-index: 999;
-  }
   .toast-container { position: fixed; bottom: 40px; right: 20px; display: flex; flex-direction: column; gap: 8px; z-index: 1001; }
-  .toast {
-    padding: 10px 14px; background: var(--panel-2); border: 1px solid var(--cyan);
-    border-left: 3px solid var(--cyan); border-radius: 3px; font-size: 11px;
-    letter-spacing: 0.5px; color: var(--text); box-shadow: 0 0 20px rgba(0, 229, 255, 0.25);
-    min-width: 240px; animation: slideInRight 0.3s ease-out;
-  }
+  .toast { padding: 10px 14px; background: var(--panel-2); border: 1px solid var(--cyan); border-left: 3px solid var(--cyan); border-radius: 3px; font-size: 11px; color: var(--text); box-shadow: 0 0 20px rgba(0, 229, 255, 0.25); min-width: 240px; animation: slideInRight 0.3s ease-out; }
   .toast.warn { border-color: var(--yellow); border-left-color: var(--yellow); }
   .toast.crit { border-color: var(--red); border-left-color: var(--red); }
   .toast.ok { border-color: var(--green); border-left-color: var(--green); }
   .toast.purple { border-color: var(--purple); border-left-color: var(--purple); }
   @keyframes slideInRight { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: translateX(0); } }
+  .scanlines { position: fixed; inset: 0; background: repeating-linear-gradient(to bottom, transparent 0px, transparent 2px, rgba(0, 229, 255, 0.022) 3px, rgba(0, 229, 255, 0.022) 4px); pointer-events: none; z-index: 999; }
 </style>
 </head>
 <body>
 
-<!-- LOGIN -->
 <div id="loginScreen">
   <div class="login-bg-grid"></div>
   <div class="login-container">
     <div class="login-logo"></div>
     <div class="login-title">EPI-SEQUENCE</div>
-    <div class="login-subtitle">Neural Hologram · v8.0</div>
+    <div class="login-subtitle">Brain Atlas · v9.4</div>
     <div class="login-role-tabs">
       <button class="role-tab active" data-role="neurologue"><span class="role-icon">🧠</span>Neurologue</button>
       <button class="role-tab" data-role="urgentiste"><span class="role-icon">🚑</span>Urgentiste</button>
       <button class="role-tab" data-role="interne"><span class="role-icon">📚</span>Interne</button>
       <button class="role-tab" data-role="admin"><span class="role-icon">⚙️</span>Admin</button>
     </div>
-    <div class="login-field">
-      <label>Identifiant RPPS / Email</label>
-      <input type="text" id="loginUser" value="dr.lefebvre@aphp.fr">
-    </div>
-    <div class="login-field">
-      <label>Mot de passe</label>
-      <input type="password" id="loginPass" value="••••••••">
-    </div>
+    <div class="login-field"><label>Identifiant RPPS / Email</label><input type="text" id="loginUser" value="dr.lefebvre@aphp.fr"></div>
+    <div class="login-field"><label>Mot de passe</label><input type="password" id="loginPass" value="••••••••"></div>
     <div class="login-2fa" id="twoFA">
       <label style="display:block; font-size:9.5px; letter-spacing:1.5px; text-transform:uppercase; color:var(--text-dim); margin-bottom:8px; text-align:center;">Code 2FA</label>
       <div class="otp-boxes">
-        <input class="otp-box" maxlength="1">
-        <input class="otp-box" maxlength="1">
-        <input class="otp-box" maxlength="1">
-        <input class="otp-box" maxlength="1">
-        <input class="otp-box" maxlength="1">
-        <input class="otp-box" maxlength="1">
+        <input class="otp-box" maxlength="1"><input class="otp-box" maxlength="1"><input class="otp-box" maxlength="1">
+        <input class="otp-box" maxlength="1"><input class="otp-box" maxlength="1"><input class="otp-box" maxlength="1">
       </div>
     </div>
     <button class="btn-login" id="btnLogin">▶ Se Connecter</button>
@@ -616,20 +285,15 @@
   </div>
 </div>
 
-<!-- APP -->
 <div class="app" id="mainApp">
-
   <div class="topbar">
-    <div class="brand">
-      <div class="brand-logo"></div>
-      EPI-SEQUENCE <span style="opacity:0.4">PRO</span>
-    </div>
+    <div class="brand"><div class="brand-logo"></div>EPI-SEQUENCE <span style="opacity:0.4">PRO</span></div>
     <div class="topbar-stats">
-      <div class="stat-item"><span class="stat-label">SESSION</span><span class="stat-value cyan" id="sessionId">SES-9182-B7</span></div>
+      <div class="stat-item"><span class="stat-label">SESSION</span><span class="stat-value cyan">SES-9182-B7</span></div>
       <div class="stat-item"><span class="stat-label">PATIENT</span><span class="stat-value yellow" id="activePatientTop">#EPI-023</span></div>
       <div class="stat-item"><span class="stat-label">CRISE</span><span class="stat-value red" id="crisisStatus">GTC ≥5 min</span></div>
       <div class="stat-item"><span class="stat-label">RISQUE 24h</span><span class="stat-value" id="riskTop" style="color:var(--orange)">68%</span></div>
-      <div class="stat-item"><span class="stat-label">NEURONES</span><span class="stat-value purple" id="neuronCount">2 847</span></div>
+      <div class="stat-item"><span class="stat-label">STRUCTURES</span><span class="stat-value purple" id="structureCount">--</span></div>
     </div>
     <div class="topbar-user">
       <div class="session-timer" id="sessionTimer">⏱ 00:00:00</div>
@@ -640,13 +304,8 @@
   </div>
 
   <div class="panel">
-    <div class="panel-header">
-      <span class="title">Dossiers Patients</span>
-      <span style="opacity:0.5">4</span>
-    </div>
-    <div class="patient-search">
-      <input type="text" placeholder="🔍 Rechercher..." id="patientSearch">
-    </div>
+    <div class="panel-header"><span class="title">Dossiers Patients</span><span style="opacity:0.5">4</span></div>
+    <div class="patient-search"><input type="text" placeholder="🔍 Rechercher..." id="patientSearch"></div>
     <div class="patient-list">
       <div class="patient-card active" data-id="EPI-023">
         <div class="pc-name">EPI-023 <span class="pc-tag crit">CRITIQUE</span></div>
@@ -672,15 +331,11 @@
   </div>
 
   <div class="panel">
-    <div class="panel-header">
-      <span class="title">Séquenceur CTAG</span>
-      <span style="opacity:0.5; color:var(--purple)">SE PROTOCOL</span>
-    </div>
+    <div class="panel-header"><span class="title">Séquenceur CTAG</span><span style="opacity:0.5; color:var(--purple)">SE PROTOCOL</span></div>
     <div class="panel-body">
       <div class="section">
         <div class="section-title"><span>◈ Contexte de la crise</span></div>
-        <div class="field">
-          <label>Type de crise</label>
+        <div class="field"><label>Type de crise</label>
           <select id="fSeizureType">
             <option>Crise généralisée tonico-clonique (GTC)</option>
             <option>Crise focale avec altération de conscience</option>
@@ -688,12 +343,8 @@
             <option>Absence (petit mal)</option>
           </select>
         </div>
-        <div class="field">
-          <label>Début de la crise</label>
-          <input type="text" id="fDuration" value="06:30 — EN COURS" style="color:var(--red);font-weight:bold;">
-        </div>
+        <div class="field"><label>Début de la crise</label><input type="text" id="fDuration" value="06:30 — EN COURS" style="color:var(--red);font-weight:bold;"></div>
       </div>
-
       <div class="section">
         <div class="section-title"><span>◈ Signes associés</span></div>
         <div class="tag-group">
@@ -701,141 +352,73 @@
           <span class="tag active red">Perte de conscience</span>
           <span class="tag active yellow">Morsure de langue</span>
           <span class="tag yellow">Incontinence</span>
-          <span class="tag">Post-critique confusion</span>
+          <span class="tag">Confusion post-critique</span>
           <span class="tag">Automatismes</span>
         </div>
       </div>
-
       <div class="section">
         <div class="section-title"><span>◈ Paramètres temps réel</span></div>
-        <div class="field">
-          <label>Durée écoulée <span style="color:var(--red)" id="sePhase">— PHASE PRÉCOCE</span></label>
-          <div class="slider-row">
-            <input type="range" min="0" max="60" value="6" id="sElapsed">
-            <span class="slider-value" id="vElapsed">6 min</span>
-          </div>
+        <div class="field"><label>Durée écoulée <span style="color:var(--red)" id="sePhase">— PHASE PRÉCOCE</span></label>
+          <div class="slider-row"><input type="range" min="0" max="60" value="6" id="sElapsed"><span class="slider-value" id="vElapsed">6 min</span></div>
         </div>
-        <div class="field">
-          <label>Benzodiazépine administrée (mg)</label>
-          <div class="slider-row">
-            <input type="range" min="0" max="20" value="4" id="sBenzos">
-            <span class="slider-value" id="vBenzos">4 mg</span>
-          </div>
+        <div class="field"><label>Benzodiazépine administrée (mg)</label>
+          <div class="slider-row"><input type="range" min="0" max="20" value="4" id="sBenzos"><span class="slider-value" id="vBenzos">4 mg</span></div>
         </div>
-        <div class="field">
-          <label>SpO₂ (%)</label>
-          <div class="slider-row">
-            <input type="range" min="70" max="100" value="92" id="sSpo2">
-            <span class="slider-value" id="vSpo2">92%</span>
-          </div>
+        <div class="field"><label>SpO₂ (%)</label>
+          <div class="slider-row"><input type="range" min="70" max="100" value="92" id="sSpo2"><span class="slider-value" id="vSpo2">92%</span></div>
         </div>
-        <div class="field">
-          <label>Recrutement neuronal (%)</label>
-          <div class="slider-row">
-            <input type="range" min="0" max="100" value="35" id="sRecruit">
-            <span class="slider-value" id="vRecruit">35%</span>
-          </div>
+        <div class="field"><label>Recrutement neuronal (%)</label>
+          <div class="slider-row"><input type="range" min="0" max="100" value="35" id="sRecruit"><span class="slider-value" id="vRecruit">35%</span></div>
         </div>
       </div>
-
       <div class="section">
         <div class="section-title"><span>◈ Séquence CTAG dynamique</span></div>
-        <div class="ctag-panel" id="ctagPanel">
-          <div class="ctag-timeline" id="ctagTimeline"></div>
-        </div>
+        <div class="ctag-panel"><div class="ctag-timeline" id="ctagTimeline"></div></div>
         <button class="btn primary" id="btnRegenerateCTAG">⟳ Recalculer Séquence</button>
       </div>
     </div>
   </div>
 
-  <!-- VIEWPORT -->
   <div class="panel viewport">
     <canvas id="scene"></canvas>
     <div class="corner tl"></div><div class="corner tr"></div>
     <div class="corner bl"></div><div class="corner br"></div>
-    <div class="crosshair"></div>
-
-    <div class="alert-banner" id="alertBanner"></div>
-
-    <div class="vp-toolbar" style="position:absolute;top:12px;left:50%;transform:translateX(-50%);display:flex;gap:4px;background:rgba(0,0,0,0.65);border:1px solid var(--border);border-radius:4px;padding:4px;backdrop-filter:blur(8px);pointer-events:auto;z-index:10;">
-      <button class="vp-tool" data-view="3d" style="padding:5px 9px;background:rgba(0,229,255,0.2);border:none;color:var(--cyan);font-family:inherit;font-size:10px;cursor:pointer;border-radius:2px;">🌐 3D</button>
-      <button class="vp-tool" data-view="axial" style="padding:5px 9px;background:transparent;border:none;color:var(--text-dim);font-family:inherit;font-size:10px;cursor:pointer;border-radius:2px;">⬛ Axial</button>
-      <button class="vp-tool" data-view="coronal" style="padding:5px 9px;background:transparent;border:none;color:var(--text-dim);font-family:inherit;font-size:10px;cursor:pointer;border-radius:2px;">▭ Coronal</button>
-      <button class="vp-tool" data-view="sagittal" style="padding:5px 9px;background:transparent;border:none;color:var(--text-dim);font-family:inherit;font-size:10px;cursor:pointer;border-radius:2px;">▯ Sagittal</button>
-      <button class="vp-tool" id="btnRCP" style="padding:5px 9px;background:rgba(168,85,247,0.2);border:1px solid var(--purple);color:var(--purple);font-family:inherit;font-size:10px;cursor:pointer;border-radius:2px;letter-spacing:1px;">🎥 RCP LIVE</button>
-    </div>
-
-    <div class="video-grid" id="videoGrid">
-      <div class="video-tile" data-p="1">
-        <video id="localVideo" autoplay muted playsinline></video>
-        <div class="tile-label" id="localLabel">Moi (Dr. LEFEBVRE)</div>
-        <div class="tile-status"></div>
-      </div>
-      <div class="video-tile" data-p="2" id="tile2">
-        <video id="remoteVideo2" autoplay playsinline></video>
-        <div class="tile-label">Dr. CHEN — Urgences</div>
-        <div class="tile-status"></div>
-      </div>
-      <div class="video-tile" data-p="3" id="tile3">
-        <video id="remoteVideo3" autoplay playsinline></video>
-        <div class="tile-label">Dr. MARTIN — Neuro</div>
-        <div class="tile-status"></div>
-      </div>
-      <div class="video-tile" data-p="4" id="tile4">
-        <video id="remoteVideo4" autoplay playsinline></video>
-        <div class="tile-label">Dr. DUBOIS — Réa</div>
-        <div class="tile-status"></div>
-      </div>
-    </div>
-
-    <div class="rcp-bar" id="rcpBar">
-      <div style="display:flex;align-items:center;gap:10px;padding-right:10px;border-right:1px solid var(--purple);">
-        <span style="font-size:9px;color:var(--purple);letter-spacing:1.5px;">● LIVE</span>
-        <span style="font-size:9px;color:var(--green);" id="rcpTimer">00:00</span>
-      </div>
-      <button class="rcp-btn" id="rcpMic">🎙 Micro</button>
-      <button class="rcp-btn" id="rcpCam">📷 Caméra</button>
-      <button class="rcp-btn" id="rcpScreen">📺 Partager</button>
-      <button class="rcp-btn" id="rcpRecord">⏺ Enregistrer</button>
-      <button class="rcp-btn" id="rcpEnd" style="border-color:var(--red);color:var(--red);">✕ Fin RCP</button>
-    </div>
-
     <div class="vp-overlay">
       <div class="vp-row">
         <div class="vp-info-box">
           <div><span class="k">PATIENT :</span> <span class="v" id="vpPatient">EPI-023</span></div>
-          <div><span class="k">MODALITÉ :</span> <span class="v">EEG — Réseau neuronal</span></div>
-          <div><span class="k">SÉRIE :</span> <span class="v">NEURAL-2024-11-14</span></div>
+          <div><span class="k">MODALITÉ :</span> <span class="v">Brain Atlas (Itay Inbar)</span></div>
         </div>
-        <div class="vp-info-box" style="text-align:right" id="webrtcStatus">
-          <div><span class="k">WEBRTC :</span> <span class="v" style="color:var(--green)">PRÊT</span></div>
-          <div><span class="k">PEERS :</span> <span class="v" id="peerCount">0</span></div>
-          <div><span class="k">LATENCE :</span> <span class="v" id="rtcLatency">-- ms</span></div>
+        <div class="vp-info-box" id="structureInfo" style="display:none;">
+          <div><span class="k">STRUCTURE :</span> <span class="v" id="structureLabel">—</span></div>
+          <div><span class="k">CATÉGORIE :</span> <span class="v" id="structureCategory">—</span></div>
+          <div><span class="k">CÔTÉ :</span> <span class="v" id="structureSide">—</span></div>
+          <div><span class="k">RÉGION :</span> <span class="v" id="structureRegion">—</span></div>
         </div>
       </div>
       <div class="vp-row" style="align-items:flex-end">
         <div class="vp-info-box">
           <div style="color:var(--red); font-weight:bold; letter-spacing:1.5px; margin-bottom:5px;">⚠ FOYER ÉPILEPTIQUE</div>
-          <div style="font-size:10px; line-height:1.6;" id="realtimeAlert">
-            Crise GTC <strong>6 min 30 s</strong> — EN COURS<br>
-            Recrutement neuronal : <strong>35%</strong><br>
-            SpO₂ : <strong>92%</strong> · FC : <strong>128 bpm</strong>
-          </div>
+          <div style="font-size:10px; line-height:1.6;" id="realtimeAlert">Chargement…</div>
         </div>
         <div class="vp-info-box" style="text-align:right">
-          <div style="color:var(--cyan); margin-bottom:5px;">◈ LÉGENDE NEURONALE</div>
-          <div style="font-size:9.5px; line-height:1.7;">
-            <div><span style="color:var(--red)">●</span> Neurones critiques</div>
-            <div><span style="color:var(--yellow)">●</span> Potentiels d'action</div>
-            <div><span style="color:var(--cyan)">●</span> Neurones sains</div>
-            <div><span style="color:var(--purple)">●</span> Synapses</div>
+          <div style="color:var(--cyan); margin-bottom:5px;">◈ CRÉDIT</div>
+          <div style="font-size:9px; line-height:1.5;">
+            Brain model © Itay Inbar<br>CC BY-SA 4.0
           </div>
         </div>
       </div>
     </div>
+    <div class="vp-toolbar">
+      <button class="vp-tool active" data-view="3d">🌐 3D</button>
+      <button class="vp-tool" data-view="axial">⬛ Axial</button>
+      <button class="vp-tool" data-view="coronal">▭ Coronal</button>
+      <button class="vp-tool" data-view="sagittal">▯ Sagittal</button>
+      <button class="vp-tool" id="btnXRay">🔍 Rayons X</button>
+      <button class="vp-tool" data-view="reset">↺ Reset</button>
+    </div>
   </div>
 
-  <!-- RIGHT PANEL -->
   <div class="panel">
     <div class="tabs">
       <button class="tab active" data-tab="pred">🔮 Préd.</button>
@@ -847,9 +430,7 @@
       <button class="tab" data-tab="cal">📅</button>
       <button class="tab" data-tab="ai">🧠 IA</button>
     </div>
-
     <div class="panel-body">
-      <!-- PREDICTION -->
       <div class="tab-content active" data-content="pred">
         <div class="section-title"><span>◈ Risque de crise imminente</span></div>
         <div class="prediction-gauge">
@@ -858,238 +439,58 @@
           <div class="prediction-window">Fenêtre : 0-24h · Confiance : 87%</div>
         </div>
         <div class="section-title"><span>◈ Facteurs contributifs</span></div>
-        <div class="prediction-factors" id="predFactors">
-          <div class="factor-item"><span class="factor-name">Sommeil < 6h (3 derniers jours)</span><span class="factor-weight pos">+22%</span></div>
-          <div class="factor-item"><span class="factor-name">Observance thérapeutique < 80%</span><span class="factor-weight pos">+18%</span></div>
-          <div class="factor-item"><span class="factor-name">Stress rapporté (8/10)</span><span class="factor-weight pos">+12%</span></div>
-          <div class="factor-item"><span class="factor-name">Activité EEG pré-ictale</span><span class="factor-weight pos">+9%</span></div>
-          <div class="factor-item"><span class="factor-name">Alcool (2 verres hier)</span><span class="factor-weight pos">+7%</span></div>
+        <div class="prediction-factors">
+          <div class="factor-item"><span class="factor-name">Sommeil < 6h</span><span class="factor-weight pos">+22%</span></div>
+          <div class="factor-item"><span class="factor-name">Observance < 80%</span><span class="factor-weight pos">+18%</span></div>
+          <div class="factor-item"><span class="factor-name">Stress (8/10)</span><span class="factor-weight pos">+12%</span></div>
+          <div class="factor-item"><span class="factor-name">EEG pré-ictal</span><span class="factor-weight pos">+9%</span></div>
           <div class="factor-item"><span class="factor-name">Respect horaires</span><span class="factor-weight neg">-8%</span></div>
-          <div class="factor-item"><span class="factor-name">Activité physique</span><span class="factor-weight neg">-5%</span></div>
-        </div>
-        <div class="section-title" style="margin-top:12px;"><span>◈ Historique</span></div>
-        <div style="font-size:9px; line-height:1.7; color:var(--text-dim);">
-          <div style="display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px dashed rgba(0,229,255,0.1);">
-            <span>J-3 · 14:00</span><span style="color:var(--orange)">72%</span><span style="color:var(--green)">✓ Confirmée</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px dashed rgba(0,229,255,0.1);">
-            <span>J-7 · 09:00</span><span style="color:var(--yellow)">45%</span><span>— Pas de crise</span>
-          </div>
         </div>
         <button class="btn success" style="width:100%;margin-top:12px;" id="btnRecalcPred">⟳ Recalculer</button>
       </div>
-
-      <!-- WEARABLES -->
       <div class="tab-content" data-content="wear">
         <div class="section-title"><span>◈ Dispositifs connectés</span></div>
-        <div class="wearable-card">
-          <div class="wearable-info">
-            <div class="wearable-name">📡 EEG portable</div>
-            <div class="wearable-status">Batterie 78% · Signal excellent</div>
-          </div>
-          <div class="wearable-dot online"></div>
-        </div>
-        <div class="wearable-card">
-          <div class="wearable-info">
-            <div class="wearable-name">⌚ Montre connectée</div>
-            <div class="wearable-status">FC 128 bpm · Activité</div>
-          </div>
-          <div class="wearable-dot warn"></div>
-        </div>
-        <div class="wearable-card">
-          <div class="wearable-info">
-            <div class="wearable-name">📱 Smartphone (EPI-LINK)</div>
-            <div class="wearable-status">Observance : 72%</div>
-          </div>
-          <div class="wearable-dot online"></div>
-        </div>
-        <div class="wearable-card">
-          <div class="wearable-info">
-            <div class="wearable-name">🛏 Capteur sommeil</div>
-            <div class="wearable-status">5h12 (insuffisant)</div>
-          </div>
-          <div class="wearable-dot warn"></div>
-        </div>
-        <div class="section-title" style="margin-top:12px;"><span>◈ Limites</span></div>
-        <div style="font-size:9px; color:var(--text-dim); line-height:1.5; padding:8px; background:rgba(255,217,59,0.05); border-left:2px solid var(--yellow); border-radius:2px;">
-          Les wearables détectent ~90% des crises généralisées en milieu contrôlé, mais <strong style="color:var(--yellow)">manquent les crises non motrices</strong>. Fausses alarmes fréquentes à domicile.
-        </div>
+        <div class="wearable-card"><div class="wearable-info"><div class="wearable-name">📡 EEG portable</div><div class="wearable-status">Batterie 78%</div></div><div class="wearable-dot online"></div></div>
+        <div class="wearable-card"><div class="wearable-info"><div class="wearable-name">⌚ Montre</div><div class="wearable-status">FC 128 bpm</div></div><div class="wearable-dot warn"></div></div>
+        <div class="wearable-card"><div class="wearable-info"><div class="wearable-name">📱 EPI-LINK</div><div class="wearable-status">Observance 72%</div></div><div class="wearable-dot online"></div></div>
       </div>
-
-      <!-- EDUCATION -->
       <div class="tab-content" data-content="edu">
         <div class="section-title"><span>◈ Modules éducatifs</span></div>
-        <div class="edu-module" data-edu="triggers">
-          <div class="edu-title">🎯 Identifier mes déclencheurs</div>
-          <div class="edu-meta"><span>8 min</span><span>Non commencé</span></div>
-          <div class="edu-progress"><div class="edu-progress-fill" style="width:0%"></div></div>
-        </div>
-        <div class="edu-module" data-edu="sleep">
-          <div class="edu-title">😴 Hygiène du sommeil</div>
-          <div class="edu-meta"><span>6 min</span><span>50%</span></div>
-          <div class="edu-progress"><div class="edu-progress-fill" style="width:50%"></div></div>
-        </div>
-        <div class="edu-module" data-edu="meds">
-          <div class="edu-title">💊 Gérer mon traitement</div>
-          <div class="edu-meta"><span>10 min</span><span>25%</span></div>
-          <div class="edu-progress"><div class="edu-progress-fill" style="width:25%"></div></div>
-        </div>
-        <div class="edu-module" data-edu="stress">
-          <div class="edu-title">🧘 Pleine conscience</div>
-          <div class="edu-meta"><span>12 min</span><span>Non commencé</span></div>
-          <div class="edu-progress"><div class="edu-progress-fill" style="width:0%"></div></div>
-        </div>
-        <div class="edu-module completed">
-          <div class="edu-title">🚨 Premiers secours</div>
-          <div class="edu-meta"><span>5 min</span><span style="color:var(--green)">✓ Complété</span></div>
-          <div class="edu-progress"><div class="edu-progress-fill" style="width:100%"></div></div>
-        </div>
-        <div class="section-title" style="margin-top:12px;"><span>◈ Corrélations</span></div>
-        <div class="metric">
-          <div class="metric-label"><span>Sommeil < 6h</span><span class="metric-value red">r = 0.72</span></div>
-          <div class="metric-bar"><div class="metric-fill red" style="width:72%"></div></div>
-        </div>
-        <div class="metric">
-          <div class="metric-label"><span>Stress > 7/10</span><span class="metric-value red">r = 0.58</span></div>
-          <div class="metric-bar"><div class="metric-fill red" style="width:58%"></div></div>
-        </div>
-        <div class="metric">
-          <div class="metric-label"><span>Activité physique</span><span class="metric-value green">r = -0.35</span></div>
-          <div class="metric-bar"><div class="metric-fill green" style="width:35%"></div></div>
-        </div>
+        <div class="edu-module"><div class="edu-title">🎯 Déclencheurs</div><div class="edu-meta"><span>8 min</span><span>Non commencé</span></div><div class="edu-progress"><div class="edu-progress-fill" style="width:0%"></div></div></div>
+        <div class="edu-module"><div class="edu-title">😴 Sommeil</div><div class="edu-meta"><span>6 min</span><span>50%</span></div><div class="edu-progress"><div class="edu-progress-fill" style="width:50%"></div></div></div>
+        <div class="edu-module completed"><div class="edu-title">🚨 Premiers secours</div><div class="edu-meta"><span>5 min</span><span style="color:var(--green)">✓</span></div><div class="edu-progress"><div class="edu-progress-fill" style="width:100%"></div></div></div>
       </div>
-
-      <!-- CHARTS -->
       <div class="tab-content" data-content="charts">
-        <div class="chart-wrap" style="height:180px;">
-          <div class="chart-title"><span>◈ Fréquence crises</span><span>+3/sem</span></div>
-          <canvas id="chartSeizures" style="max-height:145px;"></canvas>
-        </div>
-        <div class="chart-wrap" style="height:160px;">
-          <div class="chart-title"><span>◈ EEG</span><span>240 µV</span></div>
-          <canvas id="chartEEG" style="max-height:130px;"></canvas>
-        </div>
-        <div class="chart-wrap" style="height:160px;">
-          <div class="chart-title"><span>◈ Antiépileptiques</span><span>Taux</span></div>
-          <canvas id="chartASM" style="max-height:130px;"></canvas>
-        </div>
-        <div class="chart-wrap" style="height:150px;">
-          <div class="chart-title"><span>◈ Types</span><span>12 mois</span></div>
-          <canvas id="chartTypes" style="max-height:120px;"></canvas>
-        </div>
+        <div class="chart-wrap" style="height:180px;"><div class="chart-title"><span>◈ Crises</span><span>+3/sem</span></div><canvas id="chartSeizures" style="max-height:145px;"></canvas></div>
+        <div class="chart-wrap" style="height:160px;"><div class="chart-title"><span>◈ EEG</span><span>240 µV</span></div><canvas id="chartEEG" style="max-height:130px;"></canvas></div>
       </div>
-
-      <!-- SCORES -->
       <div class="tab-content" data-content="scores">
-        <div class="score-card">
-          <div class="score-header"><span class="score-name">Glasgow</span><span class="score-value yellow">12/15</span></div>
-          <div class="score-detail"><strong>Y</strong>4 · <strong>V</strong>4 · <strong>M</strong>4<br>Post-critique immédiat.</div>
-        </div>
-        <div class="score-card">
-          <div class="score-header"><span class="score-name">STESS (Pronostic)</span><span class="score-value red">5/6</span></div>
-          <div class="score-detail">Status Epilepticus Severity Score.<br><strong>Pronostic défavorable</strong> si ≥3.</div>
-        </div>
-        <div class="score-card">
-          <div class="score-header"><span class="score-name">EEG — Ictal</span><span class="score-value purple">POINTES-ONDES</span></div>
-          <div class="score-detail"><strong>3 Hz</strong> généralisées<br>Amplitude : <strong>240 µV</strong></div>
-        </div>
-        <div class="score-card">
-          <div class="score-header"><span class="score-name">Étiologie</span><span class="score-value yellow">EN COURS</span></div>
-          <div class="score-detail">IRM, bilan sanguin, PL en cours.<br><strong>Ne pas conclure prématurément.</strong></div>
-        </div>
+        <div class="score-card"><div class="score-header"><span class="score-name">Glasgow</span><span class="score-value yellow">12/15</span></div><div class="score-detail">Y4 · V4 · M4</div></div>
+        <div class="score-card"><div class="score-header"><span class="score-name">STESS</span><span class="score-value red">5/6</span></div><div class="score-detail">Pronostic défavorable si ≥3</div></div>
       </div>
-
-      <!-- RECO -->
       <div class="tab-content" data-content="reco">
-        <div class="reco-item crit">
-          <div class="reco-title">⚠ 1ère ligne (5-30 min)</div>
-          <div class="reco-text"><span class="drug">Lorazépam</span> IV 0.1 mg/kg (max 4mg)<br><em>OU Midazolam buccal 0.5 mg/kg</em></div>
-        </div>
-        <div class="reco-item warn">
-          <div class="reco-title">◈ 2ème ligne (>20 min)</div>
-          <div class="reco-text"><span class="drug">Lévétiracétam</span> 60 mg/kg IV<br><em>OU Phénytoïne 20 mg/kg</em></div>
-        </div>
-        <div class="reco-item warn">
-          <div class="reco-title">◈ 3ème ligne (>30-60 min)</div>
-          <div class="reco-text"><span class="drug">Propofol</span> ou <span class="drug">Thiopental</span><br>EEG continu</div>
-        </div>
-        <div class="reco-item crit">
-          <div class="reco-title">⚠ Contre-indications</div>
-          <div class="reco-text">Ne <strong>rien</strong> dans la bouche<br>Ne pas <strong>immobiliser</strong></div>
-        </div>
-        <div class="reco-item">
-          <div class="reco-title">◈ Grossesse</div>
-          <div class="reco-text"><strong>Éviter valproate</strong><br>Préférer Lévétiracétam / Lamotrigine</div>
-        </div>
+        <div class="reco-item crit"><div class="reco-title">⚠ 1ère ligne</div><div class="reco-text"><span class="drug">Lorazépam</span> IV 0.1 mg/kg</div></div>
+        <div class="reco-item warn"><div class="reco-title">◈ 2ème ligne</div><div class="reco-text"><span class="drug">Lévétiracétam</span> 60 mg/kg</div></div>
       </div>
-
-      <!-- CALENDAR -->
       <div class="tab-content" data-content="cal">
         <div class="calendar">
-          <div class="cal-header">
-            <span class="cal-month" id="calMonth">Novembre 2024</span>
-            <div class="cal-nav">
-              <button id="calPrev">‹</button>
-              <button id="calNext">›</button>
-            </div>
-          </div>
-          <div class="cal-grid" id="calGrid">
-            <div class="cal-day-name">L</div><div class="cal-day-name">M</div><div class="cal-day-name">M</div>
-            <div class="cal-day-name">J</div><div class="cal-day-name">V</div><div class="cal-day-name">S</div><div class="cal-day-name">D</div>
-          </div>
+          <div class="cal-header"><span class="cal-month" id="calMonth">Novembre 2024</span><div class="cal-nav"><button id="calPrev">‹</button><button id="calNext">›</button></div></div>
+          <div class="cal-grid" id="calGrid"></div>
         </div>
-        <div class="section-title" style="margin-top:12px;"><span>◈ RCP à venir</span></div>
-        <div id="eventsList">
-          <div class="rcp-event crit">
-            <div class="ev-title">⚠ RCP URGENTE — EPI-023</div>
-            <div class="ev-meta">Aujourd'hui 14h30 · Salle B2</div>
-          </div>
-          <div class="rcp-event">
-            <div class="ev-title">RCP Épileptologie</div>
-            <div class="ev-meta">Jeudi 10h00 · Visio</div>
-          </div>
-        </div>
-        <button class="btn primary" style="margin-top:12px;" id="btnNewRCP">➕ Planifier RCP</button>
       </div>
-
-      <!-- AI -->
       <div class="tab-content" data-content="ai">
-        <div class="learn-stat">
-          <div class="ls-label">Modèle</div>
-          <div class="ls-value" id="aiVersion">v6.2.847</div>
-          <div class="ls-detail">MAJ : <span id="aiLastUpdate">il y a 2h</span></div>
-        </div>
-        <div class="learn-stat">
-          <div class="ls-label">Précision</div>
-          <div class="ls-value" style="color:var(--green)" id="aiAccuracy">96.2%</div>
-          <div class="ls-detail">↑ +0.4%</div>
-        </div>
-        <div class="learn-stat">
-          <div class="ls-label">Sensibilité pré-ictale</div>
-          <div class="ls-value" style="color:var(--purple)" id="aiSensitivity">87.8%</div>
-          <div class="ls-detail">Fausses alarmes 0.8/j</div>
-        </div>
-        <div class="section-title" style="margin-top:12px;"><span>◈ Votre feedback</span></div>
+        <div class="learn-stat"><div class="ls-label">Modèle</div><div class="ls-value" id="aiVersion">v6.2.847</div></div>
+        <div class="learn-stat"><div class="ls-label">Précision</div><div class="ls-value" style="color:var(--green)" id="aiAccuracy">96.2%</div></div>
         <div class="feedback-btns">
-          <button class="feedback-btn correct" data-fb="correct">✓ Exact</button>
-          <button class="feedback-btn partial" data-fb="partial">◐ Partiel</button>
-          <button class="feedback-btn incorrect" data-fb="incorrect">✗ Erreur</button>
-          <button class="feedback-btn unknown" data-fb="unknown">? Incertain</button>
+          <button class="feedback-btn" data-fb="correct">✓ Exact</button>
+          <button class="feedback-btn" data-fb="partial">◐ Partiel</button>
+          <button class="feedback-btn" data-fb="incorrect">✗ Erreur</button>
+          <button class="feedback-btn" data-fb="unknown">? Incertain</button>
         </div>
-        <div class="section-title" style="margin-top:12px;"><span>◈ Historique</span></div>
-        <div id="feedbackLog" style="font-size:10px; line-height:1.7; color:var(--text-dim);">
-          <div>Aucun feedback</div>
-        </div>
-        <div class="metric" style="margin-top:12px;">
-          <div class="metric-label"><span>Epoch</span><span class="metric-value green" id="epochPct">72%</span></div>
-          <div class="metric-bar"><div class="metric-fill green" id="epochBar" style="width:72%"></div></div>
-        </div>
-        <button class="btn success" style="width:100%;margin-top:12px;" id="btnTrainNow">⚡ Ré-entraînement</button>
       </div>
     </div>
   </div>
 
-  <!-- BOTTOM BAR -->
   <div class="bottombar">
     <div class="bb-section">
       <span class="bb-label">Phase SE</span>
@@ -1103,13 +504,8 @@
     <div class="bb-section grow">
       <span class="bb-label">Progression crise</span>
       <div class="timeline">
-        <div class="timeline-labels">
-          <span>Aura</span><span>Convulsions</span><span>Pic</span><span>Résolution</span>
-        </div>
-        <div class="timeline-track">
-          <div class="timeline-fill" id="timelineFill"></div>
-          <div class="timeline-marker" id="timelineMarker"></div>
-        </div>
+        <div class="timeline-labels"><span>Aura</span><span>Convulsions</span><span>Pic</span><span>Résolution</span></div>
+        <div class="timeline-track"><div class="timeline-fill" id="timelineFill"></div><div class="timeline-marker" id="timelineMarker"></div></div>
       </div>
     </div>
     <div class="bb-section">
@@ -1118,7 +514,6 @@
         <button class="btn" id="btnPause">⏸</button>
         <button class="btn" id="btnReset">↺</button>
         <button class="btn" id="btnSnapshot">📸</button>
-        <button class="btn purple" id="btnRCP2">🎥</button>
       </div>
     </div>
   </div>
@@ -1126,30 +521,13 @@
   <div class="statusbar">
     <div class="status-left">
       <span><span class="status-dot" style="color:var(--green);background:var(--green)"></span>ONLINE</span>
-      <span>PACS : <span style="color:var(--green)">OK</span></span>
-      <span>EEG : <span style="color:var(--green)">OK</span></span>
-      <span>Wearables : <span style="color:var(--green)" id="wearStatus">3/4</span></span>
-      <span>WebRTC : <span style="color:var(--green)" id="rtcStatus">STANDBY</span></span>
-      <span>IA : <span style="color:var(--green)" id="aiStatus">ONLINE</span></span>
+      <span>Brain : <span style="color:var(--green)" id="brainStatus">Chargement</span></span>
+      <span>Manifest : <span style="color:var(--green)" id="manifestStatus">--</span></span>
+      <span>Arcs : <span style="color:var(--red)" id="arcCount">0</span></span>
     </div>
     <div class="status-right">
-      <span id="statusLatency">LATENCE : 38 ms</span>
       <span id="statusFps">FPS : 60</span>
       <span id="statusTime">--:--:--</span>
-    </div>
-  </div>
-</div>
-
-<div class="modal-overlay" id="modalOverlay">
-  <div class="modal">
-    <div class="modal-header">
-      <span id="modalTitle">◈ Info</span>
-      <button class="modal-close" id="modalClose">×</button>
-    </div>
-    <div class="modal-body" id="modalBody"></div>
-    <div class="modal-footer">
-      <button class="btn" id="modalCancel">Fermer</button>
-      <button class="btn success" id="modalConfirm">Confirmer</button>
     </div>
   </div>
 </div>
@@ -1157,19 +535,26 @@
 <div class="toast-container" id="toastContainer"></div>
 <div class="scanlines"></div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script>
-/* ============================================================
-   LOGIN
-   ============================================================ */
-let currentUser = { role: 'neurologue', name: 'Dr. M. LEFEBVRE', rpps: '10003456789' };
-const roleConfig = {
-  neurologue: { name: 'Dr. M. LEFEBVRE', icon: '🧠' },
-  urgentiste: { name: 'Dr. S. CHEN', icon: '🚑' },
-  interne: { name: 'Dr. A. PETIT', icon: '📚' },
-  admin: { name: 'Admin Système', icon: '⚙️' }
-};
+<script type="importmap">
+{ "imports": {
+  "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+}}
+</script>
 
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+/* ============ LOGIN ============ */
+const roleConfig = {
+  neurologue: { name: 'Dr. M. LEFEBVRE' },
+  urgentiste: { name: 'Dr. S. CHEN' },
+  interne: { name: 'Dr. A. PETIT' },
+  admin: { name: 'Admin Système' }
+};
 document.querySelectorAll('.role-tab').forEach(tab => {
   tab.addEventListener('click', () => {
     document.querySelectorAll('.role-tab').forEach(t => t.classList.remove('active'));
@@ -1178,12 +563,10 @@ document.querySelectorAll('.role-tab').forEach(tab => {
     document.getElementById('loginUser').value = role === 'admin' ? 'admin@aphp.fr' : `dr.${role}@aphp.fr`;
   });
 });
-
 document.querySelectorAll('.otp-box').forEach((box, i, all) => {
   box.addEventListener('input', () => { if (box.value.length === 1 && i < all.length - 1) all[i + 1].focus(); });
   box.addEventListener('keydown', e => { if (e.key === 'Backspace' && box.value.length === 0 && i > 0) all[i - 1].focus(); });
 });
-
 document.getElementById('btnLogin').addEventListener('click', () => {
   const btn = document.getElementById('btnLogin');
   const selectedRole = document.querySelector('.role-tab.active').dataset.role;
@@ -1198,1139 +581,792 @@ document.getElementById('btnLogin').addEventListener('click', () => {
   btn.disabled = true;
   setTimeout(() => {
     const cfg = roleConfig[selectedRole];
-    currentUser.role = selectedRole;
-    currentUser.name = cfg.name;
     document.getElementById('loginScreen').classList.add('hidden');
     setTimeout(() => {
       document.getElementById('loginScreen').style.display = 'none';
       document.getElementById('mainApp').classList.add('visible');
       document.getElementById('userNameTop').textContent = cfg.name;
-      document.getElementById('localLabel').textContent = `Moi (${cfg.name})`;
       const badge = document.getElementById('roleBadge');
       badge.textContent = selectedRole.charAt(0).toUpperCase() + selectedRole.slice(1);
       badge.className = 'role-badge ' + selectedRole;
       addToast(`✓ Connecté — ${cfg.name}`, 'ok');
-      initCharts();
-      initCalendar();
-      initAI();
-      initCTAG();
-      initPrediction();
-      startRealtimeMonitor();
+      initCharts(); initCalendar(); initAI(); initCTAG(); updatePredictionDisplay(); startRealtimeMonitor();
+      if (typeof resizeRenderer === 'function') resizeRenderer();
     }, 600);
   }, 1200);
 });
-
 document.getElementById('btnLogout').addEventListener('click', () => {
-  openModal('◈ Déconnexion', `
-    <h4>▸ Session</h4>
-    <p>Fermer votre session sécurisée ?</p>
-  `, () => {
-    if (rcpActive) toggleRCP();
-    document.getElementById('mainApp').classList.remove('visible');
-    setTimeout(() => {
-      document.getElementById('loginScreen').style.display = 'flex';
-      document.getElementById('loginScreen').classList.remove('hidden');
-      document.getElementById('twoFA').classList.remove('active');
-      document.getElementById('btnLogin').textContent = '▶ Se Connecter';
-      document.getElementById('btnLogin').disabled = false;
-      addToast('⏻ Session fermée', 'warn');
-    }, 400);
-  });
+  document.getElementById('mainApp').classList.remove('visible');
+  setTimeout(() => {
+    document.getElementById('loginScreen').style.display = 'flex';
+    document.getElementById('loginScreen').classList.remove('hidden');
+    document.getElementById('twoFA').classList.remove('active');
+    document.getElementById('btnLogin').textContent = '▶ Se Connecter';
+    document.getElementById('btnLogin').disabled = false;
+    addToast('⏻ Session fermée', 'warn');
+  }, 400);
 });
 
-/* ============================================================
-   THREE.JS — NEURAL NETWORK HOLOGRAM (REALISTIC)
-   ============================================================ */
+/* ============ THREE.JS ============ */
 const canvas = document.getElementById('scene');
 const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.setClearColor(0x000000, 0);
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 0.85;
 
 const scene = new THREE.Scene();
-scene.fog = new THREE.FogExp2(0x000308, 0.028);
+scene.fog = new THREE.FogExp2(0x050810, 0.025);
 
-const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 200);
-camera.position.set(0, 0.8, 11);
+const camera = new THREE.PerspectiveCamera(45, 1, 0.01, 200);
+camera.position.set(0, 0.5, 6.5);
+camera.lookAt(0, 0, 0);
+
+// ═══════════════════════════════════════════
+// ORBIT CONTROLS — 360° + PAN VERTICAL
+// ═══════════════════════════════════════════
+const controls = new OrbitControls(camera, canvas);
+controls.enableDamping = true;
+controls.dampingFactor = 0.08;
+controls.rotateSpeed = 0.8;
+controls.zoomSpeed = 1.0;
+controls.panSpeed = 1.2;                       // ★ pan plus sensible
+controls.minPolarAngle = 0;                    // ★ pôle nord autorisé
+controls.maxPolarAngle = Math.PI;              // ★ pôle sud autorisé
+controls.minAzimuthAngle = -Infinity;
+controls.maxAzimuthAngle = Infinity;
+controls.minDistance = 4.5;
+controls.maxDistance = 15;
+controls.target.set(0, 0, 0);
+controls.enablePan = true;
+controls.screenSpacePanning = true;            // ★ pan vertical naturel
+controls.keyPanSpeed = 15;
+controls.maxTargetRadius = 3;                  // ★ limite pour ne pas perdre le cerveau
+
+// ★ Mapping souris : gauche = rotation, droit = pan
+controls.mouseButtons = {
+  LEFT: THREE.MOUSE.ROTATE,
+  MIDDLE: THREE.MOUSE.DOLLY,
+  RIGHT: THREE.MOUSE.PAN
+};
+
+// ★ Touches clavier pour monter/descendre
+const keysPressed = {};
+window.addEventListener('keydown', (e) => { keysPressed[e.key] = true; });
+window.addEventListener('keyup', (e) => { keysPressed[e.key] = false; });
+
+function updateKeyboardPan(delta) {
+  if (!controls || !controls.target) return;
+  const speed = 2.5 * delta;
+  const target = controls.target;
+  let moved = false;
+
+  if (keysPressed['ArrowUp'] || keysPressed['z'] || keysPressed['Z']) { target.y += speed; moved = true; }
+  if (keysPressed['ArrowDown'] || keysPressed['s'] || keysPressed['S']) { target.y -= speed; moved = true; }
+  if (keysPressed['ArrowLeft'] || keysPressed['q'] || keysPressed['Q']) { target.x -= speed; moved = true; }
+  if (keysPressed['ArrowRight'] || keysPressed['d'] || keysPressed['D']) { target.x += speed; moved = true; }
+
+  if (moved) {
+    const maxOffset = 3;
+    target.y = Math.max(-maxOffset, Math.min(maxOffset, target.y));
+    target.x = Math.max(-maxOffset, Math.min(maxOffset, target.x));
+  }
+}
 
 function resizeRenderer() {
-  const w = canvas.clientWidth;
-  const h = canvas.clientHeight;
+  const w = canvas.clientWidth, h = canvas.clientHeight;
   if (w === 0 || h === 0) return;
   renderer.setSize(w, h, false);
   camera.aspect = w / h;
   camera.updateProjectionMatrix();
 }
 
-// === LIGHTS ===
-scene.add(new THREE.AmbientLight(0x001a2e, 1.2));
-const hemiLight = new THREE.HemisphereLight(0x00e5ff, 0x220011, 0.5);
-scene.add(hemiLight);
-const keyLight = new THREE.PointLight(0x00e5ff, 2.2, 40);
-keyLight.position.set(6, 8, 6);
-scene.add(keyLight);
-const rimLight = new THREE.PointLight(0xa855f7, 1.6, 30);
-rimLight.position.set(-7, -3, -5);
-scene.add(rimLight);
-const redLight = new THREE.PointLight(0xff3b6b, 3.5, 15);
-redLight.position.set(2.5, 2.5, 2);
-scene.add(redLight);
-const pulseLight = new THREE.PointLight(0xffd93b, 0, 25);
-pulseLight.position.set(3, 2, 1);
-scene.add(pulseLight);
+// Éclairage rééquilibré
+scene.add(new THREE.AmbientLight(0xffffff, 0.35));
+scene.add(new THREE.HemisphereLight(0x8899bb, 0x220011, 0.3));
+const keyLight = new THREE.DirectionalLight(0xffffff, 0.9); keyLight.position.set(5, 8, 6); scene.add(keyLight);
+const fillLight = new THREE.DirectionalLight(0x6688aa, 0.3); fillLight.position.set(-4, 2, 3); scene.add(fillLight);
+const rimLight = new THREE.DirectionalLight(0xff6644, 0.4); rimLight.position.set(-2, 3, -6); scene.add(rimLight);
+const redLight = new THREE.PointLight(0xff1a3b, 0, 20); redLight.position.set(0, 0, 0); scene.add(redLight);
 
-// === ROOT GROUP ===
 const hologram = new THREE.Group();
 scene.add(hologram);
 
-// === NEURAL NETWORK GENERATOR ===
-// Génère un réseau de neurones dans un volume ellipsoïdal (forme de cerveau)
-const NEURON_COUNT = 280;
-const neurons = [];
-const neuronGroup = new THREE.Group();
-hologram.add(neuronGroup);
+// État global
+let structureMap = new Map();
+let clickableMeshes = [];
+let hoveredMesh = null;
+let originalEmissive = new THREE.Color();
+let originalEmissiveIntensity = 0;
+let brainLoaded = false;
+let brainModel = null;
+let activeArcs = [];
+let epilepticMeshes = [];
+let arcGroup = new THREE.Group();
+let xrayMode = false;
+hologram.add(arcGroup);
 
-// Brain volume : ellipsoïde asymétrique
-function brainVolume() {
-  // Retourne un point aléatoire dans un volume en forme de cerveau
-  while (true) {
-    const x = (Math.random() - 0.5) * 2;
-    const y = (Math.random() - 0.5) * 2;
-    const z = (Math.random() - 0.5) * 2;
-    // Ellipsoïde : x/2.2, y/1.6, z/1.9
-    const d = (x * x) / (2.2 * 2.2) + (y * y) / (1.6 * 1.6) + (z * z) / (1.9 * 1.9);
-    if (d < 1) {
-      // Éviter la zone centrale (ventricules)
-      if (Math.sqrt(x*x + y*y + z*z) > 0.4) {
-        return new THREE.Vector3(x * 2.2, y * 1.6, z * 1.9);
-      }
-    }
-  }
+const crisisState = { elapsed: 6, benzos: 4, spo2: 92, recruit: 0.35, stage: 2 };
+function getCrisisSeverity() {
+  const durationFactor = Math.min(1, crisisState.elapsed / 30);
+  const benzoFactor = Math.max(0, 1 - crisisState.benzos / 8);
+  const spo2Factor = Math.max(0, (100 - crisisState.spo2) / 30);
+  return Math.min(1, durationFactor * 0.35 + benzoFactor * 0.25 + spo2Factor * 0.15 + crisisState.recruit * 0.25);
 }
 
-// Créer les neurones avec somas + dendrites
-const somaGeometry = new THREE.SphereGeometry(0.045, 8, 8);
-const somaMaterials = {
-  healthy: new THREE.MeshPhongMaterial({ color: 0x00e5ff, emissive: 0x007799, emissiveIntensity: 0.7, transparent: true, opacity: 0.85, shininess: 90 }),
-  critical: new THREE.MeshPhongMaterial({ color: 0xff3b6b, emissive: 0xff1a4a, emissiveIntensity: 1.6, transparent: true, opacity: 0.95, shininess: 100 }),
-  recruiting: new THREE.MeshPhongMaterial({ color: 0xffd93b, emissive: 0xffaa00, emissiveIntensity: 1.2, transparent: true, opacity: 0.9, shininess: 80 })
-};
+// ═══════════════════════════════════════════
+// NORMALISATION
+// ═══════════════════════════════════════════
+function normalizeKey(s) {
+  if (!s) return '';
+  return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[()\[\]{}*'",;:?!]/g, '').replace(/[-–—]/g, ' ')
+    .replace(/_/g, ' ').replace(/\.(l|r)$/i, '').replace(/\s+/g, ' ').trim();
+}
+function normalizeGLBName(s) {
+  if (!s) return '';
+  let n = s.toLowerCase();
+  n = n.replace(/(_\d+)+\d*$/g, '').replace(/\d+$/g, '');
+  return n.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[()\[\]{}*'",;:?!]/g, '').replace(/[-–—]/g, ' ')
+    .replace(/_/g, ' ').replace(/\.(l|r)$/i, '').replace(/\s+/g, ' ').trim();
+}
 
-// Axones et dendrites (lignes courbes)
-const axonGeometry = new THREE.BufferGeometry();
-const axonPositions = [];
-const axonColors = [];
-const axonSegments = [];
+// ═══════════════════════════════════════════
+// COULEURS ANATOMIQUES
+// ═══════════════════════════════════════════
+function getAnatomicalColor(category, label) {
+  const c = (category || '').toLowerCase();
+  const l = (label || '').toLowerCase();
+  if (c.includes('cortex') || l.includes('cortex') || l.includes('gyrus') || l.includes('sulcus')) return 0xd4a9a0;
+  if (c.includes('white') || c.includes('tract')) return 0xe8dcc8;
+  if (c.includes('grey') || c.includes('noyau') || c.includes('nucleus')) return 0x9a8aa8;
+  if (c.includes('ventricul') || c.includes('csf') || l.includes('ventricul')) return 0x88aacc;
+  if (c.includes('arter') || c.includes('vein') || c.includes('sinus') || l.includes('arter') || l.includes('vein')) return 0xcc3344;
+  if (c.includes('nerf') || c.includes('cranial') || l.includes('nerve')) return 0xffdd88;
+  if (c.includes('cerebell') || l.includes('cerebell')) return 0xc89878;
+  if (c.includes('brainstem') || l.includes('brainstem')) return 0xb89080;
+  return null;
+}
 
-for (let i = 0; i < NEURON_COUNT; i++) {
-  const pos = brainVolume();
-  const soma = new THREE.Mesh(somaGeometry, somaMaterials.healthy.clone());
-  soma.position.copy(pos);
-  soma.userData.basePos = pos.clone();
-  soma.userData.phase = Math.random() * Math.PI * 2;
-  soma.userData.isCritical = false;
-  soma.userData.isRecruiting = false;
-  soma.userData.fireTime = 0;
-  neuronGroup.add(soma);
-  neurons.push(soma);
-  
-  // Dendrites locales (petites projections)
-  const dendriteCount = 4 + Math.floor(Math.random() * 4);
-  for (let d = 0; d < dendriteCount; d++) {
-    const angle = Math.random() * Math.PI * 2;
-    const phi = Math.acos(2 * Math.random() - 1);
-    const length = 0.08 + Math.random() * 0.12;
-    const end = new THREE.Vector3(
-      pos.x + Math.sin(phi) * Math.cos(angle) * length,
-      pos.y + Math.cos(phi) * length,
-      pos.z + Math.sin(phi) * Math.sin(angle) * length
+// ═══════════════════════════════════════════
+// MANIFEST
+// ═══════════════════════════════════════════
+fetch('manifest.json')
+  .then(r => r.json())
+  .then(data => {
+    const nodes = data.nodes || [];
+    const categories = data.categories || {};
+    console.log(`[MANIFEST] ${nodes.length} nœuds, ${Object.keys(categories).length} catégories`);
+
+    nodes.forEach(item => {
+      const cleanName = (item.name || '').trim();
+      const meta = {
+        label: item.label || cleanName || `Structure ${item.id}`,
+        category: categories[item.category]?.label || item.category || 'Inconnu',
+        side: item.side || '',
+        region: item.region || '',
+        path: item.ta2 || '',
+        nodeId: item.id
+      };
+      structureMap.set(item.id, meta);
+      structureMap.set(String(item.id), meta);
+      if (cleanName) structureMap.set(cleanName, meta);
+      if (item.label) structureMap.set(item.label, meta);
+      structureMap.set(normalizeKey(cleanName), meta);
+      structureMap.set(normalizeKey(item.label), meta);
+      const glbStyle = cleanName.replace(/\s+/g, '_').replace(/\.(l|r)$/i, (m) => m[1].toLowerCase());
+      structureMap.set(glbStyle.toLowerCase(), meta);
+      structureMap.set((cleanName.replace(/\s+/g, '_') + (item.side === 'right' ? 'r' : item.side === 'left' ? 'l' : '')).toLowerCase(), meta);
+      structureMap.set(cleanName.replace(/\s+/g, '_').toLowerCase(), meta);
+    });
+
+    console.log(`[MANIFEST] ${structureMap.size} entrées indexées`);
+    document.getElementById('manifestStatus').textContent = nodes.length + ' structures';
+    document.getElementById('structureCount').textContent = nodes.length;
+  })
+  .catch(err => {
+    console.warn('[MANIFEST] Erreur:', err);
+    document.getElementById('manifestStatus').textContent = 'erreur';
+  });
+
+// ═══════════════════════════════════════════
+// GLB
+// ═══════════════════════════════════════════
+const dracoLoader = new DRACOLoader();
+dracoLoader.setDecoderPath('draco/');
+dracoLoader.preload();
+
+const gltfLoader = new GLTFLoader();
+gltfLoader.setDRACOLoader(dracoLoader);
+
+gltfLoader.load(
+  'brain.glb',
+  (gltf) => {
+    brainModel = gltf.scene;
+
+    let box = new THREE.Box3().setFromObject(brainModel);
+    const center = box.getCenter(new THREE.Vector3());
+    brainModel.position.sub(center);
+    let size = box.getSize(new THREE.Vector3());
+    const maxDim = Math.max(size.x, size.y, size.z);
+    const scale = 5.5 / maxDim;
+    brainModel.scale.setScalar(scale);
+    box = new THREE.Box3().setFromObject(brainModel);
+    brainModel.position.sub(box.getCenter(new THREE.Vector3()));
+    hologram.position.set(0, 0, 0);
+
+    let meshCount = 0;
+    let matchedCount = 0;
+    let coloredCount = 0;
+
+    brainModel.traverse((child) => {
+      if (!child.isMesh) return;
+      meshCount++;
+      child.castShadow = true;
+      child.receiveShadow = true;
+      if (!child.geometry.attributes.normal) child.geometry.computeVertexNormals();
+      if (!child.material) return;
+
+      child.material.envMapIntensity = 0.8;
+      if (child.material.roughness !== undefined) child.material.roughness = 0.7;
+      if (child.material.metalness !== undefined) child.material.metalness = 0.05;
+      child.material.transparent = true;
+      child.material.side = THREE.DoubleSide;
+      child.renderOrder = 0;
+
+      const rawName = child.name || '';
+      const normName = normalizeKey(rawName);
+      const glbNormName = normalizeGLBName(rawName);
+      const lowerName = rawName.toLowerCase();
+      const spacesName = rawName.replace(/_/g, ' ').toLowerCase();
+      const strippedL = spacesName.replace(/l$/, '');
+      const strippedR = spacesName.replace(/r$/, '');
+
+      const meta = structureMap.get(rawName)
+                || structureMap.get(rawName.trim())
+                || structureMap.get(lowerName)
+                || structureMap.get(normName)
+                || structureMap.get(glbNormName)
+                || structureMap.get(spacesName)
+                || structureMap.get(strippedL)
+                || structureMap.get(strippedR)
+                || structureMap.get(parseInt(rawName))
+                || structureMap.get(String(parseInt(rawName)));
+
+      if (meta) {
+        matchedCount++;
+        child.userData.structure = meta;
+      } else {
+        child.userData.structure = { label: rawName || `Mesh ${meshCount}`, category: '—', side: '', region: '' };
+      }
+
+      const anatColor = getAnatomicalColor(child.userData.structure.category, child.userData.structure.label);
+      if (anatColor !== null && child.material.color) {
+        child.material.color.setHex(anatColor);
+        if (child.material.emissive) {
+          child.material.emissive = new THREE.Color(anatColor).multiplyScalar(0.05);
+        }
+        coloredCount++;
+      }
+
+      child.geometry.computeBoundingSphere();
+      if (child.geometry.boundingSphere) {
+        child.userData.localCenter = child.geometry.boundingSphere.center.clone();
+      }
+
+      const lbl = (child.userData.structure.label || '').toLowerCase();
+      const cat = (child.userData.structure.category || '').toLowerCase();
+      if (lbl.includes('hippocamp') || lbl.includes('thalamus') ||
+          lbl.includes('amygd') || lbl.includes('gyrus') ||
+          lbl.includes('sulcus') || lbl.includes('cortex') ||
+          lbl.includes('frontal') || lbl.includes('temporal') ||
+          lbl.includes('parietal') || lbl.includes('occipital') ||
+          cat.includes('cortex') || cat.includes('grey') || cat.includes('noyau')) {
+        epilepticMeshes.push(child);
+      }
+
+      clickableMeshes.push(child);
+    });
+
+    console.log(`[GLB] ${meshCount} meshes chargés, ${matchedCount}/${meshCount} matchés, ${coloredCount} colorés`);
+    console.log(`[ARCS] ${epilepticMeshes.length} meshes épileptiques`);
+
+    hologram.add(brainModel);
+    brainLoaded = true;
+    document.getElementById('brainStatus').textContent = `${matchedCount}/${meshCount}`;
+    addToast(`🧠 Cerveau : ${meshCount} meshes (${matchedCount} nommés)`, 'ok');
+    addToast(`⚡ ${epilepticMeshes.length} zones épileptiques`, 'crit');
+    resizeRenderer();
+  },
+  (progress) => {
+    if (progress.total) {
+      const pct = Math.round((progress.loaded / progress.total) * 100);
+      if (pct % 25 === 0) addToast(`🧠 Chargement… ${pct}%`, 'purple');
+    }
+  },
+  (err) => {
+    console.error('[GLB] Erreur:', err);
+    addToast('⚠ brain.glb introuvable', 'crit');
+    document.getElementById('brainStatus').textContent = 'ERREUR';
+    const fallback = new THREE.Mesh(
+      new THREE.SphereGeometry(1.2, 32, 32),
+      new THREE.MeshStandardMaterial({ color: 0xcc8899, roughness: 0.7, metalness: 0.05 })
     );
-    const geo = new THREE.BufferGeometry().setFromPoints([pos, end]);
-    const mat = new THREE.LineBasicMaterial({ color: 0x00e5ff, transparent: true, opacity: 0.15 });
-    const line = new THREE.Line(geo, mat);
-    neuronGroup.add(line);
-    soma.userData.dendrites = soma.userData.dendrites || [];
-    soma.userData.dendrites.push(line);
+    hologram.add(fallback);
+    brainLoaded = true;
   }
-}
+);
 
-// Créer les connexions synaptiques entre neurones proches
-const synapseGeometry = new THREE.BufferGeometry();
-const synapsePositions = [];
-const synapseColors = [];
-const synapseData = [];
+// ═══════════════════════════════════════════
+// TRANSPARENCE ADAPTATIVE
+// ═══════════════════════════════════════════
+const originalOpacity = new Map();
+let lastOpacityUpdate = 0;
+function updateOpacityByZoom() {
+  if (!brainLoaded || xrayMode) return;
 
-for (let i = 0; i < NEURON_COUNT; i++) {
-  for (let j = i + 1; j < NEURON_COUNT; j++) {
-    const a = neurons[i].position;
-    const b = neurons[j].position;
-    const dist = a.distanceTo(b);
-    if (dist < 0.65 && Math.random() < 0.55) {
-      // Courbe de connexion (axone courbé)
-      const mid = new THREE.Vector3().addVectors(a, b).multiplyScalar(0.5);
-      const perp = new THREE.Vector3(
-        (Math.random() - 0.5) * 0.15,
-        (Math.random() - 0.5) * 0.15,
-        (Math.random() - 0.5) * 0.15
-      );
-      mid.add(perp);
-      
-      // Arc entre a et b via mid
-      const curve = new THREE.QuadraticBezierCurve3(a, mid, b);
-      const points = curve.getPoints(8);
-      
-      for (let k = 0; k < points.length - 1; k++) {
-        synapsePositions.push(points[k].x, points[k].y, points[k].z);
-        synapsePositions.push(points[k+1].x, points[k+1].y, points[k+1].z);
-        synapseColors.push(0.0, 0.9, 1.0);
-        synapseColors.push(0.0, 0.9, 1.0);
-        synapseData.push({ neuronA: i, neuronB: j, t: k / (points.length - 1) });
-      }
+  const now = performance.now();
+  if (now - lastOpacityUpdate < 50) return;
+  lastOpacityUpdate = now;
+
+  const dist = camera.position.distanceTo(controls.target);
+  const t = Math.max(0, Math.min(1, (dist - 4.5) / 3.5));
+  const targetOpacity = 0.3 + t * 0.7;
+
+  clickableMeshes.forEach((mesh) => {
+    if (!mesh.material) return;
+    if (!originalOpacity.has(mesh)) {
+      originalOpacity.set(mesh, mesh.material.opacity ?? 1);
     }
-  }
-}
-
-synapseGeometry.setAttribute('position', new THREE.Float32BufferAttribute(synapsePositions, 3));
-synapseGeometry.setAttribute('color', new THREE.Float32BufferAttribute(synapseColors, 3));
-const synapseMaterial = new THREE.LineBasicMaterial({ vertexColors: true, transparent: true, opacity: 0.25, blending: THREE.AdditiveBlending });
-const synapseLines = new THREE.LineSegments(synapseGeometry, synapseMaterial);
-hologram.add(synapseLines);
-
-// === POTENTIELS D'ACTION (particules qui voyagent le long des synapses) ===
-const ACTION_POTENTIAL_COUNT = 120;
-const actionPotentials = [];
-const apGeometry = new THREE.BufferGeometry();
-const apPositions = new Float32Array(ACTION_POTENTIAL_COUNT * 3);
-const apColors = new Float32Array(ACTION_POTENTIAL_COUNT * 3);
-const apData = [];
-
-for (let i = 0; i < ACTION_POTENTIAL_COUNT; i++) {
-  const synIdx = Math.floor(Math.random() * (synapsePositions.length / 6));
-  const ax = synapsePositions[synIdx * 6];
-  const ay = synapsePositions[synIdx * 6 + 1];
-  const az = synapsePositions[synIdx * 6 + 2];
-  apPositions[i * 3] = ax;
-  apPositions[i * 3 + 1] = ay;
-  apPositions[i * 3 + 2] = az;
-  apColors[i * 3] = 1.0;
-  apColors[i * 3 + 1] = 0.85;
-  apColors[i * 3 + 2] = 0.2;
-  apData.push({
-    synIdx,
-    progress: Math.random(),
-    speed: 0.5 + Math.random() * 1.5,
-    color: Math.random() < 0.2 ? 'red' : 'yellow'
+    const base = originalOpacity.get(mesh);
+    mesh.material.transparent = true;
+    mesh.material.opacity = targetOpacity * base;
+    mesh.material.depthWrite = targetOpacity > 0.7;
   });
 }
 
-apGeometry.setAttribute('position', new THREE.BufferAttribute(apPositions, 3));
-apGeometry.setAttribute('color', new THREE.BufferAttribute(apColors, 3));
-const apMaterial = new THREE.PointsMaterial({
-  size: 0.08, vertexColors: true, transparent: true, opacity: 0.95,
-  blending: THREE.AdditiveBlending, depthWrite: false, sizeAttenuation: true
-});
-const actionPotentialPoints = new THREE.Points(apGeometry, apMaterial);
-hologram.add(actionPotentialPoints);
-
-// === FOYER CRITIQUE (core de décharges) ===
-const seizureFocusGroup = new THREE.Group();
-seizureFocusGroup.position.set(2.2, 2.0, 1.2);
-
-// Core dense
-const coreGeo = new THREE.IcosahedronGeometry(0.15, 2);
-const coreMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 1 });
-const coreMesh = new THREE.Mesh(coreGeo, coreMat);
-seizureFocusGroup.add(coreMesh);
-
-// Halo rouge
-const haloGeo = new THREE.SphereGeometry(0.4, 24, 24);
-const haloMat = new THREE.MeshBasicMaterial({
-  color: 0xff3b6b, transparent: true, opacity: 0.15,
-  blending: THREE.AdditiveBlending, depthWrite: false
-});
-const haloMesh = new THREE.Mesh(haloGeo, haloMat);
-seizureFocusGroup.add(haloMesh);
-
-// Halo externe
-const haloGeo2 = new THREE.SphereGeometry(0.7, 24, 24);
-const haloMat2 = new THREE.MeshBasicMaterial({
-  color: 0xff3b6b, transparent: true, opacity: 0.06,
-  blending: THREE.AdditiveBlending, depthWrite: false
-});
-const haloMesh2 = new THREE.Mesh(haloGeo2, haloMat2);
-seizureFocusGroup.add(haloMesh2);
-
-// Ondes de choc (anneaux)
-const shockwaves = [];
-for (let i = 0; i < 3; i++) {
-  const ring = new THREE.Mesh(
-    new THREE.TorusGeometry(0.5, 0.008, 8, 64),
-    new THREE.MeshBasicMaterial({ color: 0xff3b6b, transparent: true, opacity: 0.6, blending: THREE.AdditiveBlending })
-  );
-  ring.rotation.x = Math.PI / 2;
-  seizureFocusGroup.add(ring);
-  shockwaves.push(ring);
-}
-
-hologram.add(seizureFocusGroup);
-
-// === ÉCLAIRS ÉLECTRIQUES (arcs entre neurones) ===
-const lightningGroup = new THREE.Group();
-hologram.add(lightningGroup);
-
-function createLightningArc(from, to, color = 0xffd93b) {
+// ═══════════════════════════════════════════
+// ARCS ÉLECTRIQUES
+// ═══════════════════════════════════════════
+function createElectricArc(from, to, color = 0xff1a3b, lifetime = 0.4, jitter = 0.08) {
+  const segments = 12;
   const points = [];
-  const segments = 6;
   for (let i = 0; i <= segments; i++) {
     const t = i / segments;
     const p = new THREE.Vector3().lerpVectors(from, to, t);
     if (i > 0 && i < segments) {
-      p.x += (Math.random() - 0.5) * 0.2;
-      p.y += (Math.random() - 0.5) * 0.2;
-      p.z += (Math.random() - 0.5) * 0.2;
+      p.x += (Math.random() - 0.5) * jitter;
+      p.y += (Math.random() - 0.5) * jitter;
+      p.z += (Math.random() - 0.5) * jitter;
     }
     points.push(p);
   }
   const geo = new THREE.BufferGeometry().setFromPoints(points);
-  const mat = new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.9, blending: THREE.AdditiveBlending });
-  const line = new THREE.Line(geo, mat);
-  lightningGroup.add(line);
-  
-  setTimeout(() => {
-    lightningGroup.remove(line);
-    geo.dispose();
-    mat.dispose();
-  }, 150);
-}
-
-// === PARTICULES AMBIANTES (poussière neuronale) ===
-const ambientCount = 800;
-const ambientGeo = new THREE.BufferGeometry();
-const ambientPos = new Float32Array(ambientCount * 3);
-const ambientVel = [];
-const ambientColors = new Float32Array(ambientCount * 3);
-for (let i = 0; i < ambientCount; i++) {
-  ambientPos[i * 3] = (Math.random() - 0.5) * 14;
-  ambientPos[i * 3 + 1] = (Math.random() - 0.5) * 12;
-  ambientPos[i * 3 + 2] = (Math.random() - 0.5) * 14;
-  const c = Math.random();
-  if (c < 0.7) { ambientColors[i*3]=0; ambientColors[i*3+1]=0.9; ambientColors[i*3+2]=1; }
-  else if (c < 0.9) { ambientColors[i*3]=0.66; ambientColors[i*3+1]=0.33; ambientColors[i*3+2]=0.97; }
-  else { ambientColors[i*3]=1; ambientColors[i*3+1]=0.23; ambientColors[i*3+2]=0.42; }
-  ambientVel.push({
-    x: (Math.random() - 0.5) * 0.005,
-    y: 0.005 + Math.random() * 0.015,
-    z: (Math.random() - 0.5) * 0.005
+  const mat = new THREE.LineBasicMaterial({
+    color, transparent: true, opacity: 1,
+    blending: THREE.AdditiveBlending, depthWrite: false, linewidth: 1,
+    toneMapped: false
   });
+  const line = new THREE.Line(geo, mat);
+  arcGroup.add(line);
+  activeArcs.push({ line, geo, mat, start: performance.now(), lifetime });
+
+  const halo = new THREE.Mesh(
+    new THREE.SphereGeometry(0.03, 6, 6),
+    new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.8, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false })
+  );
+  halo.position.copy(points[Math.floor(segments / 2)]);
+  arcGroup.add(halo);
+  setTimeout(() => {
+    arcGroup.remove(halo);
+    halo.geometry.dispose();
+    halo.material.dispose();
+  }, lifetime * 1000);
 }
-ambientGeo.setAttribute('position', new THREE.BufferAttribute(ambientPos, 3));
-ambientGeo.setAttribute('color', new THREE.BufferAttribute(ambientColors, 3));
-const ambientMat = new THREE.PointsMaterial({
-  size: 0.025, vertexColors: true, transparent: true, opacity: 0.6,
-  blending: THREE.AdditiveBlending, depthWrite: false
+
+function spawnArc() {
+  if (epilepticMeshes.length < 2) return;
+  const a = epilepticMeshes[Math.floor(Math.random() * epilepticMeshes.length)];
+  let b = epilepticMeshes[Math.floor(Math.random() * epilepticMeshes.length)];
+  let tries = 0;
+  while (b === a && tries++ < 10) b = epilepticMeshes[Math.floor(Math.random() * epilepticMeshes.length)];
+
+  const posA = new THREE.Vector3();
+  const posB = new THREE.Vector3();
+
+  a.updateWorldMatrix(true, false);
+  b.updateWorldMatrix(true, false);
+
+  if (a.userData.localCenter) posA.copy(a.userData.localCenter).applyMatrix4(a.matrixWorld);
+  else a.getWorldPosition(posA);
+  if (b.userData.localCenter) posB.copy(b.userData.localCenter).applyMatrix4(b.matrixWorld);
+  else b.getWorldPosition(posB);
+
+  posA.x += (Math.random() - 0.5) * 0.05;
+  posA.y += (Math.random() - 0.5) * 0.05;
+  posA.z += (Math.random() - 0.5) * 0.05;
+  posB.x += (Math.random() - 0.5) * 0.05;
+  posB.y += (Math.random() - 0.5) * 0.05;
+  posB.z += (Math.random() - 0.5) * 0.05;
+
+  if (posA.distanceTo(posB) < 0.15) {
+    posB.x += (Math.random() - 0.5) * 0.4;
+    posB.y += (Math.random() - 0.5) * 0.4;
+    posB.z += (Math.random() - 0.5) * 0.4;
+  }
+
+  const colorChoice = Math.random();
+  let color;
+  if (colorChoice < 0.6) color = 0xff1a3b;
+  else if (colorChoice < 0.85) color = 0xff3b6b;
+  else color = 0xffd93b;
+
+  createElectricArc(posA, posB, color, 0.2 + Math.random() * 0.3, 0.1);
+}
+
+function updateArcs() {
+  const now = performance.now();
+  for (let i = activeArcs.length - 1; i >= 0; i--) {
+    const arc = activeArcs[i];
+    const elapsed = (now - arc.start) / 1000;
+    if (elapsed > arc.lifetime) {
+      arcGroup.remove(arc.line);
+      arc.geo.dispose();
+      arc.mat.dispose();
+      activeArcs.splice(i, 1);
+    } else {
+      arc.mat.opacity = 1 - (elapsed / arc.lifetime);
+    }
+  }
+  const el = document.getElementById('arcCount');
+  if (el) el.textContent = activeArcs.length;
+}
+
+// ═══════════════════════════════════════════
+// RAYCASTER
+// ═══════════════════════════════════════════
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+
+renderer.domElement.addEventListener('pointermove', (event) => {
+  if (!brainLoaded || clickableMeshes.length === 0) return;
+  const rect = renderer.domElement.getBoundingClientRect();
+  mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+  mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+  raycaster.setFromCamera(mouse, camera);
+  const intersects = raycaster.intersectObjects(clickableMeshes, false);
+
+  if (hoveredMesh && hoveredMesh.material && hoveredMesh.material.emissive) {
+    hoveredMesh.material.emissive.copy(originalEmissive);
+    hoveredMesh.material.emissiveIntensity = originalEmissiveIntensity;
+    hoveredMesh = null;
+  }
+  if (intersects.length > 0) {
+    const mesh = intersects[0].object;
+    hoveredMesh = mesh;
+    if (mesh.material && mesh.material.emissive) {
+      originalEmissive.copy(mesh.material.emissive);
+      originalEmissiveIntensity = mesh.material.emissiveIntensity || 0;
+      mesh.material.emissive.setHex(0x00aaff);
+      mesh.material.emissiveIntensity = 0.6;
+    }
+    updateHUDStructure(mesh.userData.structure);
+    renderer.domElement.style.cursor = 'pointer';
+  } else {
+    updateHUDStructure(null);
+    renderer.domElement.style.cursor = 'default';
+  }
 });
-const ambientParticles = new THREE.Points(ambientGeo, ambientMat);
-scene.add(ambientParticles);
 
-// === HALO GLOBAL (grille holographique) ===
-const gridHelper = new THREE.GridHelper(20, 40, 0x00e5ff, 0x003344);
-gridHelper.position.y = -4;
-gridHelper.material.opacity = 0.15;
-gridHelper.material.transparent = true;
-scene.add(gridHelper);
+function updateHUDStructure(meta) {
+  const infoBox = document.getElementById('structureInfo');
+  if (meta && meta.label && meta.label !== '—' && meta.category !== '—') {
+    infoBox.style.display = 'block';
+    document.getElementById('structureLabel').textContent = meta.label || '—';
+    document.getElementById('structureCategory').textContent = meta.category || '—';
+    document.getElementById('structureSide').textContent = meta.side || '—';
+    document.getElementById('structureRegion').textContent = meta.region || '—';
+  } else {
+    infoBox.style.display = 'none';
+  }
+}
 
-// === ANIMATION LOOP ===
+// ═══════════════════════════════════════════
+// VUES
+// ═══════════════════════════════════════════
+function setView(view) {
+  const positions = {
+    '3d':       { pos: [3, 2.5, 5.5],   target: [0, 0, 0] },
+    'axial':    { pos: [0, 8, 0.01],    target: [0, 0, 0] },
+    'coronal':  { pos: [0, 0.5, 8],     target: [0, 0, 0] },
+    'sagittal': { pos: [8, 0.5, 0.01],  target: [0, 0, 0] },
+    'reset':    { pos: [0, 0.5, 6.5],   target: [0, 0, 0] }
+  };
+  const v = positions[view] || positions['3d'];
+  camera.position.set(...v.pos);
+  controls.target.set(...v.target);
+  controls.update();
+  addToast(`Vue ${view.toUpperCase()}`, 'ok');
+}
+document.querySelectorAll('.vp-tool[data-view]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.vp-tool').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    setView(btn.dataset.view);
+  });
+});
+
+// Mode Rayons X
+document.getElementById('btnXRay').addEventListener('click', (e) => {
+  xrayMode = !xrayMode;
+  e.currentTarget.classList.toggle('active', xrayMode);
+
+  clickableMeshes.forEach((mesh) => {
+    if (!mesh.material) return;
+    const cat = (mesh.userData.structure?.category || '').toLowerCase();
+    const lbl = (mesh.userData.structure?.label || '').toLowerCase();
+    const isOuter = cat.includes('cortex') || lbl.includes('gyrus') || lbl.includes('sulcus');
+
+    if (xrayMode) {
+      mesh.material.transparent = true;
+      if (isOuter) {
+        mesh.material.opacity = 0.08;
+        mesh.material.depthWrite = false;
+      } else {
+        mesh.material.opacity = 1.0;
+        mesh.material.emissiveIntensity = 0.4;
+        mesh.material.depthWrite = true;
+      }
+    } else {
+      const base = originalOpacity.get(mesh) ?? 1;
+      mesh.material.opacity = base;
+      mesh.material.depthWrite = true;
+    }
+    mesh.material.needsUpdate = true;
+  });
+  addToast(xrayMode ? '🔍 Mode Rayons X activé' : '👁️ Mode normal', xrayMode ? 'purple' : 'ok');
+});
+
+// ═══════════════════════════════════════════
+// ANIMATION
+// ═══════════════════════════════════════════
 let time = 0;
 let isPaused = false;
-let autoRotate = true;
+let lastArcSpawn = 0;
 const clock = new THREE.Clock();
 let frameCount = 0, lastFpsTime = performance.now();
-
-let recruitmentLevel = 0.35; // 0-1, contrôle le recrutement
-let criticalNeurons = new Set();
-let firingNeurons = [];
-
-// Fonction pour recruter les neurones autour du foyer critique
-function updateRecruitment(level) {
-  recruitmentLevel = level;
-  const focusPos = seizureFocusGroup.position;
-  
-  neurons.forEach((n, i) => {
-    const dist = n.position.distanceTo(focusPos);
-    const threshold = 0.5 + level * 3.5; // rayon de recrutement
-    if (dist < threshold) {
-      if (!n.userData.isCritical) {
-        n.userData.isCritical = true;
-        n.material.color.setHex(0xff3b6b);
-        n.material.emissive.setHex(0xff1a4a);
-        n.material.emissiveIntensity = 1.6;
-        criticalNeurons.add(i);
-      }
-    } else if (n.userData.isCritical && dist > threshold + 0.5) {
-      n.userData.isCritical = false;
-      n.material.color.setHex(0x00e5ff);
-      n.material.emissive.setHex(0x007799);
-      n.material.emissiveIntensity = 0.7;
-      criticalNeurons.delete(i);
-    }
-  });
-}
 
 function animate() {
   requestAnimationFrame(animate);
   const delta = Math.min(clock.getDelta(), 0.1);
   if (!isPaused) time += delta;
-  
-  if (autoRotate) {
-    hologram.rotation.y = Math.sin(time * 0.15) * 0.3 + time * 0.08;
+
+  if (brainLoaded) {
+    updateOpacityByZoom();
+
+    const severity = getCrisisSeverity();
+    const arcInterval = 0.4 - severity * 0.35;
+    if (time - lastArcSpawn > arcInterval && activeArcs.length < 40 + severity * 60) {
+      spawnArc();
+      lastArcSpawn = time;
+    }
+    redLight.intensity = severity * 8 + Math.sin(time * 8) * severity * 3;
   }
-  hologram.position.y = Math.sin(time * 0.6) * 0.05;
-  
-  // === NEURONES : pulsation + firing ===
-  neurons.forEach((n, i) => {
-    const phase = time * 2 + n.userData.phase;
-    const isCrit = n.userData.isCritical;
-    const baseScale = isCrit ? 1.4 : 1.0;
-    const pulse = 1 + Math.sin(phase) * (isCrit ? 0.25 : 0.08);
-    n.scale.setScalar(baseScale * pulse);
-    
-    // Firing aléatoire
-    if (isCrit && Math.random() < 0.015) {
-      n.userData.fireTime = time;
-      // Éclair vers un autre neurone proche
-      const nearby = neurons.filter((o, j) => j !== i && n.position.distanceTo(o.position) < 0.8);
-      if (nearby.length > 0) {
-        const target = nearby[Math.floor(Math.random() * nearby.length)];
-        createLightningArc(n.position.clone(), target.position.clone(), 0xffd93b);
-      }
-    }
-    
-    // Flash de firing
-    if (time - n.userData.fireTime < 0.15) {
-      n.material.emissiveIntensity = 3.5;
-    } else if (isCrit) {
-      n.material.emissiveIntensity = 1.6;
-    }
-    
-    // Dendrites : opacité variable
-    if (n.userData.dendrites) {
-      n.userData.dendrites.forEach(d => {
-        d.material.opacity = isCrit ? 0.3 + Math.sin(phase * 2) * 0.2 : 0.1;
-        d.material.color.setHex(isCrit ? 0xff3b6b : 0x00e5ff);
-      });
-    }
-  });
-  
-  // === FOYER CRITIQUE : pulsation intense ===
-  const focusPulse = 1 + Math.sin(time * 6) * 0.3;
-  coreMesh.scale.setScalar(focusPulse);
-  haloMesh.scale.setScalar(1 + Math.sin(time * 4) * 0.4);
-  haloMesh.material.opacity = 0.15 + Math.sin(time * 4) * 0.1;
-  haloMesh2.scale.setScalar(1 + Math.sin(time * 2.5) * 0.3);
-  haloMesh2.material.opacity = 0.06 + Math.sin(time * 2.5) * 0.04;
-  
-  // Ondes de choc
-  shockwaves.forEach((ring, i) => {
-    const t = (time * 0.8 + i * 0.33) % 1;
-    ring.scale.setScalar(0.5 + t * 3);
-    ring.material.opacity = (1 - t) * 0.5;
-  });
-  
-  // Lumière rouge pulsante
-  redLight.intensity = 3.5 + Math.sin(time * 6) * 2;
-  redLight.position.copy(seizureFocusGroup.position);
-  pulseLight.intensity = 1.5 + Math.sin(time * 8) * 1.5;
-  
-  // === POTENTIELS D'ACTION : voyage le long des synapses ===
-  const apPos = apGeometry.attributes.position.array;
-  const apCol = apGeometry.attributes.color.array;
-  apData.forEach((ap, i) => {
-    ap.progress += delta * ap.speed;
-    if (ap.progress > 1) {
-      ap.progress = 0;
-      ap.synIdx = Math.floor(Math.random() * (synapsePositions.length / 6));
-      ap.color = Math.random() < 0.3 ? 'red' : 'yellow';
-    }
-    // Trouver la position interpolée sur la synapse
-    const synBase = ap.synIdx * 6;
-    const p1x = synapsePositions[synBase];
-    const p1y = synapsePositions[synBase + 1];
-    const p1z = synapsePositions[synBase + 2];
-    const p2x = synapsePositions[synBase + 3];
-    const p2y = synapsePositions[synBase + 4];
-    const p2z = synapsePositions[synBase + 5];
-    
-    // Interpolation avec courbe (approximation)
-    const t = ap.progress;
-    const arc = Math.sin(t * Math.PI) * 0.15;
-    apPos[i * 3] = p1x + (p2x - p1x) * t;
-    apPos[i * 3 + 1] = p1y + (p2y - p1y) * t + arc;
-    apPos[i * 3 + 2] = p1z + (p2z - p1z) * t;
-    
-    if (ap.color === 'red') {
-      apCol[i * 3] = 1.0; apCol[i * 3 + 1] = 0.2; apCol[i * 3 + 2] = 0.4;
-    } else {
-      apCol[i * 3] = 1.0; apCol[i * 3 + 1] = 0.85; apCol[i * 3 + 2] = 0.2;
-    }
-  });
-  apGeometry.attributes.position.needsUpdate = true;
-  apGeometry.attributes.color.needsUpdate = true;
-  
-  // === PARTICULES AMBIANTES ===
-  const ambPos = ambientGeo.attributes.position.array;
-  for (let i = 0; i < ambientCount; i++) {
-    ambPos[i * 3] += ambientVel[i].x;
-    ambPos[i * 3 + 1] += ambientVel[i].y;
-    ambPos[i * 3 + 2] += ambientVel[i].z;
-    if (ambPos[i * 3 + 1] > 6) {
-      ambPos[i * 3 + 1] = -6;
-      ambPos[i * 3] = (Math.random() - 0.5) * 14;
-      ambPos[i * 3 + 2] = (Math.random() - 0.5) * 14;
-    }
-  }
-  ambientGeo.attributes.position.needsUpdate = true;
-  
-  // === GRID ===
-  gridHelper.rotation.y = time * 0.02;
-  
+
+  updateArcs();
+  updateKeyboardPan(delta);   // ★ clavier pour monter/descendre
+  controls.update();
   renderer.render(scene, camera);
-  
   frameCount++;
   const now = performance.now();
   if (now - lastFpsTime > 1000) {
     document.getElementById('statusFps').textContent = `FPS : ${frameCount}`;
-    document.getElementById('statusLatency').textContent = `LATENCE : ${Math.floor(30 + Math.random() * 25)} ms`;
-    // Nombre de neurones critiques
-    const countEl = document.getElementById('neuronCount');
-    if (countEl) countEl.textContent = (NEURON_COUNT - criticalNeurons.size) + ' / ' + NEURON_COUNT;
     frameCount = 0;
     lastFpsTime = now;
   }
 }
 
 window.addEventListener('resize', resizeRenderer);
-setTimeout(() => { resizeRenderer(); animate(); }, 200);
+setTimeout(() => { resizeRenderer(); animate(); }, 300);
 
-// Initialisation du recrutement
-setTimeout(() => updateRecruitment(0.35), 500);
-
-/* ============================================================
-   CHARTS
-   ============================================================ */
-let charts = {};
-function initCharts() {
-  if (charts.seizures) return;
-  Chart.defaults.color = '#6a8fa3';
-  Chart.defaults.font.family = 'SF Mono, Courier New, monospace';
-  Chart.defaults.font.size = 9;
-  Chart.defaults.borderColor = 'rgba(0, 229, 255, 0.1)';
-  const grid = { color: 'rgba(0, 229, 255, 0.08)', drawBorder: false };
-  const ticks = { color: '#6a8fa3', font: { size: 8.5 } };
-
-  charts.seizures = new Chart(document.getElementById('chartSeizures'), {
-    type: 'line',
-    data: {
-      labels: ['S-12', 'S-9', 'S-6', 'S-3', 'S-1', 'Auj.'],
-      datasets: [{
-        data: [1, 2, 3, 5, 8, 12],
-        borderColor: '#ff3b6b',
-        backgroundColor: (ctx) => {
-          const g = ctx.chart.ctx.createLinearGradient(0, 0, 0, 180);
-          g.addColorStop(0, 'rgba(255, 59, 107, 0.4)');
-          g.addColorStop(1, 'rgba(255, 59, 107, 0)');
-          return g;
-        },
-        borderWidth: 2, tension: 0.35, fill: true,
-        pointBackgroundColor: '#ff3b6b', pointRadius: 3
-      }]
-    },
-    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } },
-      scales: { x: { grid, ticks }, y: { grid, ticks, beginAtZero: true } } }
-  });
-
-  charts.eeg = new Chart(document.getElementById('chartEEG'), {
-    type: 'line',
-    data: {
-      labels: ['0s', '1s', '2s', '3s', '4s', '5s'],
-      datasets: [
-        { label: 'Fp1-F7', data: [40, 180, 220, 240, 200, 160], borderColor: '#ff3b6b', borderWidth: 1.5, tension: 0.2, pointRadius: 1 },
-        { label: 'Fp2-F8', data: [35, 170, 210, 230, 190, 150], borderColor: '#ffd93b', borderWidth: 1.5, tension: 0.2, pointRadius: 1 }
-      ]
-    },
-    options: { responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { display: true, position: 'top', align: 'end', labels: { boxWidth: 8, boxHeight: 8, padding: 4, font: { size: 8 } } } },
-      scales: { x: { grid, ticks }, y: { grid, ticks, beginAtZero: true } } }
-  });
-
-  charts.asm = new Chart(document.getElementById('chartASM'), {
-    type: 'bar',
-    data: {
-      labels: ['Lévétiracétam', 'Valproate', 'Lamotrigine', 'Carbamazépine'],
-      datasets: [{
-        data: [42, 38, 55, 28],
-        backgroundColor: ['#00ff9d', '#ffd93b', '#ff8b3b', '#ff3b6b'],
-        borderRadius: 3, borderWidth: 0
-      }]
-    },
-    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } },
-      scales: { x: { grid, ticks }, y: { grid, ticks, beginAtZero: true, max: 100 } } }
-  });
-
-  charts.types = new Chart(document.getElementById('chartTypes'), {
-    type: 'doughnut',
-    data: {
-      labels: ['GTC', 'Focales', 'Absences', 'Myocloniques', 'Autres'],
-      datasets: [{
-        data: [45, 30, 12, 8, 5],
-        backgroundColor: ['#ff3b6b', '#ffd93b', '#a855f7', '#ff8b3b', '#00e5ff'],
-        borderColor: 'rgba(0,0,0,0.5)', borderWidth: 2
-      }]
-    },
-    options: { responsive: true, maintainAspectRatio: false, cutout: '55%',
-      plugins: { legend: { position: 'right', labels: { boxWidth: 8, boxHeight: 8, padding: 4, font: { size: 8 } } } } }
-  });
-}
-
-/* ============================================================
-   PREDICTION
-   ============================================================ */
-let predictionState = {
-  risk: 68,
-  confidence: 87,
-  factors: [
-    { name: 'Sommeil < 6h (3 derniers jours)', weight: 22 },
-    { name: 'Observance thérapeutique < 80%', weight: 18 },
-    { name: 'Stress rapporté (8/10)', weight: 12 },
-    { name: 'Activité EEG pré-ictale', weight: 9 },
-    { name: 'Alcool (2 verres hier)', weight: 7 },
-    { name: 'Respect des horaires', weight: -8 },
-    { name: 'Activité physique', weight: -5 }
-  ]
-};
-
-function initPrediction() { updatePredictionDisplay(); }
-
-function updatePredictionDisplay() {
-  const valEl = document.getElementById('predValue');
-  if (!valEl) return;
-  const risk = predictionState.risk;
-  valEl.textContent = Math.round(risk) + '%';
-  if (risk < 25) valEl.style.color = 'var(--green)';
-  else if (risk < 50) valEl.style.color = 'var(--yellow)';
-  else if (risk < 75) valEl.style.color = 'var(--orange)';
-  else valEl.style.color = 'var(--red)';
-  document.getElementById('riskTop').textContent = Math.round(risk) + '%';
-  document.getElementById('riskTop').style.color = risk >= 75 ? 'var(--red)' : risk >= 50 ? 'var(--orange)' : 'var(--yellow)';
-  const factorsEl = document.getElementById('predFactors');
-  if (factorsEl) {
-    factorsEl.innerHTML = predictionState.factors.map(f => {
-      const cls = f.weight > 0 ? 'pos' : 'neg';
-      const sign = f.weight > 0 ? '+' : '';
-      return `<div class="factor-item"><span class="factor-name">${f.name}</span><span class="factor-weight ${cls}">${sign}${f.weight}%</span></div>`;
-    }).join('');
-  }
-}
-
-document.getElementById('btnRecalcPred').addEventListener('click', () => {
-  addToast('⟳ Recalcul prédictions...', 'purple');
-  setTimeout(() => {
-    predictionState.risk = Math.min(98, Math.max(5, predictionState.risk + (Math.random() - 0.4) * 20));
-    predictionState.confidence = Math.min(98, Math.max(70, predictionState.confidence + (Math.random() - 0.5) * 5));
-    updatePredictionDisplay();
-    addToast(`🔮 Risque : ${Math.round(predictionState.risk)}%`, predictionState.risk > 70 ? 'crit' : 'ok');
-  }, 800);
+/* ============ SLIDERS ============ */
+document.getElementById('sElapsed').addEventListener('input', e => {
+  crisisState.elapsed = parseInt(e.target.value);
+  document.getElementById('vElapsed').textContent = crisisState.elapsed + ' min';
+  const phaseEl = document.getElementById('sePhase');
+  if (crisisState.elapsed < 5) { phaseEl.textContent = '— PRÉCOCE'; phaseEl.style.color = 'var(--green)'; }
+  else if (crisisState.elapsed < 20) { phaseEl.textContent = '— ÉTABLIE'; phaseEl.style.color = 'var(--yellow)'; }
+  else if (crisisState.elapsed < 30) { phaseEl.textContent = '— RÉFRACTAIRE'; phaseEl.style.color = 'var(--orange)'; }
+  else { phaseEl.textContent = '— SE RÉFRACTAIRE'; phaseEl.style.color = 'var(--red)'; }
+  updateRealtimeAlert();
 });
+document.getElementById('sBenzos').addEventListener('input', e => {
+  crisisState.benzos = parseInt(e.target.value);
+  document.getElementById('vBenzos').textContent = crisisState.benzos + ' mg';
+  updateRealtimeAlert();
+});
+document.getElementById('sSpo2').addEventListener('input', e => {
+  crisisState.spo2 = parseInt(e.target.value);
+  document.getElementById('vSpo2').textContent = crisisState.spo2 + '%';
+  updateRealtimeAlert();
+});
+document.getElementById('sRecruit').addEventListener('input', e => {
+  crisisState.recruit = parseInt(e.target.value) / 100;
+  document.getElementById('vRecruit').textContent = parseInt(e.target.value) + '%';
+  updateRealtimeAlert();
+});
+function updateRealtimeAlert() {
+  const el = document.getElementById('realtimeAlert');
+  if (!el) return;
+  const sev = Math.round(getCrisisSeverity() * 100);
+  let html = `Crise GTC <strong>${crisisState.elapsed} min</strong> — ${crisisState.elapsed >= 30 ? 'RÉFRACTAIRE' : crisisState.elapsed >= 20 ? 'ÉTABLIE' : 'EN COURS'}<br>`;
+  html += `Sévérité : <strong style="color:${sev > 70 ? 'var(--red)' : sev > 40 ? 'var(--orange)' : 'var(--yellow)'}">${sev}%</strong><br>`;
+  html += `SpO₂ : <strong style="color:${crisisState.spo2 < 90 ? 'var(--red)' : 'var(--green)'}">${crisisState.spo2}%</strong> · Benzos : <strong>${crisisState.benzos} mg</strong>`;
+  el.innerHTML = html;
+}
 
-/* ============================================================
-   CTAG
-   ============================================================ */
+/* ============ CTAG ============ */
 const ctagSteps = [
-  { time: '0-1 min', title: 'Reconnaissance & Sécurisation', desc: 'Protéger, ne pas immobiliser, noter l\'heure', minTime: 0, status: 'done', action: 'done' },
-  { time: '1-5 min', title: 'Position Latérale de Sécurité', desc: 'Libérer les voies aériennes', minTime: 1, status: 'done', action: 'done' },
-  { time: '5 min', title: '⚠ APPEL SAMU / 15', desc: 'Crise > 5 min = état de mal imminent', minTime: 5, status: 'urgent', action: 'pending' },
-  { time: '5-10 min', title: 'Benzodiazépine 1ère dose', desc: 'Lorazépam 0.1 mg/kg IV (max 4mg)', minTime: 5, status: 'pending', action: 'pending' },
-  { time: '10-15 min', title: '2ème dose Benzos si échec', desc: 'Réévaluer après 5-10 min', minTime: 10, status: 'pending', action: 'pending' },
-  { time: '15-20 min', title: 'Examens urgents', desc: 'Glycémie, iono, calcémie, toxiques', minTime: 15, status: 'pending', action: 'pending' },
-  { time: '20-30 min', title: '2ème ligne — Antiépileptique', desc: 'Lévétiracétam 60 mg/kg IV', minTime: 20, status: 'pending', action: 'pending' },
-  { time: '> 30 min', title: '⚠ État de mal réfractaire', desc: 'Réanimation — Propofol ou Thiopental', minTime: 30, status: 'urgent', action: 'pending' },
-  { time: 'Post-critique', title: 'Surveillance & Réévaluation', desc: 'Glasgow, SpO₂, confusion post-critique', minTime: 999, status: 'pending', action: 'pending' }
+  { time: '0-1 min', title: 'Reconnaissance', desc: 'Protéger, noter l\'heure', minTime: 0, status: 'done', action: 'done' },
+  { time: '1-5 min', title: 'PLS', desc: 'Libérer voies aériennes', minTime: 1, status: 'done', action: 'done' },
+  { time: '5 min', title: '⚠ APPEL SAMU', desc: 'Crise > 5 min', minTime: 5, status: 'urgent', action: 'pending' },
+  { time: '5-10 min', title: 'Benzodiazépine', desc: 'Lorazépam', minTime: 5, status: 'pending', action: 'pending' },
+  { time: '10-15 min', title: '2ème dose', desc: 'Réévaluer', minTime: 10, status: 'pending', action: 'pending' },
+  { time: '20-30 min', title: '2ème ligne', desc: 'Lévétiracétam', minTime: 20, status: 'pending', action: 'pending' },
+  { time: '> 30 min', title: '⚠ Réfractaire', desc: 'Propofol', minTime: 30, status: 'urgent', action: 'pending' }
 ];
-
 function initCTAG() { renderCTAG(); }
-
 function renderCTAG() {
   const timeline = document.getElementById('ctagTimeline');
   if (!timeline) return;
-  const elapsed = parseInt(document.getElementById('sElapsed').value);
-  const benzos = parseInt(document.getElementById('sBenzos').value);
   ctagSteps.forEach((step) => {
     if (step.action === 'done' || step.action === 'skipped') return;
-    if (step.minTime > 999) return;
-    if (elapsed >= step.minTime && step.minTime > 0) {
-      if (step.minTime <= 5 && benzos > 0) { step.action = 'done'; step.status = 'ok'; }
-      else if (step.minTime <= 10 && benzos >= 4) { step.action = 'done'; step.status = 'ok'; }
-      else if (step.minTime > 10 && benzos >= 8) { step.action = 'done'; step.status = 'ok'; }
-      else if (elapsed >= step.minTime && step.minTime >= 20) { step.status = 'urgent'; }
-      else if (elapsed >= step.minTime) { step.status = 'urgent'; }
+    if (crisisState.elapsed >= step.minTime && step.minTime > 0) {
+      if (step.minTime <= 5 && crisisState.benzos > 0) { step.action = 'done'; step.status = 'ok'; }
+      else if (step.minTime <= 10 && crisisState.benzos >= 4) { step.action = 'done'; step.status = 'ok'; }
+      else if (step.minTime > 10 && crisisState.benzos >= 8) { step.action = 'done'; step.status = 'ok'; }
+      else { step.status = 'urgent'; }
     }
   });
   timeline.innerHTML = ctagSteps.map((step, i) => {
     let cls = 'ctag-step';
     if (step.action === 'done') cls += ' done';
     if (step.status === 'urgent' && step.action !== 'done') cls += ' crit';
-    const statusLabel = step.status === 'urgent' ? 'URGENT' : (step.action === 'done' ? 'FAIT' : 'EN ATTENTE');
+    const statusLabel = step.status === 'urgent' ? 'URGENT' : (step.action === 'done' ? 'FAIT' : 'ATTENTE');
     const statusCls = step.status === 'urgent' ? 'urgent' : (step.action === 'done' ? 'ok' : 'pending');
-    return `
-      <div class="${cls}" data-index="${i}">
-        <div class="ctag-time">${step.time}</div>
-        <div class="ctag-content">
-          <div class="ctag-title">${step.title}</div>
-          <div class="ctag-desc">${step.desc}</div>
-          <div class="ctag-actions">
-            <button class="ctag-btn ${step.action === 'done' ? 'done' : ''}" data-action="done" data-idx="${i}">
-              ${step.action === 'done' ? '✓ Fait' : '○ Marquer fait'}
-            </button>
-            <button class="ctag-btn skip" data-action="skip" data-idx="${i}">Ignorer</button>
-            <span class="ctag-status ${statusCls}">${statusLabel}</span>
-          </div>
-        </div>
-      </div>
-    `;
+    return `<div class="${cls}"><div class="ctag-time">${step.time}</div><div class="ctag-content"><div class="ctag-title">${step.title}</div><div class="ctag-desc">${step.desc}</div><div class="ctag-actions"><button class="ctag-btn ${step.action === 'done' ? 'done' : ''}" data-action="done" data-idx="${i}">${step.action === 'done' ? '✓ Fait' : '○ Fait'}</button><span class="ctag-status ${statusCls}">${statusLabel}</span></div></div></div>`;
   }).join('');
   timeline.querySelectorAll('.ctag-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
       const idx = parseInt(btn.dataset.idx);
-      const action = btn.dataset.action;
-      if (action === 'done') {
-        ctagSteps[idx].action = 'done'; ctagSteps[idx].status = 'ok';
-        addToast(`✓ ${ctagSteps[idx].title} — complété`, 'ok');
-      } else if (action === 'skip') {
-        ctagSteps[idx].action = 'skipped'; ctagSteps[idx].status = 'pending';
-        addToast(`↷ ${ctagSteps[idx].title} — ignoré`, 'warn');
-      }
+      ctagSteps[idx].action = 'done'; ctagSteps[idx].status = 'ok';
       renderCTAG();
     });
   });
 }
-
-document.getElementById('sElapsed').addEventListener('input', e => {
-  const val = parseInt(e.target.value);
-  document.getElementById('vElapsed').textContent = val + ' min';
-  const phaseEl = document.getElementById('sePhase');
-  if (val < 5) { phaseEl.textContent = '— PHASE PRÉCOCE'; phaseEl.style.color = 'var(--green)'; }
-  else if (val < 20) { phaseEl.textContent = '— PHASE ÉTABLIE'; phaseEl.style.color = 'var(--yellow)'; }
-  else if (val < 30) { phaseEl.textContent = '— PHASE RÉFRACTAIRE'; phaseEl.style.color = 'var(--orange)'; }
-  else { phaseEl.textContent = '— SE RÉFRACTAIRE'; phaseEl.style.color = 'var(--red)'; }
-  checkTimeAlerts(val);
-  updateRealtimeAlert();
-});
-
-document.getElementById('sBenzos').addEventListener('input', e => {
-  document.getElementById('vBenzos').textContent = e.target.value + ' mg';
-  updateRealtimeAlert();
-});
-document.getElementById('sSpo2').addEventListener('input', e => {
-  document.getElementById('vSpo2').textContent = e.target.value + '%';
-  updateRealtimeAlert();
-});
-document.getElementById('sRecruit').addEventListener('input', e => {
-  const val = parseInt(e.target.value) / 100;
-  document.getElementById('vRecruit').textContent = e.target.value + '%';
-  updateRecruitment(val);
-  updateRealtimeAlert();
-});
-
-let lastAlertTime = 0;
-function checkTimeAlerts(elapsed) {
-  const now = Date.now();
-  if (now - lastAlertTime < 3000) return;
-  if (elapsed >= 5 && elapsed < 6) showAlert('⚠ SEUIL 5 MIN — APPEL SAMU', 'crit');
-  else if (elapsed >= 20 && elapsed < 21) showAlert('⚠ SEUIL 20 MIN — 2ÈME LIGNE', 'crit');
-  else if (elapsed >= 30 && elapsed < 31) showAlert('⚠ SEUIL 30 MIN — RÉFRACTAIRE', 'crit');
-  else if (elapsed >= 10 && elapsed < 11) showAlert('◈ 10 MIN — RÉÉVALUER BENZOS', 'warn');
-  lastAlertTime = now;
-}
-
-function showAlert(msg, type) {
-  const banner = document.getElementById('alertBanner');
-  banner.textContent = msg;
-  banner.className = 'alert-banner ' + type + ' active';
-  setTimeout(() => banner.classList.remove('active'), 4000);
-}
-
-function updateRealtimeAlert() {
-  const elapsed = parseInt(document.getElementById('sElapsed').value);
-  const benzos = parseInt(document.getElementById('sBenzos').value);
-  const spo2 = parseInt(document.getElementById('sSpo2').value);
-  const recruit = parseInt(document.getElementById('sRecruit').value);
-  const el = document.getElementById('realtimeAlert');
-  if (!el) return;
-  let html = `Crise GTC <strong>${elapsed} min</strong> — ${elapsed >= 30 ? 'RÉFRACTAIRE' : elapsed >= 20 ? 'ÉTABLIE' : 'EN COURS'}<br>`;
-  html += `Recrutement : <strong style="color:${recruit > 60 ? 'var(--red)' : recruit > 30 ? 'var(--orange)' : 'var(--yellow)'}">${recruit}%</strong><br>`;
-  html += `SpO₂ : <strong style="color:${spo2 < 90 ? 'var(--red)' : spo2 < 94 ? 'var(--yellow)' : 'var(--green)'}">${spo2}%</strong> · Benzos : <strong>${benzos} mg</strong><br>`;
-  html += `Prochaine : <strong style="color:var(--cyan)">${getNextStep(elapsed, benzos)}</strong>`;
-  el.innerHTML = html;
-}
-
-function getNextStep(elapsed, benzos) {
-  if (elapsed < 5) return 'Surveiller — appeler si > 5 min';
-  if (elapsed < 10 && benzos < 4) return 'Benzodiazépine 1ère dose';
-  if (elapsed < 20 && benzos < 8) return '2ème dose Benzos si échec';
-  if (elapsed < 30 && benzos >= 8) return '2ème ligne Antiépileptique';
-  if (elapsed >= 30) return 'Réanimation — anesthésie générale';
-  return 'Réévaluer';
-}
-
 document.getElementById('btnRegenerateCTAG').addEventListener('click', () => {
-  addToast('⚡ Recalcul CTAG...', 'warn');
   ctagSteps.forEach(s => { if (s.action !== 'done' && s.action !== 'skipped') { s.action = 'pending'; s.status = 'pending'; } });
-  setTimeout(() => { renderCTAG(); addToast('✓ CTAG recalculée', 'ok'); }, 400);
+  renderCTAG();
+  addToast('✓ CTAG recalculée', 'ok');
 });
 
-/* ============================================================
-   CALENDAR
-   ============================================================ */
+/* ============ CHARTS ============ */
+let charts = {};
+function initCharts() {
+  if (charts.seizures) return;
+  Chart.defaults.color = '#6a8fa3';
+  Chart.defaults.font.family = 'SF Mono, Courier New, monospace';
+  Chart.defaults.font.size = 9;
+  const grid = { color: 'rgba(0, 229, 255, 0.08)', drawBorder: false };
+  const ticks = { color: '#6a8fa3', font: { size: 8.5 } };
+
+  charts.seizures = new Chart(document.getElementById('chartSeizures'), {
+    type: 'line',
+    data: { labels: ['S-12','S-9','S-6','S-3','S-1','Auj.'], datasets: [{ data: [1,2,3,5,8,12], borderColor: '#ff3b6b', backgroundColor: 'rgba(255,59,107,0.15)', borderWidth: 2, tension: 0.35, fill: true, pointBackgroundColor: '#ff3b6b', pointRadius: 3 }] },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid, ticks }, y: { grid, ticks, beginAtZero: true } } }
+  });
+  charts.eeg = new Chart(document.getElementById('chartEEG'), {
+    type: 'line',
+    data: { labels: ['0s','1s','2s','3s','4s','5s'], datasets: [
+      { label: 'Fp1', data: [40,180,220,240,200,160], borderColor: '#ff3b6b', borderWidth: 1.5, tension: 0.2, pointRadius: 1 },
+      { label: 'Fp2', data: [35,170,210,230,190,150], borderColor: '#ffd93b', borderWidth: 1.5, tension: 0.2, pointRadius: 1 }
+    ] },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: true, position: 'top', align: 'end', labels: { boxWidth: 8, boxHeight: 8, padding: 4, font: { size: 8 } } } }, scales: { x: { grid, ticks }, y: { grid, ticks, beginAtZero: true } } }
+  });
+}
+
+/* ============ PREDICTION ============ */
+let predictionState = { risk: 68 };
+function updatePredictionDisplay() {
+  const valEl = document.getElementById('predValue');
+  if (!valEl) return;
+  valEl.textContent = Math.round(predictionState.risk) + '%';
+  valEl.style.color = predictionState.risk < 25 ? 'var(--green)' : predictionState.risk < 50 ? 'var(--yellow)' : predictionState.risk < 75 ? 'var(--orange)' : 'var(--red)';
+  document.getElementById('riskTop').textContent = Math.round(predictionState.risk) + '%';
+}
+document.getElementById('btnRecalcPred').addEventListener('click', () => {
+  addToast('⟳ Recalcul...', 'purple');
+  setTimeout(() => {
+    predictionState.risk = Math.min(98, Math.max(5, predictionState.risk + (Math.random() - 0.4) * 20));
+    updatePredictionDisplay();
+  }, 800);
+});
+
+/* ============ CALENDAR ============ */
 let currentMonth = new Date(2024, 10, 1);
-const rcpEvents = {
-  '2024-11-14': { title: 'RCP URGENTE — EPI-023', type: 'crit' },
-  '2024-11-21': { title: 'RCP Épileptologie hebdo', type: 'normal' },
-  '2024-11-22': { title: 'RCP Chirurgie épilepsie', type: 'normal' },
-  '2024-11-28': { title: 'RCP Épileptologie hebdo', type: 'normal' }
-};
 const monthNames = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
-
 function initCalendar() { renderCalendar(); }
-
 function renderCalendar() {
   const grid = document.getElementById('calGrid');
   if (!grid) return;
-  grid.innerHTML = `
-    <div class="cal-day-name">L</div><div class="cal-day-name">M</div><div class="cal-day-name">M</div>
-    <div class="cal-day-name">J</div><div class="cal-day-name">V</div><div class="cal-day-name">S</div><div class="cal-day-name">D</div>
-  `;
-  const year = currentMonth.getFullYear();
-  const month = currentMonth.getMonth();
-  const firstDay = new Date(year, month, 1);
-  const lastDay = new Date(year, month + 1, 0);
-  const startOffset = (firstDay.getDay() + 6) % 7;
+  grid.innerHTML = `<div class="cal-day-name">L</div><div class="cal-day-name">M</div><div class="cal-day-name">M</div><div class="cal-day-name">J</div><div class="cal-day-name">V</div><div class="cal-day-name">S</div><div class="cal-day-name">D</div>`;
+  const year = currentMonth.getFullYear(), month = currentMonth.getMonth();
+  const startOffset = (new Date(year, month, 1).getDay() + 6) % 7;
+  const lastDay = new Date(year, month + 1, 0).getDate();
   const today = new Date();
   for (let i = 0; i < startOffset; i++) grid.innerHTML += `<div></div>`;
-  for (let d = 1; d <= lastDay.getDate(); d++) {
-    const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+  for (let d = 1; d <= lastDay; d++) {
     const isToday = year === today.getFullYear() && month === today.getMonth() && d === today.getDate();
-    const event = rcpEvents[dateStr];
     let cls = 'cal-day';
     if (isToday) cls += ' today';
-    if (event) cls += ' event ' + (event.type === 'crit' ? 'crit' : '');
-    grid.innerHTML += `<div class="${cls}" data-date="${dateStr}" title="${event ? event.title : ''}">${d}</div>`;
+    if (d === 14) cls += ' event crit';
+    if (d === 21) cls += ' event';
+    grid.innerHTML += `<div class="${cls}">${d}</div>`;
   }
   document.getElementById('calMonth').textContent = `${monthNames[month]} ${year}`;
-  grid.querySelectorAll('.cal-day.event').forEach(el => {
-    el.addEventListener('click', () => {
-      const date = el.dataset.date;
-      const ev = rcpEvents[date];
-      if (ev) {
-        addToast(`📅 ${ev.title}`, ev.type === 'crit' ? 'crit' : 'purple');
-        openModal('◈ Détails RCP', `
-          <h4>▸ ${ev.title}</h4>
-          <p><strong>Date :</strong> ${date}</p>
-          <p><strong>Type :</strong> ${ev.type === 'crit' ? 'URGENTE' : 'Programmée'}</p>
-        `, () => { toggleRCP(); });
-      }
-    });
-  });
 }
-
 document.getElementById('calPrev').addEventListener('click', () => { currentMonth.setMonth(currentMonth.getMonth() - 1); renderCalendar(); });
 document.getElementById('calNext').addEventListener('click', () => { currentMonth.setMonth(currentMonth.getMonth() + 1); renderCalendar(); });
 
-document.getElementById('btnNewRCP').addEventListener('click', () => {
-  openModal('◈ Planifier une RCP', `
-    <h4>▸ Nouvelle réunion</h4>
-    <p><strong>Patient :</strong> EPI-023</p>
-    <p><strong>Motif :</strong> Discussion stratégie</p>
-  `, () => {
-    addToast('✓ RCP planifiée', 'ok');
-    rcpEvents['2024-11-14'] = { title: 'RCP URGENTE — EPI-023', type: 'crit' };
-    renderCalendar();
-  });
-});
-
-/* ============================================================
-   AI
-   ============================================================ */
-let aiState = {
-  version: 'v6.2.847',
-  accuracy: 96.2,
-  sensitivity: 87.8,
-  cases: 1247583,
-  epochProgress: 72,
-  feedbackBuffer: 912
-};
-
-function initAI() {
-  updateAIDisplay();
-  setInterval(() => {
-    aiState.epochProgress += Math.random() * 2;
-    if (aiState.epochProgress > 100) aiState.epochProgress = 0;
-    aiState.feedbackBuffer = Math.min(1000, aiState.feedbackBuffer + Math.floor(Math.random() * 3));
-    updateAIDisplay();
-  }, 3000);
-}
-
+/* ============ AI ============ */
+let aiState = { version: 'v6.2.847', accuracy: 96.2 };
+function initAI() { updateAIDisplay(); }
 function updateAIDisplay() {
-  document.getElementById('aiVersion').textContent = aiState.version;
-  document.getElementById('aiAccuracy').textContent = aiState.accuracy.toFixed(1) + '%';
-  document.getElementById('aiSensitivity').textContent = aiState.sensitivity.toFixed(1) + '%';
-  document.getElementById('epochPct').textContent = Math.floor(aiState.epochProgress) + '%';
-  document.getElementById('epochBar').style.width = aiState.epochProgress + '%';
+  const v = document.getElementById('aiVersion'); if (v) v.textContent = aiState.version;
+  const a = document.getElementById('aiAccuracy'); if (a) a.textContent = aiState.accuracy.toFixed(1) + '%';
 }
-
-const feedbackLog = [];
-
 document.querySelectorAll('.feedback-btn').forEach(btn => {
   btn.addEventListener('click', () => {
-    const fb = btn.dataset.fb;
-    const label = { correct: '✓ Exact', partial: '◐ Partiel', incorrect: '✗ Erreur', unknown: '? Incertain' }[fb];
-    const delta = { correct: 0.3, partial: 0.1, incorrect: -0.4, unknown: 0 }[fb];
+    const delta = { correct: 0.3, partial: 0.1, incorrect: -0.4, unknown: 0 }[btn.dataset.fb];
     aiState.accuracy = Math.min(99.9, Math.max(80, aiState.accuracy + delta));
-    aiState.cases += 1;
-    aiState.feedbackBuffer = Math.min(1000, aiState.feedbackBuffer + 1);
-    if (fb === 'incorrect') {
-      aiState.version = `v6.${2 + Math.floor(Math.random() * 9)}.${800 + Math.floor(Math.random() * 200)}`;
-      document.getElementById('aiLastUpdate').textContent = 'à l\'instant';
-    }
-    feedbackLog.unshift({ type: fb, label, time: new Date().toTimeString().split(' ')[0] });
-    const logEl = document.getElementById('feedbackLog');
-    logEl.innerHTML = feedbackLog.slice(0, 5).map(f => {
-      const color = { correct: 'var(--green)', partial: 'var(--yellow)', incorrect: 'var(--red)', unknown: 'var(--purple)' }[f.type];
-      return `<div style="display:flex;gap:6px;padding:2px 0;border-bottom:1px dashed rgba(0,229,255,0.1);">
-        <span style="color:var(--cyan-dim);">${f.time}</span>
-        <span style="color:${color};">${f.label}</span>
-      </div>`;
-    }).join('');
     updateAIDisplay();
-    addToast(`🧠 Feedback — Précision ${aiState.accuracy.toFixed(1)}%`, delta > 0 ? 'ok' : 'warn');
+    addToast(`🧠 Précision ${aiState.accuracy.toFixed(1)}%`, delta > 0 ? 'ok' : 'warn');
   });
 });
 
-document.getElementById('btnTrainNow').addEventListener('click', () => {
-  if (aiState.feedbackBuffer < 100) {
-    addToast('⚠ Buffer insuffisant', 'warn');
-    return;
-  }
-  addToast('⚡ Ré-entraînement...', 'warn');
-  aiState.epochProgress = 0;
-  updateAIDisplay();
-  let ep = 0;
-  const trainInterval = setInterval(() => {
-    ep += 5;
-    aiState.epochProgress = ep;
-    updateAIDisplay();
-    if (ep >= 100) {
-      clearInterval(trainInterval);
-      aiState.version = `v6.${2 + Math.floor(Math.random() * 9)}.${800 + Math.floor(Math.random() * 200)}`;
-      aiState.accuracy = Math.min(99.9, aiState.accuracy + 0.5);
-      aiState.feedbackBuffer = 0;
-      updateAIDisplay();
-      addToast(`✓ Modèle ${aiState.version} déployé`, 'ok');
-    }
-  }, 200);
-});
-
-/* ============================================================
-   WEBRTC
-   ============================================================ */
-let rcpActive = false;
-let rcpRecording = false;
-let rcpSeconds = 0;
-let rcpInterval = null;
-let localStream = null;
-let screenStream = null;
-
-async function startLocalVideo() {
-  try {
-    localStream = await navigator.mediaDevices.getUserMedia({
-      video: { width: 320, height: 240, facingMode: 'user' }, audio: true
-    });
-    document.getElementById('localVideo').srcObject = localStream;
-    document.getElementById('webrtcStatus').innerHTML = `
-      <div><span class="k">WEBRTC :</span> <span class="v" style="color:var(--green)">ACTIF</span></div>
-      <div><span class="k">PEERS :</span> <span class="v" id="peerCount">3</span></div>
-      <div><span class="k">LATENCE :</span> <span class="v" id="rtcLatency">28 ms</span></div>
-    `;
-    document.getElementById('rtcStatus').textContent = 'STREAMING';
-    addToast('📷 Caméra activée', 'ok');
-    return true;
-  } catch (err) {
-    addToast('⚠ Caméra indisponible — simulation', 'warn');
-    document.getElementById('localVideo').style.background = 'linear-gradient(135deg, #061426, #0a2440)';
-    document.getElementById('localVideo').innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:24px;">🧠</div>';
-    document.getElementById('rtcStatus').textContent = 'SIMULATED';
-    return false;
-  }
-}
-
-function stopLocalVideo() {
-  if (localStream) { localStream.getTracks().forEach(t => t.stop()); localStream = null; }
-  if (screenStream) { screenStream.getTracks().forEach(t => t.stop()); screenStream = null; }
-}
-
-function createSimulatedPeer(videoEl, name) {
-  const canvas = document.createElement('canvas');
-  canvas.width = 320; canvas.height = 240;
-  const ctx = canvas.getContext('2d');
-  let t = 0;
-  const stream = canvas.captureStream(20);
-  function draw() {
-    if (!rcpActive) return;
-    t += 0.02;
-    const grad = ctx.createLinearGradient(0, 0, 320, 240);
-    grad.addColorStop(0, '#061426'); grad.addColorStop(1, '#0a2440');
-    ctx.fillStyle = grad; ctx.fillRect(0, 0, 320, 240);
-    ctx.font = '80px Arial'; ctx.textAlign = 'center';
-    ctx.fillText(name.icon, 160, 130 + Math.sin(t * 2) * 8);
-    ctx.fillStyle = 'rgba(0, 229, 255, 0.15)'; ctx.fillRect(0, 220, 320, 20);
-    ctx.fillStyle = '#00e5ff'; ctx.font = '12px monospace';
-    ctx.fillText(name.name, 160, 235);
-    for (let i = 0; i < 240; i += 4) {
-      ctx.fillStyle = `rgba(0, 229, 255, ${0.03 + Math.random() * 0.02})`;
-      ctx.fillRect(0, i, 320, 1);
-    }
-    requestAnimationFrame(draw);
-  }
-  videoEl.srcObject = stream; videoEl.play(); draw();
-}
-
-function toggleRCP() {
-  rcpActive = !rcpActive;
-  const bar = document.getElementById('rcpBar');
-  const grid = document.getElementById('videoGrid');
-  if (rcpActive) {
-    bar.classList.add('active'); grid.classList.add('active');
-    addToast('🎥 RCP LIVE', 'purple');
-    startLocalVideo();
-    setTimeout(() => {
-      createSimulatedPeer(document.getElementById('remoteVideo2'), { name: 'Dr. CHEN', icon: '🚑' });
-      createSimulatedPeer(document.getElementById('remoteVideo3'), { name: 'Dr. MARTIN', icon: '🧠' });
-      createSimulatedPeer(document.getElementById('remoteVideo4'), { name: 'Dr. DUBOIS', icon: '🫁' });
-      [2, 3, 4].forEach((n, i) => {
-        setTimeout(() => {
-          document.getElementById('tile' + n).classList.add('active');
-          document.getElementById('tile' + n).style.opacity = '1';
-          addToast(`👥 Dr. ${['CHEN', 'MARTIN', 'DUBOIS'][i]}`, 'ok');
-        }, i * 400);
-      });
-    }, 300);
-    rcpInterval = setInterval(() => {
-      document.querySelectorAll('.video-tile').forEach(t => t.classList.remove('speaking'));
-      const tiles = document.querySelectorAll('.video-tile');
-      tiles[Math.floor(Math.random() * tiles.length)].classList.add('speaking');
-    }, 3500);
-  } else {
-    bar.classList.remove('active'); grid.classList.remove('active');
-    if (rcpInterval) clearInterval(rcpInterval);
-    stopRCPRecording(); stopLocalVideo();
-    [2, 3, 4].forEach(n => {
-      const tile = document.getElementById('tile' + n);
-      tile.classList.remove('active', 'speaking');
-      tile.style.opacity = '0';
-    });
-    document.querySelectorAll('.video-tile').forEach(t => t.classList.remove('speaking'));
-    document.getElementById('rtcStatus').textContent = 'STANDBY';
-    addToast('⏹ RCP terminée', 'warn');
-  }
-}
-
-function startRCPRecording() {
-  if (rcpRecording) return;
-  rcpRecording = true; rcpSeconds = 0;
-  document.getElementById('rcpRecord').classList.add('recording');
-  document.getElementById('rcpRecord').textContent = '⏹ Stop';
-  window._rcpRecTimer = setInterval(() => {
-    rcpSeconds++;
-    const m = String(Math.floor(rcpSeconds / 60)).padStart(2, '0');
-    const s = String(rcpSeconds % 60).padStart(2, '0');
-    document.getElementById('rcpTimer').textContent = `${m}:${s}`;
-  }, 1000);
-  addToast('⏺ Enregistrement', 'crit');
-}
-
-function stopRCPRecording() {
-  if (!rcpRecording) return;
-  rcpRecording = false;
-  document.getElementById('rcpRecord').classList.remove('recording');
-  document.getElementById('rcpRecord').textContent = '⏺ Enregistrer';
-  if (window._rcpRecTimer) clearInterval(window._rcpRecTimer);
-  if (rcpSeconds > 0) addToast(`✓ Enregistrement (${rcpSeconds}s)`, 'ok');
-  rcpSeconds = 0;
-  document.getElementById('rcpTimer').textContent = '00:00';
-}
-
-document.getElementById('btnRCP').addEventListener('click', toggleRCP);
-document.getElementById('btnRCP2').addEventListener('click', toggleRCP);
-
-document.getElementById('rcpMic').addEventListener('click', e => {
-  e.currentTarget.classList.toggle('recording');
-  const muted = e.currentTarget.classList.contains('recording');
-  if (localStream) localStream.getAudioTracks().forEach(t => t.enabled = !muted);
-  document.querySelector('.video-tile[data-p="1"]').classList.toggle('muted', muted);
-  addToast(muted ? '🎙 Micro coupé' : '🎙 Micro actif', muted ? 'warn' : 'ok');
-});
-
-document.getElementById('rcpCam').addEventListener('click', e => {
-  e.currentTarget.classList.toggle('recording');
-  const off = e.currentTarget.classList.contains('recording');
-  if (localStream) localStream.getVideoTracks().forEach(t => t.enabled = !off);
-  document.querySelector('.video-tile[data-p="1"]').classList.toggle('muted', off);
-  addToast(off ? '📷 Caméra coupée' : '📷 Caméra active', off ? 'warn' : 'ok');
-});
-
-document.getElementById('rcpScreen').addEventListener('click', async e => {
-  e.currentTarget.classList.toggle('recording');
-  const sharing = e.currentTarget.classList.contains('recording');
-  if (sharing) {
-    try {
-      screenStream = await navigator.mediaDevices.getDisplayMedia({ video: true });
-      addToast('📺 Partage actif', 'ok');
-      screenStream.getVideoTracks()[0].addEventListener('ended', () => {
-        e.currentTarget.classList.remove('recording');
-        screenStream = null;
-        addToast('📺 Partage terminé', 'warn');
-      });
-    } catch { addToast('📺 Partage simulé', 'warn'); }
-  } else {
-    if (screenStream) { screenStream.getTracks().forEach(t => t.stop()); screenStream = null; }
-    addToast('📺 Partage arrêté', 'warn');
-  }
-});
-
-document.getElementById('rcpRecord').addEventListener('click', () => {
-  if (rcpRecording) stopRCPRecording(); else startRCPRecording();
-});
-document.getElementById('rcpEnd').addEventListener('click', toggleRCP);
-
-/* ============================================================
-   MONITORING
-   ============================================================ */
+/* ============ MONITORING ============ */
 function startRealtimeMonitor() {
   setInterval(() => {
-    const elapsed = parseInt(document.getElementById('sElapsed').value);
-    const spo2 = parseInt(document.getElementById('sSpo2').value);
-    if (elapsed >= 30) {
+    if (crisisState.elapsed >= 30) {
       predictionState.risk = Math.min(99, predictionState.risk + 2);
       updatePredictionDisplay();
-    }
-    if (spo2 < 90) {
-      document.getElementById('crisisStatus').textContent = 'HYPOXIE';
-      document.getElementById('crisisStatus').style.color = 'var(--red)';
     }
   }, 5000);
 }
 
-/* ============================================================
-   UI
-   ============================================================ */
+/* ============ UI ============ */
 const sessionStart = Date.now();
 setInterval(() => {
   const elapsed = Math.floor((Date.now() - sessionStart) / 1000);
@@ -2342,42 +1378,35 @@ setInterval(() => {
 }, 1000);
 
 const patientData = {
-  'EPI-023': { name: 'EPI-023', stage: 2, pathology: 'Crise généralisée tonico-clonique (GTC)', risk: 68, recruit: 35 },
-  'EPI-041': { name: 'EPI-041', stage: 2, pathology: 'Crise focale avec altération de conscience', risk: 45, recruit: 20 },
-  'EPI-058': { name: 'EPI-058', stage: 1, pathology: 'Absence (petit mal)', risk: 18, recruit: 8 },
-  'EPI-072': { name: 'EPI-072', stage: 1, pathology: 'Première crise — à évaluer', risk: 32, recruit: 12 }
+  'EPI-023': { stage: 2, risk: 68, recruit: 35 },
+  'EPI-041': { stage: 2, risk: 45, recruit: 20 },
+  'EPI-058': { stage: 1, risk: 18, recruit: 8 },
+  'EPI-072': { stage: 1, risk: 32, recruit: 12 }
 };
-
 document.querySelectorAll('.patient-card').forEach(card => {
   card.addEventListener('click', () => {
     document.querySelectorAll('.patient-card').forEach(c => c.classList.remove('active'));
     card.classList.add('active');
     const data = patientData[card.dataset.id];
-    document.getElementById('activePatientTop').textContent = '#' + data.name;
-    document.getElementById('vpPatient').textContent = data.name;
-    document.getElementById('fSeizureType').value = data.pathology;
-    predictionState.risk = data.risk;
-    updatePredictionDisplay();
+    document.getElementById('activePatientTop').textContent = '#' + card.dataset.id;
+    document.getElementById('vpPatient').textContent = card.dataset.id;
+    predictionState.risk = data.risk; updatePredictionDisplay();
     document.getElementById('sRecruit').value = data.recruit;
     document.getElementById('vRecruit').textContent = data.recruit + '%';
-    updateRecruitment(data.recruit / 100);
+    crisisState.recruit = data.recruit / 100;
     document.querySelectorAll('.stage-btn').forEach(b => b.classList.toggle('active', parseInt(b.dataset.stage) === data.stage));
     updateStage(data.stage);
-    addToast(`📁 ${data.name} — Risque ${data.risk}%`, 'ok');
   });
 });
-
 document.getElementById('patientSearch').addEventListener('input', e => {
   const q = e.target.value.toLowerCase();
   document.querySelectorAll('.patient-card').forEach(card => {
     card.style.display = card.textContent.toLowerCase().includes(q) ? '' : 'none';
   });
 });
-
 document.querySelectorAll('.tag').forEach(tag => {
   tag.addEventListener('click', () => { tag.classList.toggle('active'); });
 });
-
 document.querySelectorAll('.stage-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.stage-btn').forEach(b => b.classList.remove('active'));
@@ -2385,17 +1414,17 @@ document.querySelectorAll('.stage-btn').forEach(btn => {
     updateStage(parseInt(btn.dataset.stage));
   });
 });
-
 function updateStage(stage) {
+  crisisState.stage = stage;
   const widths = [25, 50, 75, 100];
   document.getElementById('timelineFill').style.width = widths[stage-1] + '%';
   document.getElementById('timelineMarker').style.left = widths[stage-1] + '%';
-  const recruitLevels = [0.1, 0.35, 0.65, 0.95];
-  document.getElementById('sRecruit').value = Math.round(recruitLevels[stage-1] * 100);
-  document.getElementById('vRecruit').textContent = Math.round(recruitLevels[stage-1] * 100) + '%';
-  updateRecruitment(recruitLevels[stage-1]);
+  const levels = [0.1, 0.35, 0.65, 0.95];
+  crisisState.recruit = levels[stage-1];
+  document.getElementById('sRecruit').value = Math.round(levels[stage-1] * 100);
+  document.getElementById('vRecruit').textContent = Math.round(levels[stage-1] * 100) + '%';
+  updateRealtimeAlert();
 }
-
 document.querySelectorAll('.tab').forEach(tab => {
   tab.addEventListener('click', () => {
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -2406,82 +1435,32 @@ document.querySelectorAll('.tab').forEach(tab => {
     if (tab.dataset.tab === 'cal') renderCalendar();
   });
 });
-
-document.querySelectorAll('.vp-tool[data-view]').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.vp-tool[data-view]').forEach(b => {
-      b.style.background = 'transparent'; b.style.color = 'var(--text-dim)';
-    });
-    btn.style.background = 'rgba(0, 229, 255, 0.2)';
-    btn.style.color = 'var(--cyan)';
-    const view = btn.dataset.view;
-    if (view === '3d') { autoRotate = true; camera.position.set(0, 0.8, 11); }
-    else if (view === 'axial') { autoRotate = false; camera.position.set(0, 12, 0.1); }
-    else if (view === 'coronal') { autoRotate = false; camera.position.set(0, 0.5, 11); }
-    else if (view === 'sagittal') { autoRotate = false; camera.position.set(11, 0.5, 0.1); }
-    camera.lookAt(0, 0, 0);
-    addToast(`Vue ${view.toUpperCase()}`, 'ok');
-  });
-});
-
 document.getElementById('btnPause').addEventListener('click', e => {
   isPaused = !isPaused;
   e.currentTarget.textContent = isPaused ? '▶' : '⏸';
 });
-
 document.getElementById('btnReset').addEventListener('click', () => {
-  time = 0; hologram.rotation.y = 0; autoRotate = true;
+  time = 0;
+  activeArcs.forEach(a => { arcGroup.remove(a.line); a.geo.dispose(); a.mat.dispose(); });
+  activeArcs = [];
   updateStage(2);
   document.querySelectorAll('.stage-btn').forEach(b => b.classList.toggle('active', b.dataset.stage === '2'));
   document.getElementById('sElapsed').value = 6; document.getElementById('vElapsed').textContent = '6 min';
   document.getElementById('sBenzos').value = 4; document.getElementById('vBenzos').textContent = '4 mg';
   document.getElementById('sSpo2').value = 92; document.getElementById('vSpo2').textContent = '92%';
+  crisisState.elapsed = 6; crisisState.benzos = 4; crisisState.spo2 = 92;
   predictionState.risk = 68; updatePredictionDisplay();
   updateRealtimeAlert();
+  setView('reset');
   addToast('↺ Réinitialisé', 'ok');
 });
-
 document.getElementById('btnSnapshot').addEventListener('click', () => {
   renderer.render(scene, camera);
-  const dataURL = canvas.toDataURL('image/png');
   const link = document.createElement('a');
   link.download = `epi-neural-${Date.now()}.png`;
-  link.href = dataURL;
+  link.href = canvas.toDataURL('image/png');
   link.click();
   addToast('📸 Snapshot téléchargé', 'ok');
-});
-
-document.querySelectorAll('.edu-module').forEach(mod => {
-  mod.addEventListener('click', () => {
-    const title = mod.querySelector('.edu-title').textContent;
-    openModal('◈ Module éducatif', `
-      <h4>▸ ${title}</h4>
-      <p>Module interactif d'aide à la gestion de l'épilepsie.</p>
-      <h4>▸ Contenu</h4>
-      <ul><li>Vidéos explicatives</li><li>Quiz interactif</li><li>Journal des déclencheurs</li></ul>
-    `, () => {
-      mod.classList.add('completed');
-      mod.querySelector('.edu-progress-fill').style.width = '100%';
-      mod.querySelector('.edu-meta span:last-child').textContent = '✓ Complété';
-      addToast(`📖 "${title}" complété`, 'ok');
-    });
-  });
-});
-
-function openModal(title, content, onConfirm) {
-  document.getElementById('modalTitle').textContent = title;
-  document.getElementById('modalBody').innerHTML = content;
-  document.getElementById('modalOverlay').classList.add('active');
-  const c = document.getElementById('modalConfirm');
-  const n = c.cloneNode(true);
-  c.parentNode.replaceChild(n, c);
-  n.addEventListener('click', () => { if (onConfirm) onConfirm(); closeModal(); });
-}
-function closeModal() { document.getElementById('modalOverlay').classList.remove('active'); }
-document.getElementById('modalClose').addEventListener('click', closeModal);
-document.getElementById('modalCancel').addEventListener('click', closeModal);
-document.getElementById('modalOverlay').addEventListener('click', e => {
-  if (e.target.id === 'modalOverlay') closeModal();
 });
 
 function addToast(msg, type = '') {
