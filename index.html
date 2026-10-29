@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>EPI-SEQUENCE PRO v9.5 — Brain Atlas Responsive</title>
+<title>EPI-SEQUENCE PRO v9.6 — Mobile Blocs</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -73,7 +73,6 @@
   .session-timer { color: var(--green); font-size: 10.5px; letter-spacing: 1px; }
   .btn-logout { padding: 4px 10px; background: transparent; border: 1px solid rgba(255, 59, 107, 0.4); color: var(--red); font-family: inherit; font-size: 9.5px; letter-spacing: 1px; cursor: pointer; border-radius: 2px; transition: all 0.2s; }
   .btn-logout:hover { background: rgba(255, 59, 107, 0.2); box-shadow: 0 0 12px rgba(255, 59, 107, 0.4); }
-  .btn-menu { display: none; background: transparent; border: 1px solid var(--border); color: var(--cyan); padding: 4px 10px; border-radius: 3px; font-family: inherit; cursor: pointer; font-size: 14px; margin-right: 8px; }
   .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 4px; backdrop-filter: blur(12px); display: flex; flex-direction: column; overflow: hidden; position: relative; }
   .panel-header { padding: 8px 12px; border-bottom: 1px solid var(--border); font-size: 10px; letter-spacing: 2px; text-transform: uppercase; display: flex; justify-content: space-between; align-items: center; background: rgba(0, 229, 255, 0.04); flex-shrink: 0; }
   .panel-header .title { color: var(--cyan); display: flex; align-items: center; gap: 6px; }
@@ -251,7 +250,7 @@
   .scanlines { position: fixed; inset: 0; background: repeating-linear-gradient(to bottom, transparent 0px, transparent 2px, rgba(0, 229, 255, 0.022) 3px, rgba(0, 229, 255, 0.022) 4px); pointer-events: none; z-index: 999; }
 
   /* ═══════════════════════════════════════════ */
-  /* RESPONSIVE — Tablette 768-1200px            */
+  /* TABLETTE 768-1200px                         */
   /* ═══════════════════════════════════════════ */
   @media (max-width: 1200px) {
     .app { grid-template-columns: 200px 1fr 300px; grid-template-rows: 44px 1fr 80px 24px; gap: 4px; padding: 4px; }
@@ -261,32 +260,61 @@
   }
 
   /* ═══════════════════════════════════════════ */
-  /* RESPONSIVE — Mobile paysage 600-768px       */
+  /* MOBILE STACK <768px — blocs empilés         */
   /* ═══════════════════════════════════════════ */
   @media (max-width: 768px) {
-    .app { grid-template-columns: 1fr; grid-template-rows: 40px 1fr 56px 22px; gap: 3px; padding: 3px; }
-    .app > .panel:nth-child(1),
-    .app > .panel:nth-child(2),
-    .app > .panel:nth-child(4) { display: none; }
-    .viewport { grid-column: 1 / -1; }
-
-    /* Panneaux visibles en mode menu */
-    .app.mobile-panels > .panel:nth-child(1),
-    .app.mobile-panels > .panel:nth-child(2),
-    .app.mobile-panels > .panel:nth-child(4) {
-      display: flex;
-      position: fixed;
-      top: 50px;
-      left: 6px;
-      right: 6px;
-      max-height: 70vh;
-      z-index: 100;
-      background: var(--panel-2);
-      box-shadow: 0 0 30px rgba(0,0,0,0.9);
-      border-color: var(--cyan);
+    .app {
+      display: block;
+      position: relative;
+      padding: 3px;
+      overflow: hidden;
+      height: 100vh;
     }
 
-    .btn-menu { display: block; }
+    .app > .panel {
+      position: absolute;
+      top: 48px;
+      left: 3px;
+      right: 3px;
+      bottom: 85px;
+      display: none;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.3s, transform 0.3s;
+      z-index: 50;
+    }
+
+    .app > .panel.mobile-active {
+      display: flex;
+      opacity: 1;
+      transform: translateY(0);
+      z-index: 51;
+    }
+
+    .app > .topbar {
+      position: relative;
+      height: 42px;
+      display: flex;
+    }
+    .app > .bottombar {
+      position: absolute;
+      bottom: 42px;
+      left: 3px;
+      right: 3px;
+      height: 42px;
+      display: flex;
+      z-index: 60;
+    }
+    .app > .statusbar {
+      position: absolute;
+      bottom: 0;
+      left: 3px;
+      right: 3px;
+      height: 38px;
+      display: flex;
+      z-index: 60;
+    }
+
     .topbar-stats { display: none; }
     .topbar { padding: 0 8px; }
     .brand { font-size: 11px; letter-spacing: 1.5px; }
@@ -306,33 +334,116 @@
     .status-left, .status-right { gap: 6px; }
     .login-container { width: 90vw; max-width: 400px; padding: 24px 20px; }
     .login-role-tabs { grid-template-columns: repeat(2, 1fr); }
+
+    /* Boutons navigation mobile */
+    .mobile-nav {
+      position: fixed;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      z-index: 100;
+    }
+    .mobile-nav button {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(0, 229, 255, 0.15);
+      border: 2px solid var(--cyan);
+      color: var(--cyan);
+      font-size: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
+      transition: all 0.2s;
+    }
+    .mobile-nav button:active {
+      transform: scale(0.9);
+      background: rgba(0, 229, 255, 0.3);
+    }
+    .mobile-nav button:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+    .mobile-nav .block-indicator {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.7);
+      border: 1px solid var(--border);
+      color: var(--cyan);
+      font-size: 10px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: inherit;
+    }
+
+    /* Titre du bloc actif */
+    .mobile-block-title {
+      position: fixed;
+      top: 50px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.85);
+      border: 1px solid var(--cyan);
+      border-radius: 20px;
+      padding: 6px 16px;
+      color: var(--cyan);
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      z-index: 90;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.3);
+      pointer-events: none;
+    }
+    .mobile-block-title .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--red);
+      box-shadow: 0 0 8px var(--red);
+      animation: pulse 1.5s infinite;
+    }
+
+    .app::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.3);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .app.switching::after { opacity: 1; }
   }
 
-  /* ═══════════════════════════════════════════ */
-  /* RESPONSIVE — Mobile portrait <600px         */
-  /* ═══════════════════════════════════════════ */
-  @media (max-width: 600px) {
-    .app { grid-template-rows: 38px 1fr 48px 20px; }
-    .login-container { width: 95vw; padding: 20px 16px; }
-    .login-title { font-size: 16px; letter-spacing: 2px; }
-    .login-subtitle { font-size: 8px; }
-    .btn-login { font-size: 10px; padding: 12px; }
-    #structureInfo { min-width: auto; max-width: 140px; }
+  /* Mobile portrait <480px */
+  @media (max-width: 480px) {
+    .mobile-nav { right: 4px; gap: 6px; }
+    .mobile-nav button { width: 40px; height: 40px; font-size: 18px; }
+    .mobile-nav .block-indicator { width: 40px; height: 40px; font-size: 9px; }
     .vp-toolbar { max-width: calc(100% - 12px); }
     .action-btns .btn { padding: 4px 6px; font-size: 9px; }
   }
 
-  /* ═══════════════════════════════════════════ */
-  /* RESPONSIVE — Ultra-wide >1920px             */
-  /* ═══════════════════════════════════════════ */
+  /* Ultra-wide >1920px */
   @media (min-width: 1920px) {
     .app { grid-template-columns: 280px 400px 1fr 420px; grid-template-rows: 56px 1fr 110px 30px; }
   }
 
-  /* ═══════════════════════════════════════════ */
-  /* RESPONSIVE — Paysage court <500px           */
-  /* ═══════════════════════════════════════════ */
-  @media (max-height: 500px) and (orientation: landscape) {
+  /* Paysage court */
+  @media (max-height: 500px) and (orientation: landscape) and (min-width: 769px) {
     .app { grid-template-rows: 34px 1fr 38px 18px; gap: 2px; padding: 2px; }
     .topbar { padding: 0 6px; }
     .brand { font-size: 10px; }
@@ -349,7 +460,7 @@
   <div class="login-container">
     <div class="login-logo"></div>
     <div class="login-title">EPI-SEQUENCE</div>
-    <div class="login-subtitle">Brain Atlas · v9.5</div>
+    <div class="login-subtitle">Brain Atlas · v9.6</div>
     <div class="login-role-tabs">
       <button class="role-tab active" data-role="neurologue"><span class="role-icon">🧠</span>Neurologue</button>
       <button class="role-tab" data-role="urgentiste"><span class="role-icon">🚑</span>Urgentiste</button>
@@ -380,7 +491,6 @@
 <div class="app" id="mainApp">
   <div class="topbar">
     <div class="brand">
-      <button class="btn-menu" id="btnMenu">☰</button>
       <div class="brand-logo"></div>
       EPI-SEQUENCE <span style="opacity:0.4">PRO</span>
     </div>
@@ -399,7 +509,7 @@
     </div>
   </div>
 
-  <div class="panel">
+  <div class="panel" id="panelPatients" data-block="1" data-title="PATIENTS">
     <div class="panel-header"><span class="title">Dossiers Patients</span><span style="opacity:0.5">4</span></div>
     <div class="patient-search"><input type="text" placeholder="🔍 Rechercher..." id="patientSearch"></div>
     <div class="patient-list">
@@ -426,7 +536,7 @@
     </div>
   </div>
 
-  <div class="panel">
+  <div class="panel" id="panelCTAG" data-block="2" data-title="SÉQUENCEUR CTAG">
     <div class="panel-header"><span class="title">Séquenceur CTAG</span><span style="opacity:0.5; color:var(--purple)">SE PROTOCOL</span></div>
     <div class="panel-body">
       <div class="section">
@@ -475,7 +585,7 @@
     </div>
   </div>
 
-  <div class="panel viewport">
+  <div class="panel viewport" id="panel3D" data-block="3" data-title="CERVEAU 3D">
     <canvas id="scene"></canvas>
     <div class="corner tl"></div><div class="corner tr"></div>
     <div class="corner bl"></div><div class="corner br"></div>
@@ -515,7 +625,7 @@
     </div>
   </div>
 
-  <div class="panel">
+  <div class="panel" id="panelAnalysis" data-block="4" data-title="ANALYSE">
     <div class="tabs">
       <button class="tab active" data-tab="pred">🔮 Préd.</button>
       <button class="tab" data-tab="wear">⌚ Wear.</button>
@@ -626,6 +736,17 @@
       <span id="statusTime">--:--:--</span>
     </div>
   </div>
+
+  <!-- ★ Navigation mobile par blocs -->
+  <div class="mobile-nav" id="mobileNav" style="display:none;">
+    <button id="btnBlockUp" title="Bloc précédent">⬆</button>
+    <div class="block-indicator" id="blockIndicator">1/4</div>
+    <button id="btnBlockDown" title="Bloc suivant">⬇</button>
+  </div>
+  <div class="mobile-block-title" id="blockTitle" style="display:none;">
+    <span class="dot"></span>
+    <span id="blockTitleText">PATIENTS</span>
+  </div>
 </div>
 
 <div class="toast-container" id="toastContainer"></div>
@@ -688,6 +809,7 @@ document.getElementById('btnLogin').addEventListener('click', () => {
       addToast(`✓ Connecté — ${cfg.name}`, 'ok');
       initCharts(); initCalendar(); initAI(); initCTAG(); updatePredictionDisplay(); startRealtimeMonitor();
       if (typeof resizeRenderer === 'function') resizeRenderer();
+      updateMobileNav();
     }, 600);
   }, 1200);
 });
@@ -702,19 +824,6 @@ document.getElementById('btnLogout').addEventListener('click', () => {
     addToast('⏻ Session fermée', 'warn');
   }, 400);
 });
-
-/* ============ MENU MOBILE ============ */
-const btnMenu = document.getElementById('btnMenu');
-if (btnMenu) {
-  btnMenu.addEventListener('click', () => {
-    document.getElementById('mainApp').classList.toggle('mobile-panels');
-  });
-}
-function updateMenuVisibility() {
-  if (btnMenu) btnMenu.style.display = window.innerWidth <= 768 ? 'block' : 'none';
-}
-window.addEventListener('resize', updateMenuVisibility);
-updateMenuVisibility();
 
 /* ============ THREE.JS ============ */
 const canvas = document.getElementById('scene');
@@ -780,10 +889,8 @@ function resizeRenderer() {
   camera.aspect = w / h;
   camera.updateProjectionMatrix();
 }
-
 window.addEventListener('orientationchange', () => setTimeout(resizeRenderer, 300));
 
-// Éclairage
 scene.add(new THREE.AmbientLight(0xffffff, 0.35));
 scene.add(new THREE.HemisphereLight(0x8899bb, 0x220011, 0.3));
 const keyLight = new THREE.DirectionalLight(0xffffff, 0.9); keyLight.position.set(5, 8, 6); scene.add(keyLight);
@@ -890,7 +997,6 @@ gltfLoader.load(
   'brain.glb',
   (gltf) => {
     brainModel = gltf.scene;
-
     let box = new THREE.Box3().setFromObject(brainModel);
     const center = box.getCenter(new THREE.Vector3());
     brainModel.position.sub(center);
@@ -1241,6 +1347,88 @@ function animate() {
 window.addEventListener('resize', resizeRenderer);
 setTimeout(() => { resizeRenderer(); animate(); }, 300);
 
+/* ============ NAVIGATION MOBILE ============ */
+let currentBlock = 1;
+const totalBlocks = 4;
+const blocks = [
+  { id: 'panelPatients', title: 'PATIENTS' },
+  { id: 'panelCTAG', title: 'SÉQUENCEUR CTAG' },
+  { id: 'panel3D', title: 'CERVEAU 3D' },
+  { id: 'panelAnalysis', title: 'ANALYSE' }
+];
+
+function isMobile() { return window.innerWidth <= 768; }
+
+function showBlock(index) {
+  if (!isMobile()) return;
+  if (index < 1) index = 1;
+  if (index > totalBlocks) index = totalBlocks;
+  currentBlock = index;
+
+  const app = document.getElementById('mainApp');
+  app.classList.add('switching');
+
+  blocks.forEach((b) => {
+    const el = document.getElementById(b.id);
+    if (el) el.classList.remove('mobile-active');
+  });
+  const activeBlock = blocks[index - 1];
+  const activeEl = document.getElementById(activeBlock.id);
+  if (activeEl) activeEl.classList.add('mobile-active');
+
+  document.getElementById('blockIndicator').textContent = `${index}/${totalBlocks}`;
+  document.getElementById('blockTitleText').textContent = activeBlock.title;
+  document.getElementById('btnBlockUp').disabled = index === 1;
+  document.getElementById('btnBlockDown').disabled = index === totalBlocks;
+
+  setTimeout(() => app.classList.remove('switching'), 350);
+
+  if (activeBlock.id === 'panel3D') {
+    setTimeout(() => { if (typeof resizeRenderer === 'function') resizeRenderer(); }, 300);
+  }
+}
+
+function updateMobileNav() {
+  const nav = document.getElementById('mobileNav');
+  const title = document.getElementById('blockTitle');
+  if (!nav || !title) return;
+  if (isMobile()) {
+    nav.style.display = 'flex';
+    title.style.display = 'flex';
+    showBlock(currentBlock);
+  } else {
+    nav.style.display = 'none';
+    title.style.display = 'none';
+    document.querySelectorAll('.app > .panel').forEach(p => p.classList.remove('mobile-active'));
+  }
+}
+
+document.getElementById('btnBlockUp').addEventListener('click', () => showBlock(currentBlock - 1));
+document.getElementById('btnBlockDown').addEventListener('click', () => showBlock(currentBlock + 1));
+
+let touchStartY = 0;
+let touchEndY = 0;
+document.addEventListener('touchstart', (e) => {
+  touchStartY = e.changedTouches[0].screenY;
+}, { passive: true });
+document.addEventListener('touchend', (e) => {
+  if (!isMobile()) return;
+  touchEndY = e.changedTouches[0].screenY;
+  const diff = touchStartY - touchEndY;
+  if (Math.abs(diff) > 80) {
+    if (diff > 0) showBlock(currentBlock + 1);
+    else showBlock(currentBlock - 1);
+  }
+}, { passive: true });
+
+window.addEventListener('resize', () => {
+  updateMobileNav();
+  if (typeof resizeRenderer === 'function') resizeRenderer();
+});
+
+setTimeout(updateMobileNav, 200);
+
+/* ============ SLIDERS ============ */
 document.getElementById('sElapsed').addEventListener('input', e => {
   crisisState.elapsed = parseInt(e.target.value);
   document.getElementById('vElapsed').textContent = crisisState.elapsed + ' min';
